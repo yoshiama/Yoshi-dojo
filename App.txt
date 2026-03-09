@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今・気・生 — Ima Ki Sei</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --gold: #c9a84c;
+    --red: #8b2020;
+    --mist: #d4cfc4;
+    --deep: #2d2520;
+    --bamboo: #4a6741;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–paper);
+color: var(–ink);
+font-family: ‘Noto Serif JP’, serif;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Washi paper texture */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image:
+url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘400’ height=‘400’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3CfeColorMatrix type=‘saturate’ values=‘0’/%3E%3C/filter%3E%3Crect width=‘400’ height=‘400’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 0;
+}
+
+/* Header */
+.header {
+text-align: center;
+padding: 40px 20px 20px;
+position: relative;
+border-bottom: 1px solid var(–mist);
+}
+
+.header::after {
+content: ‘一’;
+position: absolute;
+bottom: -18px;
+left: 50%;
+transform: translateX(-50%);
+background: var(–paper);
+padding: 0 12px;
+color: var(–gold);
+font-size: 20px;
+}
+
+.logo {
+font-family: ‘Zen Antique’, serif;
+font-size: clamp(28px, 7vw, 42px);
+letter-spacing: 0.3em;
+color: var(–ink);
+line-height: 1;
+}
+
+.logo-sub {
+font-size: 11px;
+letter-spacing: 0.5em;
+color: var(–gold);
+margin-top: 6px;
+text-transform: uppercase;
+}
+
+.date-display {
+font-size: 12px;
+letter-spacing: 0.3em;
+color: #888;
+margin-top: 10px;
+}
+
+/* Navigation tabs */
+.nav {
+display: flex;
+justify-content: center;
+gap: 0;
+padding: 30px 20px 0;
+position: relative;
+}
+
+.nav-btn {
+background: none;
+border: none;
+font-family: ‘Noto Serif JP’, serif;
+font-size: 13px;
+letter-spacing: 0.2em;
+color: var(–mist);
+padding: 12px 20px;
+cursor: pointer;
+position: relative;
+transition: color 0.4s;
+border-bottom: 2px solid transparent;
+}
+
+.nav-btn.active {
+color: var(–ink);
+border-bottom: 2px solid var(–gold);
+}
+
+.nav-btn:hover { color: var(–ink); }
+
+/* Sections */
+.section {
+display: none;
+padding: 40px 20px;
+max-width: 480px;
+margin: 0 auto;
+animation: fadeIn 0.6s ease;
+}
+
+.section.active { display: block; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* === MEDITATION SECTION === */
+.meditation-center {
+text-align: center;
+}
+
+.breath-circle-wrapper {
+position: relative;
+width: 200px;
+height: 200px;
+margin: 20px auto 30px;
+}
+
+.breath-ring {
+position: absolute;
+inset: 0;
+border-radius: 50%;
+border: 1px solid var(–mist);
+animation: breathRing 8s ease-in-out infinite;
+}
+
+.breath-ring:nth-child(2) { animation-delay: -2.6s; opacity: 0.6; }
+.breath-ring:nth-child(3) { animation-delay: -5.2s; opacity: 0.3; }
+
+@keyframes breathRing {
+0%, 100% { transform: scale(0.7); opacity: 0.8; border-color: var(–mist); }
+50% { transform: scale(1); opacity: 0.3; border-color: var(–gold); }
+}
+
+.breath-circle {
+position: absolute;
+inset: 20px;
+border-radius: 50%;
+background: radial-gradient(circle at 40% 40%, #e8e0d0, #c5bdb0);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+cursor: pointer;
+transition: transform 0.3s;
+box-shadow: 0 4px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.breath-circle.breathing {
+animation: breathPulse 8s ease-in-out infinite;
+}
+
+@keyframes breathPulse {
+0%, 100% { transform: scale(0.9); }
+50% { transform: scale(1.05); }
+}
+
+.breath-kanji {
+font-family: ‘Zen Antique’, serif;
+font-size: 36px;
+color: var(–ink);
+line-height: 1;
+}
+
+.breath-label {
+font-size: 10px;
+letter-spacing: 0.3em;
+color: #888;
+margin-top: 4px;
+}
+
+.breath-instruction {
+font-size: 14px;
+letter-spacing: 0.2em;
+color: #888;
+margin: 10px 0 20px;
+min-height: 24px;
+transition: opacity 0.5s;
+}
+
+.meditation-guide {
+background: rgba(255,255,255,0.5);
+border: 1px solid var(–mist);
+border-radius: 2px;
+padding: 20px;
+text-align: left;
+margin-top: 20px;
+}
+
+.guide-title {
+font-size: 11px;
+letter-spacing: 0.4em;
+color: var(–gold);
+margin-bottom: 12px;
+}
+
+.guide-step {
+font-size: 13px;
+color: #666;
+line-height: 2;
+letter-spacing: 0.05em;
+padding: 4px 0;
+border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.guide-step:last-child { border-bottom: none; }
+
+.start-btn {
+background: var(–ink);
+color: var(–paper);
+border: none;
+font-family: ‘Noto Serif JP’, serif;
+font-size: 13px;
+letter-spacing: 0.4em;
+padding: 14px 40px;
+cursor: pointer;
+border-radius: 1px;
+margin-top: 20px;
+transition: background 0.3s, transform 0.2s;
+}
+
+.start-btn:hover { background: var(–deep); transform: translateY(-1px); }
+.start-btn:active { transform: translateY(0); }
+
+.timer-display {
+font-family: ‘Zen Antique’, serif;
+font-size: 32px;
+color: var(–ink);
+letter-spacing: 0.2em;
+margin: 10px 0;
+}
+
+/* === VISION BOARD SECTION === */
+.section-title {
+font-family: ‘Zen Antique’, serif;
+font-size: 11px;
+letter-spacing: 0.5em;
+color: var(–gold);
+text-align: center;
+margin-bottom: 30px;
+}
+
+.vision-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-bottom: 20px;
+}
+
+.vision-card {
+aspect-ratio: 1;
+background: rgba(255,255,255,0.6);
+border: 1px solid var(–mist);
+border-radius: 2px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.3s;
+padding: 16px;
+position: relative;
+overflow: hidden;
+}
+
+.vision-card::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.vision-card:hover::before { opacity: 1; }
+.vision-card:hover { border-color: var(–gold); transform: translateY(-2px); }
+
+.vision-card.filled {
+background: linear-gradient(135deg, #f0ece0, #e8e2d5);
+}
+
+.vision-icon {
+font-size: 28px;
+margin-bottom: 8px;
+}
+
+.vision-text {
+font-size: 12px;
+letter-spacing: 0.1em;
+color: #666;
+text-align: center;
+line-height: 1.6;
+}
+
+.vision-tag {
+font-size: 9px;
+letter-spacing: 0.3em;
+color: var(–gold);
+margin-bottom: 4px;
+text-transform: uppercase;
+}
+
+.add-vision {
+border: 1px dashed var(–mist);
+color: var(–mist);
+}
+
+.add-vision:hover { border-color: var(–gold); color: var(–gold); }
+
+.add-vision .vision-icon { font-size: 24px; }
+
+/* Vision input modal */
+.modal-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(26,22,18,0.7);
+z-index: 100;
+align-items: flex-end;
+justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+background: var(–paper);
+width: 100%;
+max-width: 480px;
+padding: 30px 24px;
+border-radius: 4px 4px 0 0;
+animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+from { transform: translateY(100%); }
+to { transform: translateY(0); }
+}
+
+.modal-title {
+font-family: ‘Zen Antique’, serif;
+font-size: 14px;
+letter-spacing: 0.4em;
+color: var(–gold);
+margin-bottom: 20px;
+text-align: center;
+}
+
+.modal-input {
+width: 100%;
+background: rgba(255,255,255,0.7);
+border: 1px solid var(–mist);
+border-radius: 2px;
+padding: 12px 16px;
+font-family: ‘Noto Serif JP’, serif;
+font-size: 14px;
+color: var(–ink);
+outline: none;
+margin-bottom: 12px;
+transition: border-color 0.3s;
+}
+
+.modal-input:focus { border-color: var(–gold); }
+
+.category-select {
+display: flex;
+gap: 8px;
+margin-bottom: 20px;
+flex-wrap: wrap;
+}
+
+.cat-btn {
+background: none;
+border: 1px solid var(–mist);
+font-family: ‘Noto Serif JP’, serif;
+font-size: 11px;
+letter-spacing: 0.2em;
+color: #888;
+padding: 6px 14px;
+cursor: pointer;
+border-radius: 1px;
+transition: all 0.2s;
+}
+
+.cat-btn.selected {
+background: var(–ink);
+color: var(–paper);
+border-color: var(–ink);
+}
+
+.modal-actions {
+display: flex;
+gap: 10px;
+}
+
+.btn-save {
+flex: 1;
+background: var(–ink);
+color: var(–paper);
+border: none;
+font-family: ‘Noto Serif JP’, serif;
+font-size: 13px;
+letter-spacing: 0.3em;
+padding: 14px;
+cursor: pointer;
+border-radius: 1px;
+}
+
+.btn-cancel {
+background: none;
+border: 1px solid var(–mist);
+font-family: ‘Noto Serif JP’, serif;
+font-size: 13px;
+letter-spacing: 0.3em;
+color: #888;
+padding: 14px 20px;
+cursor: pointer;
+border-radius: 1px;
+}
+
+/* === DIARY SECTION === */
+.diary-date {
+text-align: center;
+font-size: 11px;
+letter-spacing: 0.4em;
+color: #888;
+margin-bottom: 24px;
+}
+
+.diary-prompt {
+background: rgba(201,168,76,0.08);
+border-left: 2px solid var(–gold);
+padding: 14px 16px;
+margin-bottom: 20px;
+font-size: 13px;
+letter-spacing: 0.1em;
+color: #666;
+line-height: 1.8;
+}
+
+.diary-textarea {
+width: 100%;
+min-height: 180px;
+background: rgba(255,255,255,0.6);
+border: 1px solid var(–mist);
+border-radius: 2px;
+padding: 16px;
+font-family: ‘Noto Serif JP’, serif;
+font-size: 14px;
+color: var(–ink);
+line-height: 2;
+outline: none;
+resize: none;
+transition: border-color 0.3s;
+letter-spacing: 0.05em;
+}
+
+.diary-textarea:focus { border-color: var(–gold); }
+.diary-textarea::placeholder { color: var(–mist); }
+
+.mood-row {
+display: flex;
+gap: 8px;
+margin: 16px 0;
+justify-content: center;
+}
+
+.mood-btn {
+background: none;
+border: 1px solid var(–mist);
+border-radius: 50%;
+width: 44px;
+height: 44px;
+font-size: 22px;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.mood-btn.selected {
+border-color: var(–gold);
+background: rgba(201,168,76,0.1);
+transform: scale(1.1);
+}
+
+.save-diary-btn {
+width: 100%;
+background: var(–ink);
+color: var(–paper);
+border: none;
+font-family: ‘Noto Serif JP’, serif;
+font-size: 13px;
+letter-spacing: 0.4em;
+padding: 16px;
+cursor: pointer;
+margin-top: 16px;
+border-radius: 1px;
+transition: background 0.3s;
+}
+
+.save-diary-btn:hover { background: var(–deep); }
+
+.saved-note {
+text-align: center;
+font-size: 12px;
+letter-spacing: 0.3em;
+color: var(–bamboo);
+margin-top: 10px;
+opacity: 0;
+transition: opacity 0.5s;
+}
+
+/* === BODY CHECK SECTION === */
+.body-section-title {
+font-size: 11px;
+letter-spacing: 0.4em;
+color: var(–gold);
+margin-bottom: 16px;
+text-align: center;
+}
+
+.body-check-item {
+background: rgba(255,255,255,0.5);
+border: 1px solid var(–mist);
+border-radius: 2px;
+padding: 18px;
+margin-bottom: 12px;
+transition: border-color 0.3s;
+}
+
+.body-check-item:hover { border-color: var(–gold); }
+
+.body-check-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 12px;
+}
+
+.body-check-name {
+font-size: 14px;
+letter-spacing: 0.2em;
+color: var(–ink);
+}
+
+.body-check-kanji {
+font-family: ‘Zen Antique’, serif;
+font-size: 20px;
+color: var(–gold);
+}
+
+.body-check-desc {
+font-size: 12px;
+color: #888;
+letter-spacing: 0.05em;
+line-height: 1.7;
+margin-bottom: 14px;
+}
+
+.level-slider {
+-webkit-appearance: none;
+width: 100%;
+height: 2px;
+background: linear-gradient(to right, var(–gold) 0%, var(–mist) 0%);
+outline: none;
+border-radius: 1px;
+}
+
+.level-slider::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background: var(–ink);
+cursor: pointer;
+border: 2px solid var(–paper);
+box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.level-labels {
+display: flex;
+justify-content: space-between;
+margin-top: 6px;
+font-size: 10px;
+color: var(–mist);
+letter-spacing: 0.1em;
+}
+
+.body-summary {
+background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(74,103,65,0.05));
+border: 1px solid var(–mist);
+border-radius: 2px;
+padding: 20px;
+margin-top: 20px;
+text-align: center;
+}
+
+.body-summary-title {
+font-size: 10px;
+letter-spacing: 0.5em;
+color: var(–gold);
+margin-bottom: 12px;
+}
+
+.body-summary-score {
+font-family: ‘Zen Antique’, serif;
+font-size: 48px;
+color: var(–ink);
+line-height: 1;
+}
+
+.body-summary-label {
+font-size: 11px;
+color: #888;
+letter-spacing: 0.3em;
+margin-top: 4px;
+}
+
+/* Divider */
+.zen-divider {
+text-align: center;
+color: var(–mist);
+letter-spacing: 0.5em;
+font-size: 14px;
+margin: 20px 0;
+position: relative;
+}
+
+.zen-divider::before,
+.zen-divider::after {
+content: ‘’;
+position: absolute;
+top: 50%;
+width: 30%;
+height: 1px;
+background: var(–mist);
+}
+
+.zen-divider::before { left: 0; }
+.zen-divider::after { right: 0; }
+
+/* Bottom decoration */
+.footer-seal {
+text-align: center;
+padding: 30px;
+color: var(–mist);
+font-size: 11px;
+letter-spacing: 0.4em;
+}
+
+.seal {
+display: inline-block;
+width: 40px;
+height: 40px;
+border: 2px solid var(–mist);
+border-radius: 50%;
+line-height: 36px;
+font-family: ‘Zen Antique’, serif;
+font-size: 16px;
+color: var(–red);
+margin-bottom: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">今・気・生</div>
+  <div class="logo-sub">Ima · Ki · Sei</div>
+  <div class="date-display" id="dateDisplay"></div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showSection('meditation')">瞑　想</button>
+  <button class="nav-btn" onclick="showSection('vision')">願　望</button>
+  <button class="nav-btn" onclick="showSection('diary')">気　づき</button>
+  <button class="nav-btn" onclick="showSection('body')">身　体</button>
+</nav>
+
+<!-- === MEDITATION === -->
+
+<section class="section active" id="meditation">
+  <div class="meditation-center">
+    <div class="breath-circle-wrapper">
+      <div class="breath-ring"></div>
+      <div class="breath-ring"></div>
+      <div class="breath-ring"></div>
+      <div class="breath-circle" id="breathCircle" onclick="toggleBreath()">
+        <div class="breath-kanji">息</div>
+        <div class="breath-label">呼　吸</div>
+      </div>
+    </div>
+
+```
+<div class="timer-display" id="timerDisplay">00:00</div>
+<div class="breath-instruction" id="breathInstruction">円をタップして始める</div>
+
+<button class="start-btn" id="startBtn" onclick="toggleBreath()">瞑想を始める</button>
+
+<div class="zen-divider">〇</div>
+
+<div class="meditation-guide">
+  <div class="guide-title">今・ここへの誘い</div>
+  <div class="guide-step">① 背筋を自然に伸ばし、丹田に意識を置く</div>
+  <div class="guide-step">② ゆっくり鼻から4秒吸い、7秒止め、8秒吐く</div>
+  <div class="guide-step">③ 思考が来たら、ただ「気づき」そっと戻る</div>
+  <div class="guide-step">④ 身体全体に気が満ちるのを感じる</div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- === VISION BOARD === -->
+
+<section class="section" id="vision">
+  <div class="section-title">夢 · 願 · 望</div>
+
+  <div class="vision-grid" id="visionGrid">
+    <!-- Default cards -->
+    <div class="vision-card filled" data-index="0">
+      <div class="vision-tag">健康</div>
+      <div class="vision-icon">🌿</div>
+      <div class="vision-text">毎朝、気と身体感覚で目覚める</div>
+    </div>
+    <div class="vision-card filled" data-index="1">
+      <div class="vision-tag">仕事</div>
+      <div class="vision-icon">✨</div>
+      <div class="vision-text">流れに乗る自然な繁栄</div>
+    </div>
+    <div class="vision-card filled" data-index="2">
+      <div class="vision-tag">人間関係</div>
+      <div class="vision-icon">🌸</div>
+      <div class="vision-text">深く繋がる豊かな縁</div>
+    </div>
+    <div class="vision-card add-vision" onclick="openModal()">
+      <div class="vision-icon">＋</div>
+      <div class="vision-text">新しい願望を加える</div>
+    </div>
+  </div>
+
+  <div class="zen-divider">願</div>
+
+  <div class="meditation-guide">
+    <div class="guide-title">ビジョンの使い方</div>
+    <div class="guide-step">毎朝このページを開き、目を閉じて映像化する</div>
+    <div class="guide-step">執着せず「すでに在る」感覚で受け取る</div>
+    <div class="guide-step">丁寧な今日の行動が、自然に夢を引き寄せる</div>
+  </div>
+</section>
+
+<!-- === DIARY === -->
+
+<section class="section" id="diary">
+  <div class="diary-date" id="diaryDate"></div>
+
+  <div class="diary-prompt" id="diaryPrompt">
+    今日、身体はどんなことを感じていますか？<br>どんな気の流れがありましたか？
+  </div>
+
+  <div class="body-section-title">今日の気分</div>
+  <div class="mood-row">
+    <button class="mood-btn" onclick="selectMood(this)" title="穏やか">😌</button>
+    <button class="mood-btn" onclick="selectMood(this)" title="喜び">😊</button>
+    <button class="mood-btn" onclick="selectMood(this)" title="集中">🧘</button>
+    <button class="mood-btn" onclick="selectMood(this)" title="疲れ">😔</button>
+    <button class="mood-btn" onclick="selectMood(this)" title="感謝">🙏</button>
+  </div>
+
+  <textarea class="diary-textarea" id="diaryText" placeholder="今日の気づきを、ありのままに…"></textarea>
+
+<button class="save-diary-btn" onclick="saveDiary()">今日の気づきを記す</button>
+
+  <div class="saved-note" id="savedNote">✓ 記録されました</div>
+
+  <div class="zen-divider">記</div>
+
+  <div id="pastEntries"></div>
+</section>
+
+<!-- === BODY CHECK === -->
+
+<section class="section" id="body">
+  <div class="body-section-title">身 体 感 覚 チェック</div>
+
+  <div class="body-check-item">
+    <div class="body-check-header">
+      <div class="body-check-name">丹田</div>
+      <div class="body-check-kanji">丹</div>
+    </div>
+    <div class="body-check-desc">へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？</div>
+    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
+    <div class="level-labels"><span>感じない</span><span>強く感じる</span></div>
+  </div>
+
+  <div class="body-check-item">
+    <div class="body-check-header">
+      <div class="body-check-name">呼吸</div>
+      <div class="body-check-kanji">息</div>
+    </div>
+    <div class="body-check-desc">今の呼吸は深いですか？胸ではなく、腹で呼吸できていますか？</div>
+    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
+    <div class="level-labels"><span>浅い</span><span>深く豊か</span></div>
+  </div>
+
+  <div class="body-check-item">
+    <div class="body-check-header">
+      <div class="body-check-name">脱力</div>
+      <div class="body-check-kanji">緩</div>
+    </div>
+    <div class="body-check-desc">肩、首、顎の力は抜けていますか？不必要な緊張はありますか？</div>
+    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
+    <div class="level-labels"><span>緊張</span><span>完全脱力</span></div>
+  </div>
+
+  <div class="body-check-item">
+    <div class="body-check-header">
+      <div class="body-check-name">気の流れ</div>
+      <div class="body-check-kanji">気</div>
+    </div>
+    <div class="body-check-desc">身体全体にエネルギーや温かさが流れているのを感じますか？</div>
+    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
+    <div class="level-labels"><span>滞っている</span><span>自由に流れる</span></div>
+  </div>
+
+  <div class="body-summary">
+    <div class="body-summary-title">今の気 スコア</div>
+    <div class="body-summary-score" id="scoreDisplay">50</div>
+    <div class="body-summary-label" id="scoreLabel">調和の途中</div>
+  </div>
+</section>
+
+<!-- Modal -->
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-title">新しい願望を記す</div>
+    <input type="text" class="modal-input" id="visionInput" placeholder="どんな未来を体験したいですか？">
+    <div class="category-select">
+      <button class="cat-btn selected" onclick="selectCat(this)">健康</button>
+      <button class="cat-btn" onclick="selectCat(this)">仕事</button>
+      <button class="cat-btn" onclick="selectCat(this)">人間関係</button>
+      <button class="cat-btn" onclick="selectCat(this)">豊かさ</button>
+      <button class="cat-btn" onclick="selectCat(this)">成長</button>
+      <button class="cat-btn" onclick="selectCat(this)">自由</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">戻る</button>
+      <button class="btn-save" onclick="saveVision()">記す</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer-seal">
+  <div class="seal">今</div>
+  <div>身体感覚 × 気 × 今に生きる</div>
+</div>
+
+<script>
+  // Date display
+  const now = new Date();
+  const jpDate = now.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+  document.getElementById('dateDisplay').textContent = jpDate;
+  document.getElementById('diaryDate').textContent = jpDate;
+
+  // Nav
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Breathing meditation
+  let breathingActive = false;
+  let breathTimer = null;
+  let totalSeconds = 0;
+  let timerInterval = null;
+  const phases = [
+    { text: '吸う　4秒', dur: 4000 },
+    { text: '止める　7秒', dur: 7000 },
+    { text: 'ゆっくり吐く　8秒', dur: 8000 }
+  ];
+  let phaseIdx = 0;
+
+  function runPhase() {
+    const phase = phases[phaseIdx];
+    document.getElementById('breathInstruction').textContent = phase.text;
+    phaseIdx = (phaseIdx + 1) % phases.length;
+    breathTimer = setTimeout(runPhase, phase.dur);
+  }
+
+  function toggleBreath() {
+    if (!breathingActive) {
+      breathingActive = true;
+      document.getElementById('breathCircle').classList.add('breathing');
+      document.getElementById('startBtn').textContent = '終了する';
+      document.getElementById('breathInstruction').textContent = '鼻からゆっくり吸う…';
+      runPhase();
+      timerInterval = setInterval(() => {
+        totalSeconds++;
+        const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+        const s = String(totalSeconds % 60).padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+      }, 1000);
+    } else {
+      breathingActive = false;
+      clearTimeout(breathTimer);
+      clearInterval(timerInterval);
+      document.getElementById('breathCircle').classList.remove('breathing');
+      document.getElementById('startBtn').textContent = '瞑想を始める';
+      document.getElementById('breathInstruction').textContent = 'お疲れ様でした 🙏';
+      totalSeconds = 0;
+      document.getElementById('timerDisplay').textContent = '00:00';
+      phaseIdx = 0;
+    }
+  }
+
+  // Vision board
+  const visions = [
+    { tag: '健康', icon: '🌿', text: '毎朝、気と身体感覚で目覚める' },
+    { tag: '仕事', icon: '✨', text: '流れに乗る自然な繁栄' },
+    { tag: '人間関係', icon: '🌸', text: '深く繋がる豊かな縁' }
+  ];
+
+  const catIcons = { '健康':'🌿', '仕事':'💼', '人間関係':'🌸', '豊かさ':'✨', '成長':'🌱', '自由':'🦋' };
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.getElementById('visionInput').value = '';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function selectCat(btn) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  function saveVision() {
+    const text = document.getElementById('visionInput').value.trim();
+    if (!text) return;
+    const cat = document.querySelector('.cat-btn.selected')?.textContent || '願望';
+    visions.push({ tag: cat, icon: catIcons[cat] || '🌟', text });
+    renderVisions();
+    closeModal();
+  }
+
+  function renderVisions() {
+    const grid = document.getElementById('visionGrid');
+    grid.innerHTML = '';
+    visions.forEach((v, i) => {
+      const card = document.createElement('div');
+      card.className = 'vision-card filled';
+      card.innerHTML = `<div class="vision-tag">${v.tag}</div><div class="vision-icon">${v.icon}</div><div class="vision-text">${v.text}</div>`;
+      grid.appendChild(card);
+    });
+    const add = document.createElement('div');
+    add.className = 'vision-card add-vision';
+    add.innerHTML = `<div class="vision-icon">＋</div><div class="vision-text">新しい願望を加える</div>`;
+    add.onclick = openModal;
+    grid.appendChild(add);
+  }
+
+  // Diary
+  const prompts = [
+    '今日、身体はどんなことを感じていますか？\nどんな気の流れがありましたか？',
+    '今この瞬間、何に感謝できますか？\n小さなことから感じてみましょう。',
+    '今日の丁寧な行動は何でしたか？\n自分をねぎらってあげましょう。',
+    '夢に向かう今日の一歩は何でしたか？\nプロセスを味わいましょう。',
+    '身体の声は何を伝えていますか？\n正直に聞いてみましょう。',
+    '今日、流れに乗れた瞬間はありましたか？\nその感覚を書き留めてみましょう。',
+    '今、エゴではなく気が求めていることは何ですか？'
+  ];
+
+  const dayOfWeek = now.getDay();
+  document.getElementById('diaryPrompt').textContent = prompts[dayOfWeek];
+
+  let selectedMood = null;
+
+  function selectMood(btn) {
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedMood = btn.textContent;
+  }
+
+  const diaryEntries = [];
+
+  function saveDiary() {
+    const text = document.getElementById('diaryText').value.trim();
+    if (!text) return;
+    diaryEntries.unshift({ date: jpDate, mood: selectedMood || '🙏', text });
+    document.getElementById('diaryText').value = '';
+    const note = document.getElementById('savedNote');
+    note.style.opacity = '1';
+    setTimeout(() => note.style.opacity = '0', 2000);
+    renderPastEntries();
+  }
+
+  function renderPastEntries() {
+    const el = document.getElementById('pastEntries');
+    if (diaryEntries.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = diaryEntries.slice(0, 3).map(e => `
+      <div class="body-check-item" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:10px;letter-spacing:0.3em;color:#888">${e.date}</span>
+          <span style="font-size:18px">${e.mood}</span>
+        </div>
+        <div style="font-size:13px;color:#555;line-height:1.8;letter-spacing:0.05em">${e.text}</div>
+      </div>
+    `).join('');
+  }
+
+  // Body check
+  function updateSlider(slider) {
+    const val = slider.value;
+    slider.style.background = `linear-gradient(to right, var(--gold) ${val}%, var(--mist) ${val}%)`;
+  }
+
+  // Initialize sliders
+  document.querySelectorAll('.level-slider').forEach(s => updateSlider(s));
+
+  function updateScore() {
+    const sliders = document.querySelectorAll('.level-slider');
+    const avg = Math.round([...sliders].reduce((a, s) => a + parseInt(s.value), 0) / sliders.length);
+    document.getElementById('scoreDisplay').textContent = avg;
+    const labels = [
+      [0, 25, '気の滞り'],
+      [25, 50, '調和の途中'],
+      [50, 75, '気が満ちてきた'],
+      [75, 100, '気が充実している']
+    ];
+    const label = labels.find(l => avg >= l[0] && avg <= l[1]);
+    document.getElementById('scoreLabel').textContent = label ? label[2] : '充実';
+  }
+</script>
+
+</body>
+</html>
