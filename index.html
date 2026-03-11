@@ -1,706 +1,839 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>今・気・生 — Ima Ki Sei</title>
+<title>Yoshi Dojo</title>
+<link rel="manifest" href="data:application/json,{}">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1612;
-    --paper: #f5f0e8;
-    --gold: #c9a84c;
-    --red: #8b2020;
-    --mist: #d4cfc4;
-    --deep: #2d2520;
-    --bamboo: #4a6741;
-  }
-
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
+:root {
+  --ink: #1a1612;
+  --paper: #f5f0e8;
+  --gold: #c9a84c;
+  --red: #8b2020;
+  --mist: #d4cfc4;
+  --deep: #2d2520;
+  --bamboo: #4a6741;
+  --teal: #2a6b7c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-background: var(–paper);
-color: var(–ink);
-font-family: ‘Noto Serif JP’, serif;
-min-height: 100vh;
-overflow-x: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Serif JP', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-
-/* Washi paper texture */
 body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image:
-url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘400’ height=‘400’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3CfeColorMatrix type=‘saturate’ values=‘0’/%3E%3C/filter%3E%3Crect width=‘400’ height=‘400’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 0;
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Header */
+/* === REMINDER BANNER === */
+.reminder-banner {
+  display: none;
+  background: linear-gradient(135deg, var(--deep), #3d2e28);
+  color: var(--paper);
+  text-align: center;
+  padding: 12px 20px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  position: relative;
+  z-index: 10;
+  animation: slideDown 0.5s ease;
+}
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.reminder-banner.show { display: block; }
+.reminder-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--mist);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* === LANGUAGE SWITCHER === */
+.lang-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 16px 0;
+  gap: 6px;
+  position: relative;
+  z-index: 5;
+}
+.lang-btn {
+  background: none;
+  border: 1px solid var(--mist);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #888;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* === HEADER === */
 .header {
-text-align: center;
-padding: 40px 20px 20px;
-position: relative;
-border-bottom: 1px solid var(–mist);
+  text-align: center;
+  padding: 24px 20px 20px;
+  position: relative;
+  border-bottom: 1px solid var(--mist);
 }
-
 .header::after {
-content: ‘一’;
-position: absolute;
-bottom: -18px;
-left: 50%;
-transform: translateX(-50%);
-background: var(–paper);
-padding: 0 12px;
-color: var(–gold);
-font-size: 20px;
+  content: '一';
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--paper);
+  padding: 0 12px;
+  color: var(--gold);
+  font-size: 20px;
 }
-
+.logo-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  object-fit: cover;
+}
+.logo-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  margin: 0 auto 10px;
+  background: linear-gradient(135deg, #2a6b7c, #1a4a5a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.logo-placeholder-kanji {
+  font-family: 'Zen Antique', serif;
+  font-size: 28px;
+  color: white;
+}
 .logo {
-font-family: ‘Zen Antique’, serif;
-font-size: clamp(28px, 7vw, 42px);
-letter-spacing: 0.3em;
-color: var(–ink);
-line-height: 1;
+  font-family: 'Zen Antique', serif;
+  font-size: clamp(22px, 6vw, 36px);
+  letter-spacing: 0.3em;
+  color: var(--ink);
+  line-height: 1;
 }
-
 .logo-sub {
-font-size: 11px;
-letter-spacing: 0.5em;
-color: var(–gold);
-margin-top: 6px;
-text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  margin-top: 4px;
+  text-transform: uppercase;
 }
-
 .date-display {
-font-size: 12px;
-letter-spacing: 0.3em;
-color: #888;
-margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #888;
+  margin-top: 8px;
+}
+.streak-display {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-top: 4px;
 }
 
-/* Navigation tabs */
+/* === NAV === */
 .nav {
-display: flex;
-justify-content: center;
-gap: 0;
-padding: 30px 20px 0;
-position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 30px 10px 0;
+  overflow-x: auto;
+  gap: 0;
 }
-
 .nav-btn {
-background: none;
-border: none;
-font-family: ‘Noto Serif JP’, serif;
-font-size: 13px;
-letter-spacing: 0.2em;
-color: var(–mist);
-padding: 12px 20px;
-cursor: pointer;
-position: relative;
-transition: color 0.4s;
-border-bottom: 2px solid transparent;
+  background: none;
+  border: none;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--mist);
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.4s;
+  white-space: nowrap;
 }
+.nav-btn.active { color: var(--ink); border-bottom: 2px solid var(--gold); }
+.nav-btn:hover { color: var(--ink); }
 
-.nav-btn.active {
-color: var(–ink);
-border-bottom: 2px solid var(–gold);
-}
-
-.nav-btn:hover { color: var(–ink); }
-
-/* Sections */
+/* === SECTIONS === */
 .section {
-display: none;
-padding: 40px 20px;
-max-width: 480px;
-margin: 0 auto;
-animation: fadeIn 0.6s ease;
+  display: none;
+  padding: 40px 20px;
+  max-width: 480px;
+  margin: 0 auto;
+  animation: fadeIn 0.6s ease;
 }
-
 .section.active { display: block; }
-
 @keyframes fadeIn {
-from { opacity: 0; transform: translateY(10px); }
-to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* === MEDITATION SECTION === */
-.meditation-center {
-text-align: center;
-}
-
+/* === MEDITATION === */
+.meditation-center { text-align: center; }
 .breath-circle-wrapper {
-position: relative;
-width: 200px;
-height: 200px;
-margin: 20px auto 30px;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto 30px;
 }
-
 .breath-ring {
-position: absolute;
-inset: 0;
-border-radius: 50%;
-border: 1px solid var(–mist);
-animation: breathRing 8s ease-in-out infinite;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--mist);
+  animation: breathRing 8s ease-in-out infinite;
 }
-
 .breath-ring:nth-child(2) { animation-delay: -2.6s; opacity: 0.6; }
 .breath-ring:nth-child(3) { animation-delay: -5.2s; opacity: 0.3; }
-
 @keyframes breathRing {
-0%, 100% { transform: scale(0.7); opacity: 0.8; border-color: var(–mist); }
-50% { transform: scale(1); opacity: 0.3; border-color: var(–gold); }
+  0%, 100% { transform: scale(0.7); opacity: 0.8; border-color: var(--mist); }
+  50% { transform: scale(1); opacity: 0.3; border-color: var(--gold); }
 }
-
 .breath-circle {
-position: absolute;
-inset: 20px;
-border-radius: 50%;
-background: radial-gradient(circle at 40% 40%, #e8e0d0, #c5bdb0);
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-cursor: pointer;
-transition: transform 0.3s;
-box-shadow: 0 4px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #e8e0d0, #c5bdb0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
 }
-
-.breath-circle.breathing {
-animation: breathPulse 8s ease-in-out infinite;
-}
-
+.breath-circle.breathing { animation: breathPulse 8s ease-in-out infinite; }
 @keyframes breathPulse {
-0%, 100% { transform: scale(0.9); }
-50% { transform: scale(1.05); }
+  0%, 100% { transform: scale(0.9); }
+  50% { transform: scale(1.05); }
 }
-
-.breath-kanji {
-font-family: ‘Zen Antique’, serif;
-font-size: 36px;
-color: var(–ink);
-line-height: 1;
-}
-
-.breath-label {
-font-size: 10px;
-letter-spacing: 0.3em;
-color: #888;
-margin-top: 4px;
-}
-
-.breath-instruction {
-font-size: 14px;
-letter-spacing: 0.2em;
-color: #888;
-margin: 10px 0 20px;
-min-height: 24px;
-transition: opacity 0.5s;
-}
-
-.meditation-guide {
-background: rgba(255,255,255,0.5);
-border: 1px solid var(–mist);
-border-radius: 2px;
-padding: 20px;
-text-align: left;
-margin-top: 20px;
-}
-
-.guide-title {
-font-size: 11px;
-letter-spacing: 0.4em;
-color: var(–gold);
-margin-bottom: 12px;
-}
-
-.guide-step {
-font-size: 13px;
-color: #666;
-line-height: 2;
-letter-spacing: 0.05em;
-padding: 4px 0;
-border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.guide-step:last-child { border-bottom: none; }
-
+.breath-kanji { font-family: 'Zen Antique', serif; font-size: 36px; color: var(--ink); line-height: 1; }
+.breath-label { font-size: 10px; letter-spacing: 0.3em; color: #888; margin-top: 4px; }
+.breath-instruction { font-size: 14px; letter-spacing: 0.2em; color: #888; margin: 10px 0 20px; min-height: 24px; }
+.timer-display { font-family: 'Zen Antique', serif; font-size: 32px; color: var(--ink); letter-spacing: 0.2em; margin: 10px 0; }
 .start-btn {
-background: var(–ink);
-color: var(–paper);
-border: none;
-font-family: ‘Noto Serif JP’, serif;
-font-size: 13px;
-letter-spacing: 0.4em;
-padding: 14px 40px;
-cursor: pointer;
-border-radius: 1px;
-margin-top: 20px;
-transition: background 0.3s, transform 0.2s;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  padding: 14px 40px;
+  cursor: pointer;
+  border-radius: 1px;
+  margin-top: 20px;
+  transition: background 0.3s, transform 0.2s;
 }
+.start-btn:hover { background: var(--deep); transform: translateY(-1px); }
 
-.start-btn:hover { background: var(–deep); transform: translateY(-1px); }
-.start-btn:active { transform: translateY(0); }
-
-.timer-display {
-font-family: ‘Zen Antique’, serif;
-font-size: 32px;
-color: var(–ink);
-letter-spacing: 0.2em;
-margin: 10px 0;
+/* === SHARED COMPONENTS === */
+.meditation-guide {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid var(--mist);
+  border-radius: 2px;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
 }
-
-/* === VISION BOARD SECTION === */
-.section-title {
-font-family: ‘Zen Antique’, serif;
-font-size: 11px;
-letter-spacing: 0.5em;
-color: var(–gold);
-text-align: center;
-margin-bottom: 30px;
-}
-
-.vision-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 12px;
-margin-bottom: 20px;
-}
-
-.vision-card {
-aspect-ratio: 1;
-background: rgba(255,255,255,0.6);
-border: 1px solid var(–mist);
-border-radius: 2px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-transition: all 0.3s;
-padding: 16px;
-position: relative;
-overflow: hidden;
-}
-
-.vision-card::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
-opacity: 0;
-transition: opacity 0.3s;
-}
-
-.vision-card:hover::before { opacity: 1; }
-.vision-card:hover { border-color: var(–gold); transform: translateY(-2px); }
-
-.vision-card.filled {
-background: linear-gradient(135deg, #f0ece0, #e8e2d5);
-}
-
-.vision-icon {
-font-size: 28px;
-margin-bottom: 8px;
-}
-
-.vision-text {
-font-size: 12px;
-letter-spacing: 0.1em;
-color: #666;
-text-align: center;
-line-height: 1.6;
-}
-
-.vision-tag {
-font-size: 9px;
-letter-spacing: 0.3em;
-color: var(–gold);
-margin-bottom: 4px;
-text-transform: uppercase;
-}
-
-.add-vision {
-border: 1px dashed var(–mist);
-color: var(–mist);
-}
-
-.add-vision:hover { border-color: var(–gold); color: var(–gold); }
-
-.add-vision .vision-icon { font-size: 24px; }
-
-/* Vision input modal */
-.modal-overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(26,22,18,0.7);
-z-index: 100;
-align-items: flex-end;
-justify-content: center;
-}
-
-.modal-overlay.open { display: flex; }
-
-.modal {
-background: var(–paper);
-width: 100%;
-max-width: 480px;
-padding: 30px 24px;
-border-radius: 4px 4px 0 0;
-animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-from { transform: translateY(100%); }
-to { transform: translateY(0); }
-}
-
-.modal-title {
-font-family: ‘Zen Antique’, serif;
-font-size: 14px;
-letter-spacing: 0.4em;
-color: var(–gold);
-margin-bottom: 20px;
-text-align: center;
-}
-
-.modal-input {
-width: 100%;
-background: rgba(255,255,255,0.7);
-border: 1px solid var(–mist);
-border-radius: 2px;
-padding: 12px 16px;
-font-family: ‘Noto Serif JP’, serif;
-font-size: 14px;
-color: var(–ink);
-outline: none;
-margin-bottom: 12px;
-transition: border-color 0.3s;
-}
-
-.modal-input:focus { border-color: var(–gold); }
-
-.category-select {
-display: flex;
-gap: 8px;
-margin-bottom: 20px;
-flex-wrap: wrap;
-}
-
-.cat-btn {
-background: none;
-border: 1px solid var(–mist);
-font-family: ‘Noto Serif JP’, serif;
-font-size: 11px;
-letter-spacing: 0.2em;
-color: #888;
-padding: 6px 14px;
-cursor: pointer;
-border-radius: 1px;
-transition: all 0.2s;
-}
-
-.cat-btn.selected {
-background: var(–ink);
-color: var(–paper);
-border-color: var(–ink);
-}
-
-.modal-actions {
-display: flex;
-gap: 10px;
-}
-
-.btn-save {
-flex: 1;
-background: var(–ink);
-color: var(–paper);
-border: none;
-font-family: ‘Noto Serif JP’, serif;
-font-size: 13px;
-letter-spacing: 0.3em;
-padding: 14px;
-cursor: pointer;
-border-radius: 1px;
-}
-
-.btn-cancel {
-background: none;
-border: 1px solid var(–mist);
-font-family: ‘Noto Serif JP’, serif;
-font-size: 13px;
-letter-spacing: 0.3em;
-color: #888;
-padding: 14px 20px;
-cursor: pointer;
-border-radius: 1px;
-}
-
-/* === DIARY SECTION === */
-.diary-date {
-text-align: center;
-font-size: 11px;
-letter-spacing: 0.4em;
-color: #888;
-margin-bottom: 24px;
-}
-
-.diary-prompt {
-background: rgba(201,168,76,0.08);
-border-left: 2px solid var(–gold);
-padding: 14px 16px;
-margin-bottom: 20px;
-font-size: 13px;
-letter-spacing: 0.1em;
-color: #666;
-line-height: 1.8;
-}
-
-.diary-textarea {
-width: 100%;
-min-height: 180px;
-background: rgba(255,255,255,0.6);
-border: 1px solid var(–mist);
-border-radius: 2px;
-padding: 16px;
-font-family: ‘Noto Serif JP’, serif;
-font-size: 14px;
-color: var(–ink);
-line-height: 2;
-outline: none;
-resize: none;
-transition: border-color 0.3s;
-letter-spacing: 0.05em;
-}
-
-.diary-textarea:focus { border-color: var(–gold); }
-.diary-textarea::placeholder { color: var(–mist); }
-
-.mood-row {
-display: flex;
-gap: 8px;
-margin: 16px 0;
-justify-content: center;
-}
-
-.mood-btn {
-background: none;
-border: 1px solid var(–mist);
-border-radius: 50%;
-width: 44px;
-height: 44px;
-font-size: 22px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.mood-btn.selected {
-border-color: var(–gold);
-background: rgba(201,168,76,0.1);
-transform: scale(1.1);
-}
-
-.save-diary-btn {
-width: 100%;
-background: var(–ink);
-color: var(–paper);
-border: none;
-font-family: ‘Noto Serif JP’, serif;
-font-size: 13px;
-letter-spacing: 0.4em;
-padding: 16px;
-cursor: pointer;
-margin-top: 16px;
-border-radius: 1px;
-transition: background 0.3s;
-}
-
-.save-diary-btn:hover { background: var(–deep); }
-
-.saved-note {
-text-align: center;
-font-size: 12px;
-letter-spacing: 0.3em;
-color: var(–bamboo);
-margin-top: 10px;
-opacity: 0;
-transition: opacity 0.5s;
-}
-
-/* === BODY CHECK SECTION === */
-.body-section-title {
-font-size: 11px;
-letter-spacing: 0.4em;
-color: var(–gold);
-margin-bottom: 16px;
-text-align: center;
-}
-
-.body-check-item {
-background: rgba(255,255,255,0.5);
-border: 1px solid var(–mist);
-border-radius: 2px;
-padding: 18px;
-margin-bottom: 12px;
-transition: border-color 0.3s;
-}
-
-.body-check-item:hover { border-color: var(–gold); }
-
-.body-check-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 12px;
-}
-
-.body-check-name {
-font-size: 14px;
-letter-spacing: 0.2em;
-color: var(–ink);
-}
-
-.body-check-kanji {
-font-family: ‘Zen Antique’, serif;
-font-size: 20px;
-color: var(–gold);
-}
-
-.body-check-desc {
-font-size: 12px;
-color: #888;
-letter-spacing: 0.05em;
-line-height: 1.7;
-margin-bottom: 14px;
-}
-
-.level-slider {
--webkit-appearance: none;
-width: 100%;
-height: 2px;
-background: linear-gradient(to right, var(–gold) 0%, var(–mist) 0%);
-outline: none;
-border-radius: 1px;
-}
-
-.level-slider::-webkit-slider-thumb {
--webkit-appearance: none;
-width: 16px;
-height: 16px;
-border-radius: 50%;
-background: var(–ink);
-cursor: pointer;
-border: 2px solid var(–paper);
-box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.level-labels {
-display: flex;
-justify-content: space-between;
-margin-top: 6px;
-font-size: 10px;
-color: var(–mist);
-letter-spacing: 0.1em;
-}
-
-.body-summary {
-background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(74,103,65,0.05));
-border: 1px solid var(–mist);
-border-radius: 2px;
-padding: 20px;
-margin-top: 20px;
-text-align: center;
-}
-
-.body-summary-title {
-font-size: 10px;
-letter-spacing: 0.5em;
-color: var(–gold);
-margin-bottom: 12px;
-}
-
-.body-summary-score {
-font-family: ‘Zen Antique’, serif;
-font-size: 48px;
-color: var(–ink);
-line-height: 1;
-}
-
-.body-summary-label {
-font-size: 11px;
-color: #888;
-letter-spacing: 0.3em;
-margin-top: 4px;
-}
-
-/* Divider */
+.guide-title { font-size: 11px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 12px; }
+.guide-step { font-size: 13px; color: #666; line-height: 2; letter-spacing: 0.05em; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.guide-step:last-child { border-bottom: none; }
 .zen-divider {
-text-align: center;
-color: var(–mist);
-letter-spacing: 0.5em;
-font-size: 14px;
-margin: 20px 0;
-position: relative;
+  text-align: center; color: var(--mist); letter-spacing: 0.5em; font-size: 14px; margin: 20px 0; position: relative;
 }
-
-.zen-divider::before,
-.zen-divider::after {
-content: ‘’;
-position: absolute;
-top: 50%;
-width: 30%;
-height: 1px;
-background: var(–mist);
+.zen-divider::before, .zen-divider::after {
+  content: ''; position: absolute; top: 50%; width: 30%; height: 1px; background: var(--mist);
 }
-
 .zen-divider::before { left: 0; }
 .zen-divider::after { right: 0; }
+.section-title { font-family: 'Zen Antique', serif; font-size: 11px; letter-spacing: 0.5em; color: var(--gold); text-align: center; margin-bottom: 30px; }
+.body-check-item {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid var(--mist);
+  border-radius: 2px;
+  padding: 18px;
+  margin-bottom: 12px;
+  transition: border-color 0.3s;
+}
+.body-check-item:hover { border-color: var(--gold); }
 
-/* Bottom decoration */
-.footer-seal {
-text-align: center;
-padding: 30px;
-color: var(–mist);
-font-size: 11px;
-letter-spacing: 0.4em;
+/* === VISION BOARD === */
+.vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.vision-card {
+  aspect-ratio: 1;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid var(--mist);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.vision-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+.vision-card:hover::before { opacity: 1; }
+.vision-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.vision-card.filled { background: linear-gradient(135deg, #f0ece0, #e8e2d5); }
+.vision-icon { font-size: 28px; margin-bottom: 8px; }
+.vision-text { font-size: 12px; letter-spacing: 0.1em; color: #666; text-align: center; line-height: 1.6; }
+.vision-tag { font-size: 9px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 4px; text-transform: uppercase; }
+.add-vision { border: 1px dashed var(--mist); color: var(--mist); }
+.add-vision:hover { border-color: var(--gold); color: var(--gold); }
+
+/* === DIARY === */
+.diary-date { text-align: center; font-size: 11px; letter-spacing: 0.4em; color: #888; margin-bottom: 24px; }
+.diary-prompt { background: rgba(201,168,76,0.08); border-left: 2px solid var(--gold); padding: 14px 16px; margin-bottom: 20px; font-size: 13px; letter-spacing: 0.1em; color: #666; line-height: 1.8; }
+.diary-textarea {
+  width: 100%; min-height: 180px; background: rgba(255,255,255,0.6); border: 1px solid var(--mist); border-radius: 2px; padding: 16px; font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--ink); line-height: 2; outline: none; resize: none; transition: border-color 0.3s; letter-spacing: 0.05em;
+}
+.diary-textarea:focus { border-color: var(--gold); }
+.diary-textarea::placeholder { color: var(--mist); }
+.mood-row { display: flex; gap: 8px; margin: 16px 0; justify-content: center; }
+.mood-btn { background: none; border: 1px solid var(--mist); border-radius: 50%; width: 44px; height: 44px; font-size: 22px; cursor: pointer; transition: all 0.2s; }
+.mood-btn.selected { border-color: var(--gold); background: rgba(201,168,76,0.1); transform: scale(1.1); }
+.save-diary-btn { width: 100%; background: var(--ink); color: var(--paper); border: none; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; padding: 16px; cursor: pointer; margin-top: 16px; border-radius: 1px; transition: background 0.3s; }
+.save-diary-btn:hover { background: var(--deep); }
+.saved-note { text-align: center; font-size: 12px; letter-spacing: 0.3em; color: var(--bamboo); margin-top: 10px; opacity: 0; transition: opacity 0.5s; }
+
+/* === BODY CHECK === */
+.body-section-title { font-size: 11px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 16px; text-align: center; }
+.body-check-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.body-check-name { font-size: 14px; letter-spacing: 0.2em; color: var(--ink); }
+.body-check-kanji { font-family: 'Zen Antique', serif; font-size: 20px; color: var(--gold); }
+.body-check-desc { font-size: 12px; color: #888; letter-spacing: 0.05em; line-height: 1.7; margin-bottom: 14px; }
+.level-slider { -webkit-appearance: none; width: 100%; height: 2px; background: linear-gradient(to right, var(--gold) 0%, var(--mist) 0%); outline: none; border-radius: 1px; }
+.level-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); cursor: pointer; border: 2px solid var(--paper); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+.level-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--mist); letter-spacing: 0.1em; }
+.body-summary { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(74,103,65,0.05)); border: 1px solid var(--mist); border-radius: 2px; padding: 20px; margin-top: 20px; text-align: center; }
+.body-summary-title { font-size: 10px; letter-spacing: 0.5em; color: var(--gold); margin-bottom: 12px; }
+.body-summary-score { font-family: 'Zen Antique', serif; font-size: 48px; color: var(--ink); line-height: 1; }
+.body-summary-label { font-size: 11px; color: #888; letter-spacing: 0.3em; margin-top: 4px; }
+
+/* === SAMURAI RESET VIDEO === */
+.samurai-reset {
+  background: linear-gradient(135deg, rgba(42,107,124,0.08), rgba(26,22,18,0.04));
+  border: 1px solid var(--teal);
+  border-radius: 2px;
+  padding: 16px;
+  margin-top: 16px;
+  text-align: center;
+}
+.samurai-title { font-size: 10px; letter-spacing: 0.4em; color: var(--teal); margin-bottom: 8px; }
+.samurai-desc { font-size: 12px; color: #666; letter-spacing: 0.05em; line-height: 1.7; margin-bottom: 12px; }
+.samurai-btn {
+  background: var(--teal);
+  color: white;
+  border: none;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  padding: 10px 24px;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.samurai-btn:hover { background: #1a5060; transform: translateY(-1px); }
+.score-up-badge {
+  display: none;
+  background: var(--bamboo);
+  color: white;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-top: 10px;
+  animation: popIn 0.4s ease;
+}
+.score-up-badge.show { display: inline-block; }
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.seal {
-display: inline-block;
-width: 40px;
-height: 40px;
-border: 2px solid var(–mist);
-border-radius: 50%;
-line-height: 36px;
-font-family: ‘Zen Antique’, serif;
-font-size: 16px;
-color: var(–red);
-margin-bottom: 8px;
+/* === MINI YOSHI AI === */
+.yoshi-chat {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 200;
 }
+.yoshi-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+  z-index: 201;
+  font-family: 'Zen Antique', serif;
+  font-size: 20px;
+  color: var(--gold);
+}
+.yoshi-toggle:hover { transform: scale(1.05); }
+.yoshi-panel {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  left: 16px;
+  right: 16px;
+  max-width: 448px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--mist);
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  z-index: 200;
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+}
+.yoshi-panel.open { display: flex; flex-direction: column; }
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.yoshi-header {
+  background: var(--ink);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.yoshi-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Zen Antique', serif;
+  font-size: 14px;
+  color: white;
+}
+.yoshi-name { color: var(--paper); font-size: 13px; letter-spacing: 0.2em; flex: 1; }
+.yoshi-status { font-size: 10px; color: var(--gold); letter-spacing: 0.2em; }
+.yoshi-close-btn { background: none; border: none; color: var(--mist); font-size: 20px; cursor: pointer; padding: 0 4px; }
+.yoshi-disclaimer {
+  background: rgba(201,168,76,0.06);
+  border-bottom: 1px solid var(--mist);
+  padding: 8px 14px;
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+.yoshi-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 2px;
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+}
+.msg.yoshi { background: rgba(42,107,124,0.08); border: 1px solid rgba(42,107,124,0.2); align-self: flex-start; color: var(--ink); }
+.msg.user { background: var(--ink); color: var(--paper); align-self: flex-end; }
+.msg.loading { background: rgba(42,107,124,0.08); border: 1px solid rgba(42,107,124,0.2); align-self: flex-start; color: #888; font-style: italic; }
+.yoshi-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--mist);
+}
+.yoshi-input {
+  flex: 1;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--mist);
+  border-radius: 2px;
+  padding: 8px 12px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+}
+.yoshi-input:focus { border-color: var(--gold); }
+.yoshi-send {
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 1px;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+.yoshi-send:hover { background: var(--deep); }
+.quick-questions {
+  padding: 8px 14px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  border-top: 1px solid var(--mist);
+}
+.quick-btn {
+  background: none;
+  border: 1px solid var(--mist);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #666;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.quick-btn:hover { border-color: var(--gold); color: var(--gold); }
 
+/* === BOOKING === */
+.booking-section { text-align: center; }
+.booking-card {
+  background: linear-gradient(135deg, var(--ink), var(--deep));
+  color: var(--paper);
+  border-radius: 4px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.booking-card::before {
+  content: '予';
+  position: absolute;
+  right: -10px;
+  top: -20px;
+  font-family: 'Zen Antique', serif;
+  font-size: 120px;
+  color: rgba(255,255,255,0.03);
+}
+.booking-title { font-family: 'Zen Antique', serif; font-size: 20px; letter-spacing: 0.3em; margin-bottom: 8px; }
+.booking-sub { font-size: 11px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 20px; }
+.booking-btn {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  padding: 14px 32px;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: all 0.2s;
+  font-weight: 700;
+}
+.booking-btn:hover { background: #e0be5a; transform: translateY(-1px); }
+.clinic-info { text-align: left; }
+.clinic-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--mist);
+  font-size: 13px;
+  color: #555;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+.clinic-info-item:last-child { border-bottom: none; }
+.clinic-info-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+/* === MODAL === */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,22,18,0.7);
+  z-index: 300;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--paper);
+  width: 100%;
+  max-width: 480px;
+  padding: 30px 24px;
+  border-radius: 4px 4px 0 0;
+  animation: slideUp 0.3s ease;
+}
+.modal-title { font-family: 'Zen Antique', serif; font-size: 14px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 20px; text-align: center; }
+.modal-input { width: 100%; background: rgba(255,255,255,0.7); border: 1px solid var(--mist); border-radius: 2px; padding: 12px 16px; font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--ink); outline: none; margin-bottom: 12px; transition: border-color 0.3s; }
+.modal-input:focus { border-color: var(--gold); }
+.category-select { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.cat-btn { background: none; border: 1px solid var(--mist); font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 0.2em; color: #888; padding: 6px 14px; cursor: pointer; border-radius: 1px; transition: all 0.2s; }
+.cat-btn.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.modal-actions { display: flex; gap: 10px; }
+.btn-save { flex: 1; background: var(--ink); color: var(--paper); border: none; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.3em; padding: 14px; cursor: pointer; border-radius: 1px; }
+.btn-cancel { background: none; border: 1px solid var(--mist); font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.3em; color: #888; padding: 14px 20px; cursor: pointer; border-radius: 1px; }
+
+/* === DAILY QUOTE === */
+.daily-quote-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,22,18,0.88);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.daily-quote-overlay.show { display: flex; }
+.daily-quote-card {
+  background: var(--paper);
+  max-width: 380px;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  animation: quoteAppear 0.7s ease;
+  position: relative;
+}
+@keyframes quoteAppear {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.daily-quote-top {
+  background: linear-gradient(135deg, var(--ink), var(--deep));
+  padding: 28px 24px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.daily-quote-top::before {
+  content: '言';
+  position: absolute;
+  right: -10px;
+  top: -20px;
+  font-family: 'Zen Antique', serif;
+  font-size: 110px;
+  color: rgba(255,255,255,0.04);
+}
+.daily-quote-label {
+  font-size: 9px;
+  letter-spacing: 0.6em;
+  color: var(--gold);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.daily-quote-kanji {
+  font-family: 'Zen Antique', serif;
+  font-size: 52px;
+  color: var(--gold);
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(201,168,76,0.4);
+}
+.daily-quote-body {
+  padding: 24px;
+  text-align: center;
+}
+.daily-quote-text {
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 2;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+.daily-quote-sub {
+  font-size: 12px;
+  color: #666;
+  letter-spacing: 0.05em;
+  line-height: 1.9;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: rgba(201,168,76,0.06);
+  border-left: 2px solid var(--gold);
+  text-align: left;
+}
+.daily-quote-source {
+  font-size: 10px;
+  color: var(--mist);
+  letter-spacing: 0.3em;
+  margin-bottom: 20px;
+}
+.daily-quote-close {
+  width: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  padding: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.daily-quote-close:hover { background: var(--deep); }
+
+/* === FOOTER === */
+.footer-seal { text-align: center; padding: 30px; color: var(--mist); font-size: 11px; letter-spacing: 0.4em; margin-bottom: 80px; }
+.seal { display: inline-block; width: 40px; height: 40px; border: 2px solid var(--mist); border-radius: 50%; line-height: 36px; font-family: 'Zen Antique', serif; font-size: 16px; color: var(--red); margin-bottom: 8px; }
+
+/* === BGM SELECTOR === */
+.bgm-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.bgm-mute-btn {
+  background: none;
+  border: 1px solid var(--mist);
+  font-size: 18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.bgm-mute-btn.muted {
+  border-color: var(--red);
+  background: rgba(139,32,32,0.08);
+}
+.bgm-mute-btn:hover { border-color: var(--gold); }
+.bgm-btns {
+  display: flex;
+  gap: 6px;
+  transition: opacity 0.3s;
+}
+.bgm-btns.muted {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.bgm-btn {
+  background: none;
+  border: 1px solid var(--mist);
+  font-family: 'Zen Antique', serif;
+  font-size: 14px;
+  color: #888;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bgm-btn.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+.bgm-btn:hover { border-color: var(--gold); color: var(--gold); }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">今・気・生</div>
-  <div class="logo-sub">Ima · Ki · Sei</div>
-  <div class="date-display" id="dateDisplay"></div>
+<!-- Daily Quote Overlay -->
+<div class="daily-quote-overlay" id="dailyQuoteOverlay">
+  <div class="daily-quote-card">
+    <div class="daily-quote-top">
+      <div class="daily-quote-label" id="quoteLabelTop">今日のYoshiの言葉</div>
+      <div class="daily-quote-kanji" id="quoteKanji">今</div>
+    </div>
+    <div class="daily-quote-body">
+      <div class="daily-quote-text" id="quoteText"></div>
+      <div class="daily-quote-sub" id="quoteSub"></div>
+      <div class="daily-quote-source" id="quoteSource"></div>
+      <button class="daily-quote-close" id="quoteCloseBtn" onclick="closeQuote()">今日も、気と共に　🙏</button>
+    </div>
+  </div>
 </div>
 
+<!-- Reminder Banner -->
+<div class="reminder-banner" id="reminderBanner">
+  <span id="reminderText">🌿 お帰りなさい。今日も気と共に。</span>
+  <button class="reminder-close" onclick="dismissReminder()">×</button>
+</div>
+
+<!-- Language Bar -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
+  <button class="lang-btn" onclick="setLang('es')">Español</button>
+  <button class="lang-btn" onclick="setLang('en')">English</button>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo-placeholder">
+    <div class="logo-placeholder-kanji">賀</div>
+  </div>
+  <div class="logo">Yoshi Dojo</div>
+  <div class="logo-sub">身体感覚 · 気 · 今に生きる</div>
+  <div class="date-display" id="dateDisplay"></div>
+  <div class="streak-display" id="streakDisplay"></div>
+</div>
+
+<!-- Nav -->
 <nav class="nav">
-  <button class="nav-btn active" onclick="showSection('meditation')">瞑　想</button>
-  <button class="nav-btn" onclick="showSection('vision')">願　望</button>
-  <button class="nav-btn" onclick="showSection('diary')">気　づき</button>
-  <button class="nav-btn" onclick="showSection('body')">身　体</button>
+  <button class="nav-btn active" onclick="showSection('meditation', this)" id="nav-meditation">瞑　想</button>
+  <button class="nav-btn" onclick="showSection('vision', this)" id="nav-vision">願　望</button>
+  <button class="nav-btn" onclick="showSection('diary', this)" id="nav-diary">気　づき</button>
+  <button class="nav-btn" onclick="showSection('body', this)" id="nav-body">身　体</button>
+  <button class="nav-btn" onclick="showSection('booking', this)" id="nav-booking">予　約</button>
 </nav>
 
-<!-- === MEDITATION === -->
-
+<!-- MEDITATION -->
 <section class="section active" id="meditation">
   <div class="meditation-center">
     <div class="breath-circle-wrapper">
@@ -709,60 +842,39 @@ margin-bottom: 8px;
       <div class="breath-ring"></div>
       <div class="breath-circle" id="breathCircle" onclick="toggleBreath()">
         <div class="breath-kanji">息</div>
-        <div class="breath-label">呼　吸</div>
+        <div class="breath-label" id="breath-label-sub">呼　吸</div>
+      </div>
+    </div>
+    <div class="timer-display" id="timerDisplay">00:00</div>
+    <div class="breath-instruction" id="breathInstruction" data-ja="円をタップして始める" data-es="Toca el círculo para comenzar" data-en="Tap the circle to begin">円をタップして始める</div>
+    <button class="start-btn" id="startBtn" onclick="toggleBreath()">瞑想を始める</button>
+
+    <!-- BGM Selector -->
+    <div class="bgm-selector" id="bgmSelector">
+      <button class="bgm-mute-btn" id="bgmMuteBtn" onclick="toggleMute()" title="BGM ON/OFF">🔊</button>
+      <div class="bgm-btns" id="bgmBtns">
+        <button class="bgm-btn active" onclick="selectBgm('bowl', this)" title="シンギングボウル 432Hz">鉢</button>
+        <button class="bgm-btn" onclick="selectBgm('forest', this)" title="森・自然音">森</button>
+        <button class="bgm-btn" onclick="selectBgm('drone', this)" title="禅ドローン 528Hz">禅</button>
       </div>
     </div>
 
-```
-<div class="timer-display" id="timerDisplay">00:00</div>
-<div class="breath-instruction" id="breathInstruction">円をタップして始める</div>
-
-<button class="start-btn" id="startBtn" onclick="toggleBreath()">瞑想を始める</button>
-
-<div class="zen-divider">〇</div>
-
-<div class="meditation-guide">
-  <div class="guide-title">今・ここへの誘い</div>
-  <div class="guide-step">① 背筋を自然に伸ばし、丹田に意識を置く</div>
-  <div class="guide-step">② ゆっくり鼻から4秒吸い、7秒止め、8秒吐く</div>
-  <div class="guide-step">③ 思考が来たら、ただ「気づき」そっと戻る</div>
-  <div class="guide-step">④ 身体全体に気が満ちるのを感じる</div>
-</div>
-```
-
+    <div class="zen-divider">〇</div>
+    <div class="meditation-guide">
+      <div class="guide-title" id="guide-title-1">今・ここへの誘い</div>
+      <div class="guide-step" id="guide-step-1">① 背筋を自然に伸ばし、丹田に意識を置く</div>
+      <div class="guide-step" id="guide-step-2">② ゆっくり鼻から4秒吸い、7秒止め、8秒吐く</div>
+      <div class="guide-step" id="guide-step-3">③ 思考が来たら、ただ「気づき」そっと戻る</div>
+      <div class="guide-step" id="guide-step-4">④ 身体全体に気が満ちるのを感じる</div>
+    </div>
   </div>
 </section>
 
-<!-- === VISION BOARD === -->
-
+<!-- VISION BOARD -->
 <section class="section" id="vision">
   <div class="section-title">夢 · 願 · 望</div>
-
-  <div class="vision-grid" id="visionGrid">
-    <!-- Default cards -->
-    <div class="vision-card filled" data-index="0">
-      <div class="vision-tag">健康</div>
-      <div class="vision-icon">🌿</div>
-      <div class="vision-text">毎朝、気と身体感覚で目覚める</div>
-    </div>
-    <div class="vision-card filled" data-index="1">
-      <div class="vision-tag">仕事</div>
-      <div class="vision-icon">✨</div>
-      <div class="vision-text">流れに乗る自然な繁栄</div>
-    </div>
-    <div class="vision-card filled" data-index="2">
-      <div class="vision-tag">人間関係</div>
-      <div class="vision-icon">🌸</div>
-      <div class="vision-text">深く繋がる豊かな縁</div>
-    </div>
-    <div class="vision-card add-vision" onclick="openModal()">
-      <div class="vision-icon">＋</div>
-      <div class="vision-text">新しい願望を加える</div>
-    </div>
-  </div>
-
+  <div class="vision-grid" id="visionGrid"></div>
   <div class="zen-divider">願</div>
-
   <div class="meditation-guide">
     <div class="guide-title">ビジョンの使い方</div>
     <div class="guide-step">毎朝このページを開き、目を閉じて映像化する</div>
@@ -771,40 +883,28 @@ margin-bottom: 8px;
   </div>
 </section>
 
-<!-- === DIARY === -->
-
+<!-- DIARY -->
 <section class="section" id="diary">
   <div class="diary-date" id="diaryDate"></div>
-
-  <div class="diary-prompt" id="diaryPrompt">
-    今日、身体はどんなことを感じていますか？<br>どんな気の流れがありましたか？
-  </div>
-
+  <div class="diary-prompt" id="diaryPrompt"></div>
   <div class="body-section-title">今日の気分</div>
   <div class="mood-row">
-    <button class="mood-btn" onclick="selectMood(this)" title="穏やか">😌</button>
-    <button class="mood-btn" onclick="selectMood(this)" title="喜び">😊</button>
-    <button class="mood-btn" onclick="selectMood(this)" title="集中">🧘</button>
-    <button class="mood-btn" onclick="selectMood(this)" title="疲れ">😔</button>
-    <button class="mood-btn" onclick="selectMood(this)" title="感謝">🙏</button>
+    <button class="mood-btn" onclick="selectMood(this)">😌</button>
+    <button class="mood-btn" onclick="selectMood(this)">😊</button>
+    <button class="mood-btn" onclick="selectMood(this)">🧘</button>
+    <button class="mood-btn" onclick="selectMood(this)">😔</button>
+    <button class="mood-btn" onclick="selectMood(this)">🙏</button>
   </div>
-
   <textarea class="diary-textarea" id="diaryText" placeholder="今日の気づきを、ありのままに…"></textarea>
-
-<button class="save-diary-btn" onclick="saveDiary()">今日の気づきを記す</button>
-
+  <button class="save-diary-btn" onclick="saveDiary()">今日の気づきを記す</button>
   <div class="saved-note" id="savedNote">✓ 記録されました</div>
-
   <div class="zen-divider">記</div>
-
   <div id="pastEntries"></div>
 </section>
 
-<!-- === BODY CHECK === -->
-
+<!-- BODY CHECK -->
 <section class="section" id="body">
   <div class="body-section-title">身 体 感 覚 チェック</div>
-
   <div class="body-check-item">
     <div class="body-check-header">
       <div class="body-check-name">丹田</div>
@@ -814,7 +914,6 @@ margin-bottom: 8px;
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
     <div class="level-labels"><span>感じない</span><span>強く感じる</span></div>
   </div>
-
   <div class="body-check-item">
     <div class="body-check-header">
       <div class="body-check-name">呼吸</div>
@@ -824,7 +923,6 @@ margin-bottom: 8px;
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
     <div class="level-labels"><span>浅い</span><span>深く豊か</span></div>
   </div>
-
   <div class="body-check-item">
     <div class="body-check-header">
       <div class="body-check-name">脱力</div>
@@ -834,7 +932,6 @@ margin-bottom: 8px;
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
     <div class="level-labels"><span>緊張</span><span>完全脱力</span></div>
   </div>
-
   <div class="body-check-item">
     <div class="body-check-header">
       <div class="body-check-name">気の流れ</div>
@@ -844,16 +941,65 @@ margin-bottom: 8px;
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
     <div class="level-labels"><span>滞っている</span><span>自由に流れる</span></div>
   </div>
-
   <div class="body-summary">
     <div class="body-summary-title">今の気 スコア</div>
     <div class="body-summary-score" id="scoreDisplay">50</div>
     <div class="body-summary-label" id="scoreLabel">調和の途中</div>
   </div>
+
+  <!-- Samurai Reset -->
+  <div class="samurai-reset" id="samuraiReset">
+    <div class="samurai-title">⚡ SAMURAI RESET</div>
+    <div class="samurai-desc" id="samuraiDesc">スコアを上げたいですか？Yoshiの「サムライリセット」動画で身体を整えましょう。見ると気スコアが上がります！</div>
+    <button class="samurai-btn" onclick="openSamuraiVideo()">
+      ▶ 動画を見てスコアアップ
+    </button>
+    <div class="score-up-badge" id="scoreUpBadge">🎉 ＋10 気スコアアップ！</div>
+  </div>
 </section>
 
-<!-- Modal -->
+<!-- BOOKING -->
+<section class="section" id="booking">
+  <div class="booking-section">
+    <div class="booking-card">
+      <div class="booking-title">Clínica Yoshi</div>
+      <div class="booking-sub">マドリード · MADRID · 整体指圧</div>
+      <button class="booking-btn" onclick="openBooking()">🗓 オンライン予約</button>
+    </div>
+    <div class="clinic-info">
+      <div class="clinic-info-item">
+        <span class="clinic-info-icon">📍</span>
+        <span>Calle Velázquez, 73 Bajo B.<br>28006 Madrid</span>
+      </div>
+      <div class="clinic-info-item">
+        <span class="clinic-info-icon">🕐</span>
+        <span>月〜金 10:00–21:00<br>土 10:00–14:00 / 日 休</span>
+      </div>
+      <div class="clinic-info-item">
+        <span class="clinic-info-icon">📞</span>
+        <span>606 054 229<br>（WhatsApp・SMS可）</span>
+      </div>
+      <div class="clinic-info-item">
+        <span class="clinic-info-icon">🎙</span>
+        <a href="https://podcasts.apple.com/es/podcast/id1659916913" target="_blank" style="color:var(--teal);text-decoration:none">Yoshiの聞く(効く)チャンネル<br>292話 — Apple Podcasts</a>
+      </div>
+      <div class="clinic-info-item">
+        <span class="clinic-info-icon">📺</span>
+        <a href="https://www.youtube.com/@yoshishiatsu" target="_blank" style="color:var(--teal);text-decoration:none">YouTube: Yoshi clínica de Seitai shiatsu</a>
+      </div>
+    </div>
+    <div class="zen-divider">縁</div>
+    <div class="meditation-guide">
+      <div class="guide-title">セッションの流れ</div>
+      <div class="guide-step">① まず「本物のリラクゼーション」を体験する</div>
+      <div class="guide-step">② 日常でその感覚を自分で再現できるようになる</div>
+      <div class="guide-step">③ 他者にも分かち合えるようになる</div>
+      <div class="guide-step">④ 気を感じる生き方が自然に広がる</div>
+    </div>
+  </div>
+</section>
 
+<!-- Vision Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-title">新しい願望を記す</div>
@@ -873,195 +1019,701 @@ margin-bottom: 8px;
   </div>
 </div>
 
+<!-- Footer -->
 <div class="footer-seal">
   <div class="seal">今</div>
   <div>身体感覚 × 気 × 今に生きる</div>
 </div>
 
+<!-- Mini Yoshi AI -->
+<button class="yoshi-toggle" id="yoshiToggle" onclick="toggleYoshi()">賀</button>
+<div class="yoshi-panel" id="yoshiPanel">
+  <div class="yoshi-header">
+    <div class="yoshi-avatar">賀</div>
+    <div>
+      <div class="yoshi-name">ミニ Yoshi</div>
+      <div class="yoshi-status">AI · 今に生きるサポート</div>
+    </div>
+    <button class="yoshi-close-btn" onclick="toggleYoshi()">×</button>
+  </div>
+  <div class="yoshi-disclaimer" id="yoshiDisclaimer">
+    🌿 私はAIです。医療診断はできません。深刻な場合は必ず医療機関へご相談ください。
+  </div>
+  <div class="yoshi-messages" id="yoshiMessages">
+    <div class="msg yoshi" id="yoshiWelcome">こんにちは。Yoshiの哲学をベースに、今この瞬間に寄り添います。身体のこと、気のこと、何でも話しかけてください。🙏</div>
+  </div>
+  <div class="quick-questions" id="quickQuestions">
+    <button class="quick-btn" onclick="quickAsk('丹田とは何ですか？')">丹田とは？</button>
+    <button class="quick-btn" onclick="quickAsk('不安を感じています')">不安を感じる</button>
+    <button class="quick-btn" onclick="quickAsk('気の流れを良くするには？')">気を整える</button>
+    <button class="quick-btn" onclick="quickAsk('今に生きるとは？')">今に生きる</button>
+  </div>
+  <div class="yoshi-input-row">
+    <input type="text" class="yoshi-input" id="yoshiInput" placeholder="Yoshiに話しかける…" onkeydown="if(event.key==='Enter')sendYoshi()">
+    <button class="yoshi-send" onclick="sendYoshi()">送</button>
+  </div>
+</div>
+
 <script>
-  // Date display
-  const now = new Date();
-  const jpDate = now.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
-  document.getElementById('dateDisplay').textContent = jpDate;
-  document.getElementById('diaryDate').textContent = jpDate;
+// === LANGUAGE ===
+let currentLang = 'ja';
+const translations = {
+  ja: {
+    nav: ['瞑　想', '願　望', '気　づき', '身　体', '予　約'],
+    logoSub: '身体感覚 · 気 · 今に生きる',
+    breathStart: '瞑想を始める', breathStop: '終了する',
+    breathBegin: '鼻からゆっくり吸う…', breathDone: 'お疲れ様でした 🙏',
+    breathTap: '円をタップして始める',
+    phases: [{text:'吸う　4秒',dur:4000},{text:'止める　7秒',dur:7000},{text:'ゆっくり吐く　8秒',dur:8000}],
+    guideTitle: '今・ここへの誘い',
+    steps: ['① 背筋を自然に伸ばし、丹田に意識を置く','② ゆっくり鼻から4秒吸い、7秒止め、8秒吐く','③ 思考が来たら、ただ「気づき」そっと戻る','④ 身体全体に気が満ちるのを感じる'],
+    saveDiary: '今日の気づきを記す', savedNote: '✓ 記録されました',
+    diaryPlaceholder: '今日の気づきを、ありのままに…',
+    samuraiDesc: 'スコアを上げたいですか？Yoshiの「サムライリセット」動画で身体を整えましょう。',
+    samuraiBtn: '▶ 動画を見てスコアアップ',
+    scoreUp: '🎉 ＋10 気スコアアップ！',
+    bookingBtn: '🗓 オンライン予約',
+    yoshiDisclaimer: '🌿 私はAIです。医療診断はできません。深刻な場合は必ず医療機関へご相談ください。',
+    yoshiWelcome: 'こんにちは。Yoshiの哲学をベースに、今この瞬間に寄り添います。身体のこと、気のこと、何でも話しかけてください。🙏',
+    yoshiPlaceholder: 'Yoshiに話しかける…',
+    quickBtns: ['丹田とは？','不安を感じる','気を整える','今に生きる'],
+    quickQuestions: ['丹田とは何ですか？','不安を感じています','気の流れを良くするには？','今に生きるとは？'],
+    streakMsg: (n) => `🔥 ${n}日連続`,
+    reminderMsg: '🌿 お帰りなさい。今日も気と共に。',
+    scoreLabels: ['気の滞り','調和の途中','気が満ちてきた','気が充実している'],
+    prompts: ['今日、身体はどんなことを感じていますか？\nどんな気の流れがありましたか？','今この瞬間、何に感謝できますか？\n小さなことから感じてみましょう。','今日の丁寧な行動は何でしたか？\n自分をねぎらってあげましょう。','夢に向かう今日の一歩は何でしたか？\nプロセスを味わいましょう。','身体の声は何を伝えていますか？\n正直に聞いてみましょう。','今日、流れに乗れた瞬間はありましたか？\nその感覚を書き留めてみましょう。','今、エゴではなく気が求めていることは何ですか？'],
+  },
+  es: {
+    nav: ['Meditación', 'Visión', 'Diario', 'Cuerpo', 'Reserva'],
+    logoSub: 'Sensación corporal · Ki · Vivir el presente',
+    breathStart: 'Comenzar meditación', breathStop: 'Terminar',
+    breathBegin: 'Inhala lentamente por la nariz…', breathDone: 'Bien hecho 🙏',
+    breathTap: 'Toca el círculo para comenzar',
+    phases: [{text:'Inhala 4 seg',dur:4000},{text:'Retén 7 seg',dur:7000},{text:'Exhala 8 seg',dur:8000}],
+    guideTitle: 'Invitación al presente',
+    steps: ['① Endereza la espalda, lleva la consciencia al tanden','② Inhala 4s, retén 7s, exhala 8s por la nariz','③ Si llegan pensamientos, nótalos y vuelve suavemente','④ Siente el ki llenando todo tu cuerpo'],
+    saveDiary: 'Guardar nota de hoy', savedNote: '✓ Guardado',
+    diaryPlaceholder: 'Escribe tu reflexión de hoy…',
+    samuraiDesc: '¿Quieres subir tu puntuación? Mira el video "Samurai Reset" de Yoshi para reequilibrar tu cuerpo.',
+    samuraiBtn: '▶ Ver video y subir puntuación',
+    scoreUp: '🎉 ＋10 ¡Puntuación Ki aumentada!',
+    bookingBtn: '🗓 Reservar cita online',
+    yoshiDisclaimer: '🌿 Soy una IA. No puedo hacer diagnósticos médicos. Para casos graves, consulta a un profesional de salud.',
+    yoshiWelcome: 'Hola. Basándome en la filosofía de Yoshi, estoy aquí para acompañarte en este momento. Háblame de tu cuerpo, de tu ki, de lo que necesites. 🙏',
+    yoshiPlaceholder: 'Habla con Yoshi…',
+    quickBtns: ['¿Qué es tanden?','Siento ansiedad','Equilibrar ki','Vivir el presente'],
+    quickQuestions: ['¿Qué es el tanden?','Siento ansiedad','¿Cómo mejorar el flujo de ki?','¿Qué significa vivir el presente?'],
+    streakMsg: (n) => `🔥 ${n} días seguidos`,
+    reminderMsg: '🌿 Bienvenido. Hoy también, con ki.',
+    scoreLabels: ['Ki bloqueado','En camino','Ki fluyendo','Ki en plenitud'],
+    prompts: ['¿Qué sensaciones tiene tu cuerpo hoy?','¿De qué puedes estar agradecido ahora mismo?','¿Cuál fue tu acción más cuidadosa de hoy?','¿Cuál fue tu paso hacia tu sueño hoy?','¿Qué te está diciendo tu cuerpo?','¿Hubo un momento en que fluiste hoy?','¿Qué está pidiendo tu ki, más allá del ego?'],
+  },
+  en: {
+    nav: ['Meditation', 'Vision', 'Journal', 'Body', 'Booking'],
+    logoSub: 'Body Sensation · Ki · Living the Present',
+    breathStart: 'Begin meditation', breathStop: 'End',
+    breathBegin: 'Inhale slowly through the nose…', breathDone: 'Well done 🙏',
+    breathTap: 'Tap the circle to begin',
+    phases: [{text:'Inhale 4s',dur:4000},{text:'Hold 7s',dur:7000},{text:'Exhale 8s',dur:8000}],
+    guideTitle: 'Invitation to the present',
+    steps: ['① Straighten naturally, bring awareness to tanden','② Inhale 4s, hold 7s, exhale 8s through nose','③ If thoughts arise, notice and gently return','④ Feel ki filling your entire body'],
+    saveDiary: 'Save today\'s insight', savedNote: '✓ Saved',
+    diaryPlaceholder: 'Write your insight as it is…',
+    samuraiDesc: 'Want to raise your score? Watch Yoshi\'s "Samurai Reset" video to realign your body.',
+    samuraiBtn: '▶ Watch & boost your score',
+    scoreUp: '🎉 ＋10 Ki Score Boosted!',
+    bookingBtn: '🗓 Book Online',
+    yoshiDisclaimer: '🌿 I am an AI. I cannot make medical diagnoses. For serious concerns, please consult a healthcare professional.',
+    yoshiWelcome: 'Hello. Based on Yoshi\'s philosophy, I\'m here with you in this moment. Talk to me about your body, ki, or anything on your mind. 🙏',
+    yoshiPlaceholder: 'Talk to Yoshi…',
+    quickBtns: ['What is tanden?','Feeling anxious','Balance ki','Living present'],
+    quickQuestions: ['What is the tanden?','I am feeling anxious','How to improve ki flow?','What does living in the present mean?'],
+    streakMsg: (n) => `🔥 ${n} day streak`,
+    reminderMsg: '🌿 Welcome back. Today also, with ki.',
+    scoreLabels: ['Ki blocked','Finding balance','Ki flowing','Ki in fullness'],
+    prompts: ['What sensations is your body feeling today?','What can you be grateful for right now?','What was your most mindful action today?','What was your step toward your dream today?','What is your body telling you?','Was there a moment you were in flow today?','What is your ki asking for, beyond the ego?'],
+  }
+};
 
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  const t = translations[lang];
   // Nav
-  function showSection(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
-  }
-
-  // Breathing meditation
-  let breathingActive = false;
-  let breathTimer = null;
-  let totalSeconds = 0;
-  let timerInterval = null;
-  const phases = [
-    { text: '吸う　4秒', dur: 4000 },
-    { text: '止める　7秒', dur: 7000 },
-    { text: 'ゆっくり吐く　8秒', dur: 8000 }
-  ];
-  let phaseIdx = 0;
-
-  function runPhase() {
-    const phase = phases[phaseIdx];
-    document.getElementById('breathInstruction').textContent = phase.text;
-    phaseIdx = (phaseIdx + 1) % phases.length;
-    breathTimer = setTimeout(runPhase, phase.dur);
-  }
-
-  function toggleBreath() {
-    if (!breathingActive) {
-      breathingActive = true;
-      document.getElementById('breathCircle').classList.add('breathing');
-      document.getElementById('startBtn').textContent = '終了する';
-      document.getElementById('breathInstruction').textContent = '鼻からゆっくり吸う…';
-      runPhase();
-      timerInterval = setInterval(() => {
-        totalSeconds++;
-        const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-        const s = String(totalSeconds % 60).padStart(2, '0');
-        document.getElementById('timerDisplay').textContent = `${m}:${s}`;
-      }, 1000);
-    } else {
-      breathingActive = false;
-      clearTimeout(breathTimer);
-      clearInterval(timerInterval);
-      document.getElementById('breathCircle').classList.remove('breathing');
-      document.getElementById('startBtn').textContent = '瞑想を始める';
-      document.getElementById('breathInstruction').textContent = 'お疲れ様でした 🙏';
-      totalSeconds = 0;
-      document.getElementById('timerDisplay').textContent = '00:00';
-      phaseIdx = 0;
-    }
-  }
-
-  // Vision board
-  const visions = [
-    { tag: '健康', icon: '🌿', text: '毎朝、気と身体感覚で目覚める' },
-    { tag: '仕事', icon: '✨', text: '流れに乗る自然な繁栄' },
-    { tag: '人間関係', icon: '🌸', text: '深く繋がる豊かな縁' }
-  ];
-
-  const catIcons = { '健康':'🌿', '仕事':'💼', '人間関係':'🌸', '豊かさ':'✨', '成長':'🌱', '自由':'🦋' };
-
-  function openModal() {
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-    document.getElementById('visionInput').value = '';
-  }
-
-  function closeModalOutside(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  }
-
-  function selectCat(btn) {
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-  }
-
-  function saveVision() {
-    const text = document.getElementById('visionInput').value.trim();
-    if (!text) return;
-    const cat = document.querySelector('.cat-btn.selected')?.textContent || '願望';
-    visions.push({ tag: cat, icon: catIcons[cat] || '🌟', text });
-    renderVisions();
-    closeModal();
-  }
-
-  function renderVisions() {
-    const grid = document.getElementById('visionGrid');
-    grid.innerHTML = '';
-    visions.forEach((v, i) => {
-      const card = document.createElement('div');
-      card.className = 'vision-card filled';
-      card.innerHTML = `<div class="vision-tag">${v.tag}</div><div class="vision-icon">${v.icon}</div><div class="vision-text">${v.text}</div>`;
-      grid.appendChild(card);
-    });
-    const add = document.createElement('div');
-    add.className = 'vision-card add-vision';
-    add.innerHTML = `<div class="vision-icon">＋</div><div class="vision-text">新しい願望を加える</div>`;
-    add.onclick = openModal;
-    grid.appendChild(add);
-  }
-
+  const navIds = ['meditation','vision','diary','body','booking'];
+  navIds.forEach((id,i) => { const el = document.getElementById('nav-'+id); if(el) el.textContent = t.nav[i]; });
+  // Logo sub
+  document.querySelector('.logo-sub').textContent = t.logoSub;
+  // Breath
+  document.getElementById('startBtn').textContent = breathingActive ? t.breathStop : t.breathStart;
+  document.getElementById('breathInstruction').textContent = breathingActive ? '' : t.breathTap;
+  // Guide
+  document.getElementById('guide-title-1').textContent = t.guideTitle;
+  t.steps.forEach((s,i) => { const el = document.getElementById('guide-step-'+(i+1)); if(el) el.textContent = s; });
   // Diary
-  const prompts = [
-    '今日、身体はどんなことを感じていますか？\nどんな気の流れがありましたか？',
-    '今この瞬間、何に感謝できますか？\n小さなことから感じてみましょう。',
-    '今日の丁寧な行動は何でしたか？\n自分をねぎらってあげましょう。',
-    '夢に向かう今日の一歩は何でしたか？\nプロセスを味わいましょう。',
-    '身体の声は何を伝えていますか？\n正直に聞いてみましょう。',
-    '今日、流れに乗れた瞬間はありましたか？\nその感覚を書き留めてみましょう。',
-    '今、エゴではなく気が求めていることは何ですか？'
+  document.getElementById('diaryText').placeholder = t.diaryPlaceholder;
+  document.querySelector('.save-diary-btn').textContent = t.saveDiary;
+  document.getElementById('savedNote').textContent = t.savedNote;
+  const dow = new Date().getDay();
+  document.getElementById('diaryPrompt').textContent = t.prompts[dow];
+  // Samurai
+  document.getElementById('samuraiDesc').textContent = t.samuraiDesc;
+  document.querySelector('.samurai-btn').textContent = t.samuraiBtn;
+  document.getElementById('scoreUpBadge').textContent = t.scoreUp;
+  // Booking
+  document.querySelector('.booking-btn').textContent = t.bookingBtn;
+  // Yoshi AI
+  document.getElementById('yoshiDisclaimer').textContent = t.yoshiDisclaimer;
+  document.getElementById('yoshiInput').placeholder = t.yoshiPlaceholder;
+  const quickQ = document.querySelectorAll('.quick-btn');
+  t.quickBtns.forEach((txt,i) => { if(quickQ[i]) quickQ[i].textContent = txt; });
+  // Reminder
+  document.getElementById('reminderText').textContent = t.reminderMsg;
+  // Score
+  updateScore();
+  // Streak
+  updateStreakDisplay();
+}
+
+// === DATE & STREAK ===
+const now = new Date();
+const today = now.toDateString();
+document.getElementById('dateDisplay').textContent = now.toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
+document.getElementById('diaryDate').textContent = now.toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
+
+// Streak logic
+let visitData = JSON.parse(localStorage.getItem('yoshiVisit') || '{"lastVisit":"","streak":0}');
+const yesterday = new Date(now); yesterday.setDate(yesterday.getDate()-1);
+if (visitData.lastVisit === yesterday.toDateString()) {
+  visitData.streak = (visitData.streak||0)+1;
+} else if (visitData.lastVisit !== today) {
+  visitData.streak = 1;
+}
+if (visitData.lastVisit !== today) {
+  visitData.lastVisit = today;
+  localStorage.setItem('yoshiVisit', JSON.stringify(visitData));
+  // Show reminder if returning after a gap
+  const lastDate = new Date(visitData.lastVisit);
+  const diffDays = Math.floor((now - lastDate) / 86400000);
+  if (diffDays >= 1) showReminder();
+}
+function updateStreakDisplay() {
+  const t = translations[currentLang];
+  if (visitData.streak > 1) {
+    document.getElementById('streakDisplay').textContent = t.streakMsg(visitData.streak);
+  }
+}
+updateStreakDisplay();
+
+// Reminder
+function showReminder() {
+  document.getElementById('reminderBanner').classList.add('show');
+  setTimeout(() => dismissReminder(), 5000);
+}
+function dismissReminder() {
+  document.getElementById('reminderBanner').classList.remove('show');
+}
+
+// === NAV ===
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  else { const el = document.getElementById('nav-'+id); if(el) el.classList.add('active'); }
+}
+
+// === BREATHING ===
+let breathingActive = false;
+let breathTimer = null;
+let totalSeconds = 0;
+let timerInterval = null;
+let phaseIdx = 0;
+
+function runPhase() {
+  const t = translations[currentLang];
+  const phase = t.phases[phaseIdx];
+  document.getElementById('breathInstruction').textContent = phase.text;
+  phaseIdx = (phaseIdx + 1) % t.phases.length;
+  breathTimer = setTimeout(runPhase, phase.dur);
+}
+function toggleBreath() {
+  const t = translations[currentLang];
+  if (!breathingActive) {
+    breathingActive = true;
+    document.getElementById('breathCircle').classList.add('breathing');
+    document.getElementById('startBtn').textContent = t.breathStop;
+    document.getElementById('breathInstruction').textContent = t.breathBegin;
+    phaseIdx = 0; runPhase();
+    timerInterval = setInterval(() => {
+      totalSeconds++;
+      const m = String(Math.floor(totalSeconds/60)).padStart(2,'0');
+      const s = String(totalSeconds%60).padStart(2,'0');
+      document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+    }, 1000);
+    startBgm();
+  } else {
+    breathingActive = false;
+    clearTimeout(breathTimer); clearInterval(timerInterval);
+    document.getElementById('breathCircle').classList.remove('breathing');
+    document.getElementById('startBtn').textContent = t.breathStart;
+    document.getElementById('breathInstruction').textContent = t.breathDone;
+    totalSeconds = 0; phaseIdx = 0;
+    document.getElementById('timerDisplay').textContent = '00:00';
+    stopBgm();
+  }
+}
+
+// === VISION BOARD ===
+const defaultVisions = [
+  { tag: '健康', icon: '🌿', text: '毎朝、気と身体感覚で目覚める' },
+  { tag: '仕事', icon: '✨', text: '流れに乗る自然な繁栄' },
+  { tag: '人間関係', icon: '🌸', text: '深く繋がる豊かな縁' }
+];
+let visions = JSON.parse(localStorage.getItem('yoshiVisions') || JSON.stringify(defaultVisions));
+const catIcons = {'健康':'🌿','仕事':'💼','人間関係':'🌸','豊かさ':'✨','成長':'🌱','自由':'🦋'};
+
+function renderVisions() {
+  const grid = document.getElementById('visionGrid');
+  grid.innerHTML = '';
+  visions.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'vision-card filled';
+    card.innerHTML = `<div class="vision-tag">${v.tag}</div><div class="vision-icon">${v.icon}</div><div class="vision-text">${v.text}</div>`;
+    grid.appendChild(card);
+  });
+  const add = document.createElement('div');
+  add.className = 'vision-card add-vision';
+  add.innerHTML = `<div class="vision-icon">＋</div><div class="vision-text">新しい願望を加える</div>`;
+  add.onclick = openModal;
+  grid.appendChild(add);
+}
+renderVisions();
+
+function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.getElementById('visionInput').value = ''; }
+function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+function selectCat(btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); }
+function saveVision() {
+  const text = document.getElementById('visionInput').value.trim();
+  if (!text) return;
+  const cat = document.querySelector('.cat-btn.selected')?.textContent || '願望';
+  visions.push({tag:cat, icon:catIcons[cat]||'🌟', text});
+  localStorage.setItem('yoshiVisions', JSON.stringify(visions));
+  renderVisions(); closeModal();
+}
+
+// === DIARY ===
+const dow = now.getDay();
+document.getElementById('diaryPrompt').textContent = translations['ja'].prompts[dow];
+let selectedMood = null;
+let diaryEntries = JSON.parse(localStorage.getItem('yoshiDiary') || '[]');
+function selectMood(btn) { document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedMood = btn.textContent; }
+function saveDiary() {
+  const text = document.getElementById('diaryText').value.trim();
+  if (!text) return;
+  const entry = {date: now.toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'}), mood: selectedMood||'🙏', text};
+  diaryEntries.unshift(entry);
+  localStorage.setItem('yoshiDiary', JSON.stringify(diaryEntries.slice(0,30)));
+  document.getElementById('diaryText').value = '';
+  const note = document.getElementById('savedNote');
+  note.style.opacity = '1';
+  setTimeout(() => note.style.opacity = '0', 2000);
+  renderPastEntries();
+}
+function renderPastEntries() {
+  const el = document.getElementById('pastEntries');
+  if (!diaryEntries.length) { el.innerHTML = ''; return; }
+  el.innerHTML = diaryEntries.slice(0,5).map(e => `
+    <div class="body-check-item" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;letter-spacing:0.3em;color:#888">${e.date}</span>
+        <span style="font-size:18px">${e.mood}</span>
+      </div>
+      <div style="font-size:13px;color:#555;line-height:1.8;letter-spacing:0.05em">${e.text}</div>
+    </div>`).join('');
+}
+renderPastEntries();
+
+// === BODY CHECK ===
+function updateSlider(slider) {
+  const val = slider.value;
+  slider.style.background = `linear-gradient(to right, var(--gold) ${val}%, var(--mist) ${val}%)`;
+}
+document.querySelectorAll('.level-slider').forEach(s => updateSlider(s));
+
+let bodyScoreBonus = 0;
+function updateScore() {
+  const t = translations[currentLang];
+  const sliders = document.querySelectorAll('.level-slider');
+  const base = Math.round([...sliders].reduce((a,s) => a+parseInt(s.value), 0) / sliders.length);
+  const total = Math.min(100, base + bodyScoreBonus);
+  document.getElementById('scoreDisplay').textContent = total;
+  const ranges = [[0,25,0],[25,50,1],[50,75,2],[75,101,3]];
+  const idx = ranges.find(r => total >= r[0] && total < r[1]);
+  document.getElementById('scoreLabel').textContent = t.scoreLabels[idx ? idx[2] : 3];
+  // Show samurai reset if score < 60
+  document.getElementById('samuraiReset').style.display = total < 60 ? 'block' : 'none';
+}
+
+// Samurai Reset
+function openSamuraiVideo() {
+  window.open('https://www.youtube.com/@yoshishiatsu', '_blank');
+  setTimeout(() => {
+    bodyScoreBonus = 10;
+    updateScore();
+    const badge = document.getElementById('scoreUpBadge');
+    badge.classList.add('show');
+    setTimeout(() => badge.classList.remove('show'), 3000);
+  }, 2000);
+}
+
+// Booking
+function openBooking() {
+  window.open('https://iframe-13864.nearcut.com', '_blank');
+}
+
+// === MINI YOSHI AI ===
+let yoshiOpen = false;
+let yoshiHistory = [];
+
+function toggleYoshi() {
+  yoshiOpen = !yoshiOpen;
+  const panel = document.getElementById('yoshiPanel');
+  if (yoshiOpen) panel.classList.add('open');
+  else panel.classList.remove('open');
+}
+
+function quickAsk(q) {
+  document.getElementById('yoshiInput').value = q;
+  sendYoshi();
+}
+
+async function sendYoshi() {
+  const input = document.getElementById('yoshiInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMsg(text, 'user');
+  yoshiHistory.push({role:'user', content: text});
+  const loading = addMsg('…', 'loading');
+  try {
+    const lang = currentLang === 'ja' ? '日本語' : currentLang === 'es' ? 'スペイン語' : '英語';
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `あなたは「ミニYoshi」です。スペインのマドリードで整体指圧クリニックを経営するYoshiの哲学をベースにしたAIコンシェルジュです。
+
+Yoshiの核心的な哲学：
+- 身体感覚（丹田・呼吸・脱力・気の流れ）を感じることが人生の基盤
+- 「今に生きる」こと。思考やエゴに縛られず、この瞬間に意識を置く
+- 気を感じる生き方。気とは東洋医学のエネルギー・生命力
+- 脱力しながら集中する。余分な力を抜きつつ気を保持
+- 夢や願望は大切だが、結果に執着せず、プロセスを楽しむ
+- 「感じる」がキーワード。身体感覚を伴わない思考は悩みを生む
+- 東洋的アプローチ：全体性・気・身体感覚の統合
+
+応答ルール：
+1. ${lang}で答える
+2. 温かく、寄り添うトーンで
+3. 短く（3-5文程度）、具体的に
+4. 必要に応じて身体感覚の実践をガイドする
+5. 深刻な医療的問題は専門家を勧める
+6. Yoshiのウェブサイト: shiatsuyoshi.com
+7. あなたはAIであり、本物のYoshiではない`,
+        messages: yoshiHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || '申し訳ありません。もう一度お試しください。';
+    loading.remove();
+    addMsg(reply, 'yoshi');
+    yoshiHistory.push({role:'assistant', content: reply});
+    if (yoshiHistory.length > 20) yoshiHistory = yoshiHistory.slice(-20);
+  } catch(e) {
+    loading.textContent = '通信エラーが発生しました。もう一度お試しください。';
+    loading.className = 'msg yoshi';
+  }
+}
+
+function addMsg(text, type) {
+  const msgs = document.getElementById('yoshiMessages');
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+// === DAILY YOSHI QUOTES ===
+const yoshiQuotes = [
+  { kanji:'今', text:'今に生きよう', sub:'過去でも未来でもなく、今この瞬間を感じること。身体が今ここにあるように、心も今ここに置こう。', source:'📺 Yoshi YouTube · 整体セッションより', es:{text:'Vive el presente', sub:'No en el pasado ni en el futuro. Siente este momento. Como tu cuerpo está aquí, pon también tu mente aquí.'}, en:{text:'Live in the present', sub:'Not in the past or future. Feel this moment. Just as your body is here now, bring your mind here too.'} },
+  { kanji:'感', text:'感じることが答え', sub:'考えすぎると迷子になる。身体が感じていることに、すべての答えがある。丹田に手を置いて、ただ感じてみよう。', source:'🎙 Podcast #154 · 身体は間違えない', es:{text:'Sentir es la respuesta', sub:'Pensar demasiado nos pierde. Todas las respuestas están en lo que siente tu cuerpo.'}, en:{text:'Feeling is the answer', sub:'Overthinking leads you astray. All answers lie in what your body feels.'} },
+  { kanji:'脱', text:'力を抜けば、気が流れる', sub:'頑張ることと力むことは違う。余分な力を抜いた時、本当の力が出てくる。今、肩の力を抜いてみよう。', source:'🎙 Podcast #153 · 脱力', es:{text:'Al soltar, fluye el ki', sub:'Esforzarse y tensarse son cosas distintas. Cuando sueltas la tensión innecesaria, emerge tu verdadera fuerza.'}, en:{text:'Release tension, ki flows', sub:'Effort and tension are different. When you release unnecessary force, your true power emerges.'} },
+  { kanji:'気', text:'気を感じれば、世界が変わる', sub:'東洋では「気」と呼ばれるエネルギーが全てのものに流れている。身体感覚を研ぎ澄ますと、その流れを感じ始める。', source:'🌐 shiatsuyoshi.com · Método Yoshi', es:{text:'Siente el ki, cambia el mundo', sub:'En Oriente, el ki fluye en todo. Al afinar la sensación corporal, empiezas a sentir ese flujo.'}, en:{text:'Feel ki, change your world', sub:'In Eastern tradition, ki flows through everything. By sharpening body sensation, you begin to feel that flow.'} },
+  { kanji:'丹', text:'丹田が中心', sub:'へそ下3センチ、丹田はあなたの重心。ここに意識を置くだけで、心が落ち着き、地に足がつく感覚が生まれる。', source:'📺 Yoshi YouTube · サムライリセット', es:{text:'El tanden es tu centro', sub:'3 cm bajo el ombligo, el tanden es tu centro de gravedad. Solo poniendo consciencia aquí, la mente se calma.'}, en:{text:'Tanden is your center', sub:'3cm below your navel, the tanden is your center of gravity. Bringing awareness here calms the mind.'} },
+  { kanji:'息', text:'呼吸が全てを変える', sub:'不安な時、怒りを感じる時、ただ呼吸に戻ろう。鼻からゆっくり吸って、ゆっくり吐く。それだけで、今に戻れる。', source:'🎙 Podcast #135 · 身体は間違えない', es:{text:'La respiración cambia todo', sub:'Cuando sientes ansiedad o ira, vuelve a la respiración. Inhala y exhala lento. Con eso, vuelves al presente.'}, en:{text:'Breathing changes everything', sub:'When anxious or angry, return to breathing. Slowly inhale and exhale. That alone brings you back to now.'} },
+  { kanji:'流', text:'流れに乗る生き方', sub:'川の水は岩に逆らわず、自然に流れる。人生も同じ。抵抗せず、今の流れを感じ、その中で丁寧に生きよう。', source:'📺 Yoshi YouTube · Método Yoshi', es:{text:'Vivir fluyendo', sub:'El agua del río fluye naturalmente. La vida es igual. Sin resistir, siente el flujo actual y vive con cuidado.'}, en:{text:'Living in the flow', sub:'River water flows naturally around rocks. Life is the same. Without resisting, feel the current and live carefully.'} },
+  { kanji:'体', text:'身体は正直だ', sub:'身体は決して嘘をつかない。疲れたと言えば疲れている。喜んでいれば軽くなる。今日、身体の声を聞いてみよう。', source:'🎙 Podcast #154 · 身体は間違えない', es:{text:'El cuerpo no miente', sub:'El cuerpo nunca miente. Si dice que está cansado, lo está. Escúchalo hoy.'}, en:{text:'The body is honest', sub:'The body never lies. If it says tired, it is tired. Today, listen to your body\'s voice.'} },
+  { kanji:'観', text:'観念を書き換えよう', sub:'「どうせ無理」——それは過去の経験が作った物語。今日、新しい物語を書き始めよう。あなたは変われる。', source:'📺 Yoshi YouTube · 観念書き換え法', es:{text:'Reescribe tus creencias', sub:'"No puedo" es una historia del pasado. Hoy, empieza a escribir una nueva historia. Puedes cambiar.'}, en:{text:'Rewrite your beliefs', sub:'"I can\'t" is a story from the past. Today, begin writing a new story. You can change.'} },
+  { kanji:'若', text:'若さは心の在り方', sub:'年齢は数字に過ぎない。80歳でも目を輝かせて生きている人がいる。若さとは、今この瞬間に感動できる心のこと。', source:'🎙 Podcast #152 · 若さは数字ではなく心の在り方', es:{text:'La juventud es actitud', sub:'La edad es solo un número. La juventud es la capacidad de emocionarse en este momento.'}, en:{text:'Youth is a state of mind', sub:'Age is just a number. Youth is the ability to be moved by this moment.'} },
+  { kanji:'愛', text:'自分を大切にすること', sub:'他者を癒す前に、まず自分を愛そう。自分が満たされていなければ、人に与えることはできない。今日、自分を労ろう。', source:'🎙 Podcast #153 · 自分を大事にしてみよう', es:{text:'Ámate primero', sub:'Antes de sanar a otros, ámate. Si no estás lleno, no puedes dar. Hoy, cuídate.'}, en:{text:'Love yourself first', sub:'Before healing others, love yourself. If you are not full, you cannot give. Today, take care of yourself.'} },
+  { kanji:'機', text:'リスクの先にチャンスがある', sub:'怖いと感じる時、そこに成長がある。リスクの裏側には必ずチャンスが隠れている。一歩、踏み出してみよう。', source:'🎙 Podcast #133 · detras de riesgo hay oportunidad', es:{text:'Tras el riesgo hay oportunidad', sub:'Cuando sientes miedo, ahí está el crecimiento. Detrás de cada riesgo se esconde una oportunidad.'}, en:{text:'Opportunity lies beyond risk', sub:'When afraid, that is where growth is. Behind every risk, an opportunity is hidden.'} },
+  { kanji:'夢', text:'夢はオーダーして手放す', sub:'願いを明確にしたら、執着しない。宇宙に注文して、あとは今を丁寧に生きる。夢は自然にやってくる。', source:'🌐 shiatsuyoshi.com · Clínica Yoshi', es:{text:'Pide el sueño y suéltalo', sub:'Una vez clara tu intención, no te apegues. Vive el presente. Los sueños llegan solos.'}, en:{text:'Order your dream, then release', sub:'Once your wish is clear, don\'t cling. Live carefully in the present. Dreams come naturally.'} },
+  { kanji:'縁', text:'出会いは必然', sub:'今日会う人、今日起きること、すべてに意味がある。偶然はない。気を開いていれば、必要な縁が自然に集まってくる。', source:'📺 Yoshi YouTube · 整体セッションより', es:{text:'Los encuentros son destino', sub:'Las personas que encuentras hoy, todo tiene significado. No hay coincidencias cuando el ki está abierto.'}, en:{text:'Encounters are destiny', sub:'The people you meet today, all events have meaning. There are no coincidences when ki is open.'} },
+  { kanji:'静', text:'静かな心が、全てを見通す', sub:'喧騒の中でも、内側に静けさを持とう。嵐の中心は静かなように、心の中心を静かに保てば、全てが明確に見えてくる。', source:'🎙 Podcast · Yoshiの聞く(効く)チャンネル', es:{text:'La mente quieta todo lo ve', sub:'Incluso en el ruido, mantén la quietud interior. Como el ojo del huracán, mantén tu centro en calma.'}, en:{text:'A quiet mind sees all', sub:'Even amid noise, hold stillness inside. Like the eye of a storm, keeping your inner center calm makes everything clear.'} },
+];
+
+function showDailyQuote() {
+  const lastShown = localStorage.getItem('yoshiQuoteDate');
+  const todayStr = new Date().toDateString();
+  if (lastShown === todayStr) return;
+  const dayIndex = Math.floor((new Date() - new Date('2024-01-01')) / 86400000) % yoshiQuotes.length;
+  const q = yoshiQuotes[dayIndex];
+  const lang = currentLang;
+  const t = lang === 'es' ? q.es : lang === 'en' ? q.en : q;
+  document.getElementById('quoteKanji').textContent = q.kanji;
+  document.getElementById('quoteText').textContent = t.text;
+  document.getElementById('quoteSub').textContent = t.sub;
+  document.getElementById('quoteSource').textContent = q.source;
+  const labels = {ja:'今日のYoshiの言葉', es:'Palabra de Yoshi de hoy', en:"Today's Word from Yoshi"};
+  const closeBtns = {ja:'今日も、気と共に　🙏', es:'Hoy también, con ki　🙏', en:'Today also, with ki　🙏'};
+  document.getElementById('quoteLabelTop').textContent = labels[lang];
+  document.getElementById('quoteCloseBtn').textContent = closeBtns[lang];
+  document.getElementById('dailyQuoteOverlay').classList.add('show');
+}
+
+function closeQuote() {
+  document.getElementById('dailyQuoteOverlay').classList.remove('show');
+  localStorage.setItem('yoshiQuoteDate', new Date().toDateString());
+}
+
+setTimeout(showDailyQuote, 800);
+
+
+// === ZEN BGM ENGINE ===
+let audioCtx = null;
+let bgmNodes = [];
+let selectedBgm = 'bowl';
+let bgmPlaying = false;
+
+let bgmMuted = false;
+
+function toggleMute() {
+  bgmMuted = !bgmMuted;
+  const btn = document.getElementById('bgmMuteBtn');
+  const btns = document.getElementById('bgmBtns');
+  if (bgmMuted) {
+    btn.textContent = '🔇';
+    btn.classList.add('muted');
+    btns.classList.add('muted');
+    if (bgmPlaying) stopBgm();
+  } else {
+    btn.textContent = '🔊';
+    btn.classList.remove('muted');
+    btns.classList.remove('muted');
+    if (breathingActive) startBgm();
+  }
+}
+
+function selectBgm(type, btn) {
+  selectedBgm = type;
+  document.querySelectorAll('.bgm-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (bgmPlaying) {
+    stopBgm();
+    if (!bgmMuted) startBgm();
+  }
+}
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function stopBgm() {
+  bgmNodes.forEach(n => { try { n.stop(); } catch(e){} });
+  bgmNodes = [];
+  bgmPlaying = false;
+}
+
+function startBgm() {
+  if (bgmMuted) return;
+  initAudio();
+  if (selectedBgm === 'bowl') startSingingBowl();
+  else if (selectedBgm === 'forest') startForest();
+  else if (selectedBgm === 'drone') startZenDrone();
+  bgmPlaying = true;
+}
+
+// 432Hz シンギングボウル — 倍音付き
+function startSingingBowl() {
+  const master = audioCtx.createGain();
+  master.gain.setValueAtTime(0, audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 3);
+  master.connect(audioCtx.destination);
+
+  // Base 432Hz + harmonics
+  const freqs = [432, 864, 1296, 540, 270];
+  const gains = [0.5, 0.25, 0.12, 0.15, 0.08];
+
+  freqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    // Subtle vibrato
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.frequency.value = 0.3 + i * 0.1;
+    lfoGain.gain.value = freq * 0.002;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    lfo.start();
+    g.gain.value = gains[i];
+    osc.connect(g);
+    g.connect(master);
+    osc.start();
+    bgmNodes.push(osc, lfo);
+  });
+
+  // Bowl strike effect — periodic gentle pulse
+  function bowlStrike() {
+    if (!bgmPlaying) return;
+    const strikeGain = audioCtx.createGain();
+    strikeGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    strikeGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 4);
+    strikeGain.connect(master);
+    const strikeOsc = audioCtx.createOscillator();
+    strikeOsc.type = 'sine';
+    strikeOsc.frequency.setValueAtTime(432, audioCtx.currentTime);
+    strikeOsc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 4);
+    strikeOsc.connect(strikeGain);
+    strikeOsc.start();
+    strikeOsc.stop(audioCtx.currentTime + 5);
+    setTimeout(bowlStrike, 8000 + Math.random() * 4000);
+  }
+  setTimeout(bowlStrike, 1000);
+  bgmNodes.push(master);
+}
+
+// 森・自然音 — ピンクノイズ + 鳥の音風
+function startForest() {
+  const master = audioCtx.createGain();
+  master.gain.setValueAtTime(0, audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 2);
+  master.connect(audioCtx.destination);
+
+  // Pink noise (wind/rain feel)
+  const bufferSize = audioCtx.sampleRate * 4;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    b0 = 0.99886*b0 + white*0.0555179;
+    b1 = 0.99332*b1 + white*0.0750759;
+    b2 = 0.96900*b2 + white*0.1538520;
+    b3 = 0.86650*b3 + white*0.3104856;
+    b4 = 0.55000*b4 + white*0.5329522;
+    b5 = -0.7616*b5 - white*0.0168980;
+    data[i] = (b0+b1+b2+b3+b4+b5+b6+white*0.5362) * 0.11;
+    b6 = white * 0.115926;
+  }
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.loop = true;
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 800;
+  source.connect(filter);
+  filter.connect(master);
+  source.start();
+  bgmNodes.push(source, master);
+
+  // Bird chirp sounds
+  function birdChirp() {
+    if (!bgmPlaying) return;
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0, audioCtx.currentTime);
+    g.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    g.connect(audioCtx.destination);
+    const o = audioCtx.createOscillator();
+    o.type = 'sine';
+    const baseFreq = 2000 + Math.random() * 1500;
+    o.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+    o.frequency.linearRampToValueAtTime(baseFreq * 1.3, audioCtx.currentTime + 0.15);
+    o.frequency.linearRampToValueAtTime(baseFreq * 0.9, audioCtx.currentTime + 0.35);
+    o.connect(g);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.45);
+    setTimeout(birdChirp, 3000 + Math.random() * 7000);
+  }
+  setTimeout(birdChirp, 2000);
+}
+
+// 528Hz 禅ドローン — 奇跡の周波数
+function startZenDrone() {
+  const master = audioCtx.createGain();
+  master.gain.setValueAtTime(0, audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.14, audioCtx.currentTime + 4);
+  master.connect(audioCtx.destination);
+
+  // 528Hz base + 396Hz + 174Hz (Solfeggio frequencies)
+  const solfeggio = [
+    {freq: 528, gain: 0.4},  // 変容・奇跡
+    {freq: 396, gain: 0.25}, // 解放
+    {freq: 174, gain: 0.2},  // 基盤・安定
+    {freq: 1056, gain: 0.1}, // 528 * 2
+    {freq: 264, gain: 0.15}, // 528 / 2
   ];
 
-  const dayOfWeek = now.getDay();
-  document.getElementById('diaryPrompt').textContent = prompts[dayOfWeek];
+  solfeggio.forEach(({freq, gain}, i) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = i === 0 ? 'sine' : 'sine';
+    osc.frequency.value = freq;
+    // Slow gentle wobble
+    const lfo = audioCtx.createOscillator();
+    const lfoG = audioCtx.createGain();
+    lfo.frequency.value = 0.1 + i * 0.05;
+    lfoG.gain.value = freq * 0.001;
+    lfo.connect(lfoG);
+    lfoG.connect(osc.frequency);
+    lfo.start();
+    g.gain.value = gain * 0.5;
+    osc.connect(g);
+    g.connect(master);
+    osc.start();
+    bgmNodes.push(osc, lfo);
+  });
 
-  let selectedMood = null;
-
-  function selectMood(btn) {
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedMood = btn.textContent;
+  // Gentle gong sound
+  function zenGong() {
+    if (!bgmPlaying) return;
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 6);
+    g.connect(audioCtx.destination);
+    const o = audioCtx.createOscillator();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(528, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(520, audioCtx.currentTime + 6);
+    o.connect(g);
+    o.start();
+    o.stop(audioCtx.currentTime + 7);
+    setTimeout(zenGong, 12000 + Math.random() * 6000);
   }
+  setTimeout(zenGong, 500);
+  bgmNodes.push(master);
+}
 
-  const diaryEntries = [];
-
-  function saveDiary() {
-    const text = document.getElementById('diaryText').value.trim();
-    if (!text) return;
-    diaryEntries.unshift({ date: jpDate, mood: selectedMood || '🙏', text });
-    document.getElementById('diaryText').value = '';
-    const note = document.getElementById('savedNote');
-    note.style.opacity = '1';
-    setTimeout(() => note.style.opacity = '0', 2000);
-    renderPastEntries();
-  }
-
-  function renderPastEntries() {
-    const el = document.getElementById('pastEntries');
-    if (diaryEntries.length === 0) { el.innerHTML = ''; return; }
-    el.innerHTML = diaryEntries.slice(0, 3).map(e => `
-      <div class="body-check-item" style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <span style="font-size:10px;letter-spacing:0.3em;color:#888">${e.date}</span>
-          <span style="font-size:18px">${e.mood}</span>
-        </div>
-        <div style="font-size:13px;color:#555;line-height:1.8;letter-spacing:0.05em">${e.text}</div>
-      </div>
-    `).join('');
-  }
-
-  // Body check
-  function updateSlider(slider) {
-    const val = slider.value;
-    slider.style.background = `linear-gradient(to right, var(--gold) ${val}%, var(--mist) ${val}%)`;
-  }
-
-  // Initialize sliders
-  document.querySelectorAll('.level-slider').forEach(s => updateSlider(s));
-
-  function updateScore() {
-    const sliders = document.querySelectorAll('.level-slider');
-    const avg = Math.round([...sliders].reduce((a, s) => a + parseInt(s.value), 0) / sliders.length);
-    document.getElementById('scoreDisplay').textContent = avg;
-    const labels = [
-      [0, 25, '気の滞り'],
-      [25, 50, '調和の途中'],
-      [50, 75, '気が満ちてきた'],
-      [75, 100, '気が充実している']
-    ];
-    const label = labels.find(l => avg >= l[0] && avg <= l[1]);
-    document.getElementById('scoreLabel').textContent = label ? label[2] : '充実';
-  }
 </script>
-
 </body>
 </html>
