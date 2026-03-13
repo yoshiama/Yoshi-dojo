@@ -241,6 +241,33 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .quick-btn { background: none; border: 1px solid var(--mist); font-family: 'Noto Serif JP', serif; font-size: 10px; letter-spacing: 0.1em; color: #666; padding: 4px 10px; cursor: pointer; border-radius: 20px; white-space: nowrap; transition: all 0.2s; }
 .quick-btn:hover { border-color: var(--gold); color: var(--gold); }
 
+
+/* TANDEN INFO */
+.tanden-info-btn { background: var(--gold); color: var(--ink); border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+.tanden-info-btn:hover { background: #e0be5a; transform: scale(1.1); }
+
+.tanden-overlay { display: none; position: fixed; inset: 0; background: rgba(26,22,18,0.92); z-index: 800; align-items: center; justify-content: center; padding: 20px; }
+.tanden-overlay.show { display: flex; }
+.tanden-card { background: var(--paper); max-width: 420px; width: 100%; border-radius: 4px; overflow: hidden; animation: quoteAppear 0.5s ease; max-height: 90vh; overflow-y: auto; }
+.tanden-top { background: linear-gradient(135deg, var(--ink), #3a2e28); padding: 20px 24px; text-align: center; position: relative; overflow: hidden; }
+.tanden-top::before { content: '丹'; position: absolute; right: -10px; top: -15px; font-family: "Zen Antique", serif; font-size: 100px; color: rgba(255,255,255,0.04); }
+.tanden-top-label { font-size: 9px; letter-spacing: 0.6em; color: var(--gold); margin-bottom: 8px; }
+.tanden-top-title { font-family: "Zen Antique", serif; font-size: 28px; color: var(--gold); letter-spacing: 0.3em; }
+.tanden-top-sub { font-size: 12px; color: rgba(245,240,232,0.6); letter-spacing: 0.15em; margin-top: 6px; }
+.tanden-body { padding: 20px 24px; }
+.tanden-figure { margin: 0 auto 20px; max-width: 260px; }
+.tanden-desc { font-size: 13px; color: #555; line-height: 1.9; letter-spacing: 0.05em; margin-bottom: 14px; }
+.tanden-points { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.tanden-point { display: flex; align-items: flex-start; gap: 12px; background: rgba(201,168,76,0.06); border-left: 2px solid var(--gold); padding: 10px 14px; border-radius: 0 2px 2px 0; }
+.tanden-point-icon { font-size: 20px; flex-shrink: 0; }
+.tanden-point-text { font-size: 13px; color: var(--ink); line-height: 1.7; letter-spacing: 0.03em; }
+.tanden-point-title { font-size: 11px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 2px; }
+.tanden-practice { background: linear-gradient(135deg, rgba(42,107,124,0.08), rgba(201,168,76,0.05)); border: 1px solid rgba(42,107,124,0.2); border-radius: 2px; padding: 14px 16px; margin-bottom: 16px; }
+.tanden-practice-title { font-size: 10px; letter-spacing: 0.4em; color: var(--teal); margin-bottom: 8px; }
+.tanden-practice-steps { font-size: 13px; color: #555; line-height: 2; letter-spacing: 0.03em; }
+.tanden-close-btn { width: 100%; background: var(--ink); color: var(--paper); border: none; font-family: "Noto Serif JP", serif; font-size: 13px; letter-spacing: 0.3em; padding: 14px; cursor: pointer; transition: background 0.2s; }
+.tanden-close-btn:hover { background: var(--deep); }
+
 /* LANG GUIDE OVERLAY */
 .lang-guide-overlay { display: none; position: fixed; inset: 0; background: rgba(26,22,18,0.92); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
 .lang-guide-overlay.show { display: flex; }
@@ -439,7 +466,13 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 <section class="section" id="body">
   <div class="body-section-title" id="bodyTitle">身 体 感 覚 チェック</div>
   <div class="body-check-item">
-    <div class="body-check-header"><div class="body-check-name" id="body-name-1">丹田</div><div class="body-check-kanji">丹</div></div>
+    <div class="body-check-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="body-check-name" id="body-name-1">丹田</div>
+        <button class="tanden-info-btn" onclick="showTandenInfo()" id="tandenInfoBtn" title="丹田とは？">？</button>
+      </div>
+      <div class="body-check-kanji">丹</div>
+    </div>
     <div class="body-check-desc" id="body-desc-1">へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？</div>
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
     <div class="level-labels"><span id="body-low-1">感じない</span><span id="body-high-1">強く感じる</span></div>
@@ -589,6 +622,85 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     </div>
   </div>
 </section>
+
+<!-- Tanden Info Overlay -->
+<div class="tanden-overlay" id="tandenOverlay" onclick="closeTandenInfo(event)">
+  <div class="tanden-card" id="tandenCard">
+    <div class="tanden-top">
+      <div class="tanden-top-label" id="tandenLabel">丹田とは</div>
+      <div class="tanden-top-title">丹　田</div>
+      <div class="tanden-top-sub" id="tandenSub">Tanden · Dan Tian · 丹田</div>
+    </div>
+    <div class="tanden-body">
+
+      <!-- SVG Figure -->
+      <div class="tanden-figure">
+        <svg viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Body silhouette -->
+          <ellipse cx="130" cy="52" rx="34" ry="38" fill="#e8e0d0" stroke="#c5bdb0" stroke-width="1.5"/>
+          <rect x="88" y="85" width="84" height="110" rx="12" fill="#e8e0d0" stroke="#c5bdb0" stroke-width="1.5"/>
+          <!-- Arms -->
+          <rect x="58" y="88" width="30" height="80" rx="12" fill="#e8e0d0" stroke="#c5bdb0" stroke-width="1.5"/>
+          <rect x="172" y="88" width="30" height="80" rx="12" fill="#e8e0d0" stroke="#c5bdb0" stroke-width="1.5"/>
+          <!-- Legs -->
+          <rect x="90" y="192" width="32" height="100" rx="12" fill="#e8e0d0" stroke="#c5bdb0" stroke-width="1.5"/>
+          <rect x="138" y="192" width="32" height="100" rx="12" fill="#e8e0d0" stroke="#c5bdb0" stroke-width="1.5"/>
+          <!-- Navel marker -->
+          <circle cx="130" cy="158" r="4" fill="#c9a84c" opacity="0.6"/>
+          <!-- Tanden area glow -->
+          <ellipse cx="130" cy="178" rx="22" ry="16" fill="rgba(201,168,76,0.25)" stroke="var(--gold,#c9a84c)" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <!-- Tanden center dot -->
+          <circle cx="130" cy="178" r="6" fill="#c9a84c"/>
+          <!-- Leader line -->
+          <line x1="152" y1="178" x2="198" y2="178" stroke="#c9a84c" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="202" y="174" font-family="serif" font-size="11" fill="#c9a84c" font-weight="600">丹田</text>
+          <text x="202" y="187" font-family="sans-serif" font-size="9" fill="#888">Tanden</text>
+          <!-- Navel line -->
+          <line x1="134" y1="158" x2="195" y2="140" stroke="#aaa" stroke-width="0.8" stroke-dasharray="2,2"/>
+          <text x="197" y="138" font-family="sans-serif" font-size="9" fill="#aaa" id="navelLabel">へそ</text>
+          <!-- 3cm annotation -->
+          <line x1="118" y1="160" x2="118" y2="176" stroke="#c9a84c" stroke-width="1"/>
+          <line x1="114" y1="160" x2="122" y2="160" stroke="#c9a84c" stroke-width="1"/>
+          <line x1="114" y1="176" x2="122" y2="176" stroke="#c9a84c" stroke-width="1"/>
+          <text x="100" y="170" font-family="sans-serif" font-size="9" fill="#c9a84c" id="cmLabel">3cm</text>
+        </svg>
+      </div>
+
+      <div class="tanden-desc" id="tandenDesc"></div>
+
+      <div class="tanden-points">
+        <div class="tanden-point">
+          <div class="tanden-point-icon">📍</div>
+          <div>
+            <div class="tanden-point-title" id="tandenPoint1Title">場所</div>
+            <div class="tanden-point-text" id="tandenPoint1Text">へそから3センチ下、お腹の奥深くにあるエネルギーの中心点</div>
+          </div>
+        </div>
+        <div class="tanden-point">
+          <div class="tanden-point-icon">⚡</div>
+          <div>
+            <div class="tanden-point-title" id="tandenPoint2Title">役割</div>
+            <div class="tanden-point-text" id="tandenPoint2Text">気（生命エネルギー）が集まり、全身に広がる源。心身の安定と活力の中心</div>
+          </div>
+        </div>
+        <div class="tanden-point">
+          <div class="tanden-point-icon">🌍</div>
+          <div>
+            <div class="tanden-point-title" id="tandenPoint3Title">世界の共通概念</div>
+            <div class="tanden-point-text" id="tandenPoint3Text">日本：丹田 / 中国：丹田（Dan Tian）/ インド：第2チャクラ / スペイン語圏：centro vital</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tanden-practice">
+        <div class="tanden-practice-title" id="tandenPracticeTitle">今すぐ試す</div>
+        <div class="tanden-practice-steps" id="tandenPracticeSteps"></div>
+      </div>
+
+      <button class="tanden-close-btn" id="tandenCloseBtn" onclick="closeTandenInfo(null)">閉じる 🙏</button>
+    </div>
+  </div>
+</div>
 
 <!-- Video Player Overlay -->
 <div class="video-overlay" id="videoOverlay">
@@ -1406,6 +1518,81 @@ function updateBodyCheckLang() {
     if (el('body-high-' + n)) el('body-high-' + n).textContent = item.high;
   });
 }
+
+// ===== TANDEN INFO =====
+const tandenContent = {
+  ja: {
+    label: '丹田とは',
+    sub: 'Tanden · Dan Tian · 丹田',
+    desc: '丹田は東洋医学・武道・指圧において最も重要な身体の中心点です。ここに意識を置くだけで、心が落ち着き、地に足がついた感覚が生まれます。Yoshiが20年間の施術で最も重視してきた場所です。',
+    point1Title: '📍 場所',
+    point1Text: 'へそから約3センチ下、お腹の奥深く。手をお腹に当てると感じやすい。',
+    point2Title: '⚡ 役割',
+    point2Text: '気（生命エネルギー）が集まり、全身に広がる源。ここが充実すると心身が安定し、自然な活力が湧いてくる。',
+    point3Title: '🌍 世界の共通概念',
+    point3Text: '日本：丹田 ／ 中国：丹田（Dan Tian）／ インド：第2・3チャクラ ／ スペイン：centro vital（生命の中心）',
+    practiceTitle: '🌿 今すぐ試す',
+    practiceSteps: '① へそ下3センチに手を当てる｜② 鼻からゆっくり息を吸う｜③ 息と共にお腹が膨らむのを感じる｜④ ゆっくり吐きながら、手の温かさを感じる｜⑤ そこに「気」が集まるイメージを持つ',
+    navelLabel: 'へそ',
+    closeBtn: '閉じる 🙏',
+  },
+  es: {
+    label: '¿Qué es el Tanden?',
+    sub: 'Tanden · Dan Tian · 丹田',
+    desc: 'El Tanden es el centro energético más importante del cuerpo en la medicina oriental, las artes marciales y el shiatsu. Solo con llevar la consciencia aquí, la mente se calma y el cuerpo encuentra estabilidad. Es el punto que Yoshi más trabaja en sus 20 años de práctica.',
+    point1Title: '📍 Ubicación',
+    point1Text: 'Aproximadamente 3 cm por debajo del ombligo, en la profundidad del abdomen. Puedes sentirlo poniendo la mano en el vientre.',
+    point2Title: '⚡ Función',
+    point2Text: 'Es la fuente donde se acumula el Ki (energía vital) y desde donde se distribuye por todo el cuerpo. Cuando está pleno, la mente y el cuerpo se estabilizan y surge la vitalidad natural.',
+    point3Title: '🌍 Concepto universal',
+    point3Text: 'Japón: Tanden ／ China: Dan Tian ／ India: 2.º y 3.º Chakra ／ Occidente: centro vital o centro de gravedad',
+    practiceTitle: '🌿 Pruébalo ahora',
+    practiceSteps: '① Pon la mano 3 cm bajo el ombligo｜② Inhala lentamente por la nariz｜③ Siente cómo el abdomen se expande｜④ Al exhalar, siente el calor de tu mano｜⑤ Imagina el Ki acumulándose allí',
+    navelLabel: 'Ombligo',
+    closeBtn: 'Cerrar 🙏',
+  },
+  en: {
+    label: 'What is the Tanden?',
+    sub: 'Tanden · Dan Tian · 丹田',
+    desc: 'The Tanden is the most important energy center in the body according to Eastern medicine, martial arts, and shiatsu. Simply bringing awareness here calms the mind and grounds the body. It is the point Yoshi has focused on most throughout his 20 years of practice.',
+    point1Title: '📍 Location',
+    point1Text: 'Approximately 3cm below your navel, deep inside the abdomen. You can sense it by placing your hand on your lower belly.',
+    point2Title: '⚡ Function',
+    point2Text: 'This is where Ki (life energy) gathers and spreads throughout the body. When it is full, the mind and body stabilize naturally and vitality arises on its own.',
+    point3Title: '🌍 Universal concept',
+    point3Text: 'Japan: Tanden ／ China: Dan Tian ／ India: 2nd & 3rd Chakra ／ Western: center of gravity / vital center',
+    practiceTitle: '🌿 Try it now',
+    practiceSteps: '① Place your hand 3cm below your navel｜② Inhale slowly through your nose｜③ Feel your belly expand with the breath｜④ As you exhale, feel the warmth of your hand｜⑤ Visualize Ki gathering in that spot',
+    navelLabel: 'Navel',
+    closeBtn: 'Close 🙏',
+  }
+};
+
+function showTandenInfo() {
+  const c = tandenContent[currentLang] || tandenContent.en;
+  const el = (id) => document.getElementById(id);
+  el('tandenLabel').textContent = c.label;
+  el('tandenSub').textContent = c.sub;
+  el('tandenDesc').textContent = c.desc;
+  el('tandenPoint1Title').textContent = c.point1Title;
+  el('tandenPoint1Text').textContent = c.point1Text;
+  el('tandenPoint2Title').textContent = c.point2Title;
+  el('tandenPoint2Text').textContent = c.point2Text;
+  el('tandenPoint3Title').textContent = c.point3Title;
+  el('tandenPoint3Text').textContent = c.point3Text;
+  el('tandenPracticeTitle').textContent = c.practiceTitle;
+  el('tandenPracticeSteps').innerHTML = c.practiceSteps.split('｜').map(s => '<div style="padding:3px 0;border-bottom:1px solid rgba(0,0,0,0.05)">' + s + '</div>').join('');
+  el('navelLabel').textContent = c.navelLabel;
+  el('tandenCloseBtn').textContent = c.closeBtn;
+  el('tandenOverlay').classList.add('show');
+}
+
+function closeTandenInfo(event) {
+  if (event === null || event.target === document.getElementById('tandenOverlay')) {
+    document.getElementById('tandenOverlay').classList.remove('show');
+  }
+}
+
 </script>
 </body>
 </html>
