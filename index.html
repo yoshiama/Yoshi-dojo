@@ -241,6 +241,21 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .quick-btn { background: none; border: 1px solid var(--mist); font-family: 'Noto Serif JP', serif; font-size: 10px; letter-spacing: 0.1em; color: #666; padding: 4px 10px; cursor: pointer; border-radius: 20px; white-space: nowrap; transition: all 0.2s; }
 .quick-btn:hover { border-color: var(--gold); color: var(--gold); }
 
+/* LANG GUIDE OVERLAY */
+.lang-guide-overlay { display: none; position: fixed; inset: 0; background: rgba(26,22,18,0.92); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
+.lang-guide-overlay.show { display: flex; }
+.lang-guide-card { background: var(--paper); max-width: 400px; width: 100%; border-radius: 4px; overflow: hidden; animation: quoteAppear 0.5s ease; }
+.lang-guide-top { background: linear-gradient(135deg, var(--ink), #3a2e28); padding: 20px 24px; }
+.lang-guide-title { font-family: "Zen Antique", serif; font-size: 16px; color: var(--gold); letter-spacing: 0.1em; line-height: 1.5; }
+.lang-guide-body { padding: 20px 24px; }
+.lang-guide-intro { font-size: 13px; color: #555; line-height: 1.9; letter-spacing: 0.05em; margin-bottom: 16px; padding: 12px 14px; background: rgba(201,168,76,0.07); border-left: 2px solid var(--gold); }
+.lg-step { font-size: 13px; color: var(--ink); line-height: 1.8; padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.06); letter-spacing: 0.04em; }
+.lg-step:last-child { border-bottom: none; }
+.lg-btn { width: 100%; background: var(--gold); color: var(--ink); border: none; font-family: "Noto Serif JP", serif; font-size: 13px; letter-spacing: 0.2em; padding: 14px; cursor: pointer; border-radius: 1px; margin-top: 16px; font-weight: 700; transition: background 0.2s; }
+.lg-btn:hover { background: #e0be5a; }
+.lg-skip { width: 100%; background: none; border: 1px solid var(--mist); color: #888; font-family: "Noto Serif JP", serif; font-size: 12px; letter-spacing: 0.2em; padding: 10px; cursor: pointer; border-radius: 1px; margin-top: 8px; transition: all 0.2s; }
+.lg-skip:hover { border-color: var(--ink); color: var(--ink); }
+
 /* FOOTER */
 .footer-seal { text-align: center; padding: 30px; color: var(--mist); font-size: 11px; letter-spacing: 0.4em; margin-bottom: 80px; }
 .seal { display: inline-block; width: 40px; height: 40px; border: 2px solid var(--mist); border-radius: 50%; line-height: 36px; font-family: 'Zen Antique', serif; font-size: 16px; color: var(--red); margin-bottom: 8px; }
@@ -534,7 +549,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="clinic-info-item"><span class="clinic-info-icon">🕐</span><span>月〜金 10:00–21:00<br>土 10:00–14:00 / 日 休</span></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">📞</span><span>606 054 229（WhatsApp可）</span></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">🎙</span><a href="https://podcasts.apple.com/es/podcast/id1659916913" target="_blank" style="color:var(--teal);text-decoration:none">Yoshiの聞く(効く)チャンネル · 292話</a></div>
-      <div class="clinic-info-item"><span class="clinic-info-icon">📺</span><a href="https://www.youtube.com/@yoshishiatsu" target="_blank" style="color:var(--teal);text-decoration:none">YouTube: Yoshi clínica de Seitai shiatsu</a></div>
+      <div class="clinic-info-item"><span class="clinic-info-icon">📺</span><a href="https://youtu.be/MJdYrTwRizo?si=1Y7Gjsc_oOIYqcl2" target="_blank" style="color:var(--teal);text-decoration:none">YouTube: Yoshi clínica de Seitai shiatsu</a></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">📸</span><a href="https://www.instagram.com/yoshishiatsu" target="_blank" style="color:var(--teal);text-decoration:none">Instagram: @yoshishiatsu</a></div>
     </div>
     <div class="zen-divider">縁</div>
@@ -547,6 +562,21 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     </div>
   </div>
 </section>
+
+<!-- Lang Guide Overlay -->
+<div class="lang-guide-overlay" id="langGuideOverlay">
+  <div class="lang-guide-card">
+    <div class="lang-guide-top">
+      <div class="lang-guide-title" id="lgTitle">🎬 YouTube 字幕・翻訳の設定方法</div>
+    </div>
+    <div class="lang-guide-body">
+      <div class="lang-guide-intro" id="lgIntro"></div>
+      <div id="lgSteps"></div>
+      <button class="lg-btn" id="lgBtn" onclick="closeLangGuide(true)">設定方法を確認した。動画を見る →</button>
+      <button class="lg-skip" id="lgSkip" onclick="closeLangGuide(true)">スキップして動画へ</button>
+    </div>
+  </div>
+</div>
 
 <!-- Footer -->
 <div class="footer-seal">
@@ -674,6 +704,7 @@ function setLang(lang) {
   document.getElementById('yoshiInput').placeholder = t.yoshiPlaceholder;
   document.getElementById('reminderText').textContent = t.reminderMsg;
   updateScore(); updateStreakDisplay();
+  updateLangGuideContent();
 }
 
 // ===== DATE & STREAK =====
@@ -887,13 +918,67 @@ function updateScore() {
 }
 
 function openSamuraiVideo() {
-  window.open('https://www.youtube.com/@yoshishiatsu', '_blank');
+  const langKey = 'yoshiSamuraiLangSet';
+  const alreadySet = localStorage.getItem(langKey);
+  if (alreadySet) {
+    launchSamuraiVideo();
+  } else {
+    showLangGuide();
+  }
+}
+
+function launchSamuraiVideo() {
+  window.open('https://youtu.be/MJdYrTwRizo?si=1Y7Gjsc_oOIYqcl2', '_blank');
   setTimeout(() => {
     bodyScoreBonus = 10; updateScore();
     const badge = document.getElementById('scoreUpBadge');
     badge.classList.add('show');
     setTimeout(() => badge.classList.remove('show'), 3000);
-  }, 2000);
+  }, 1500);
+}
+
+function showLangGuide() {
+  document.getElementById('langGuideOverlay').classList.add('show');
+}
+
+function closeLangGuide(goToVideo) {
+  document.getElementById('langGuideOverlay').classList.remove('show');
+  if (goToVideo) {
+    localStorage.setItem('yoshiSamuraiLangSet', '1');
+    launchSamuraiVideo();
+  }
+}
+
+function updateLangGuideContent() {
+  var guides = {
+    ja: {
+      title: 'YouTube 字幕・翻訳の設定方法',
+      intro: 'この動画は日本語ですが、YouTubeの自動翻訳機能を使えばあなたの言語で字幕を表示できます。初回だけ設定してください。次回からは直接動画へ移動します。',
+      steps: ['① 動画が開いたら、右下の「設定」ボタンをタップ','② 「字幕」を選ぶ','③ 「自動翻訳」を選ぶ','④ 「日本語」を選ぶ（そのままOK）','完了 次回からは自動で表示されます'],
+      btn: '設定方法を確認した。動画を見る',
+      skip: 'スキップして動画へ'
+    },
+    es: {
+      title: 'Como activar subtitulos en espanol',
+      intro: 'Este video esta en japones, pero puedes ver subtitulos en espanol usando la traduccion automatica de YouTube. Solo necesitas configurarlo una vez.',
+      steps: ['① Abre el video y toca el icono Configuracion abajo a la derecha','② Selecciona Subtitulos','③ Selecciona Traduccion automatica','④ Busca y selecciona Espanol','OK La proxima vez se mostrara automaticamente'],
+      btn: 'Entendido. Ver el video',
+      skip: 'Saltar al video'
+    },
+    en: {
+      title: 'How to enable English subtitles',
+      intro: 'This video is in Japanese, but you can watch it with English subtitles using YouTube auto-translate. You only need to set this up once.',
+      steps: ['① Open the video and tap the Settings icon at the bottom right','② Select Subtitles/CC','③ Select Auto-translate','④ Find and select English','Done! Next time it will show automatically'],
+      btn: 'Got it. Watch the video',
+      skip: 'Skip to video'
+    }
+  };
+  var g = guides[currentLang] || guides.en;
+  document.getElementById('lgTitle').textContent = g.title;
+  document.getElementById('lgIntro').textContent = g.intro;
+  document.getElementById('lgSteps').innerHTML = g.steps.map(function(s){ return '<div class="lg-step">' + s + '</div>'; }).join('');
+  document.getElementById('lgBtn').textContent = g.btn;
+  document.getElementById('lgSkip').textContent = g.skip;
 }
 
 function openBooking() { window.open('https://iframe-13864.nearcut.com', '_blank'); }
@@ -1017,6 +1102,7 @@ function closeQuote() {
   document.getElementById('dailyQuoteOverlay').classList.remove('show');
   localStorage.setItem('yoshiQuoteDate', new Date().toDateString());
 }
+updateLangGuideContent();
 setTimeout(showDailyQuote, 800);
 
 // ===== ZEN BGM ENGINE =====
