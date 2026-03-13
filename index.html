@@ -256,6 +256,30 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .lg-skip { width: 100%; background: none; border: 1px solid var(--mist); color: #888; font-family: "Noto Serif JP", serif; font-size: 12px; letter-spacing: 0.2em; padding: 10px; cursor: pointer; border-radius: 1px; margin-top: 8px; transition: all 0.2s; }
 .lg-skip:hover { border-color: var(--ink); color: var(--ink); }
 
+
+/* VIDEO PLAYER OVERLAY */
+.video-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 700; flex-direction: column; }
+.video-overlay.show { display: flex; }
+.video-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--ink); flex-shrink: 0; }
+.video-close { background: none; border: none; color: var(--gold); font-size: 22px; cursor: pointer; padding: 4px 8px; }
+.video-title-bar { color: var(--paper); font-family: "Noto Serif JP", serif; font-size: 13px; letter-spacing: 0.1em; flex: 1; }
+.video-frame-wrap { flex: 1; position: relative; background: #000; }
+.video-frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+/* VIDEO LIST */
+.video-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.video-card { display: flex; gap: 12px; align-items: center; background: rgba(255,255,255,0.5); border: 1px solid var(--mist); border-radius: 3px; padding: 10px 12px; cursor: pointer; transition: all 0.2s; }
+.video-card:hover { border-color: var(--gold); transform: translateY(-1px); }
+.video-thumb { position: relative; width: 100px; height: 56px; border-radius: 2px; overflow: hidden; flex-shrink: 0; background: var(--ink); }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.video-thumb-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); }
+.video-thumb-play span { font-size: 20px; }
+.video-card-info { flex: 1; }
+.video-card-num { font-size: 9px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 2px; }
+.video-card-title { font-size: 13px; color: var(--ink); line-height: 1.5; letter-spacing: 0.05em; }
+.video-card-title-sub { font-size: 11px; color: #888; margin-top: 2px; letter-spacing: 0.05em; }
+.video-section-title { font-size: 10px; letter-spacing: 0.5em; color: var(--gold); text-align: center; margin: 24px 0 4px; }
+
 /* FOOTER */
 .footer-seal { text-align: center; padding: 30px; color: var(--mist); font-size: 11px; letter-spacing: 0.4em; margin-bottom: 80px; }
 .seal { display: inline-block; width: 40px; height: 40px; border: 2px solid var(--mist); border-radius: 50%; line-height: 36px; font-family: 'Zen Antique', serif; font-size: 16px; color: var(--red); margin-bottom: 8px; }
@@ -449,6 +473,9 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <button class="samurai-btn" onclick="openSamuraiVideo()">▶ 動画を見てスコアアップ</button>
     <div class="score-up-badge" id="scoreUpBadge">🎉 ＋10 気スコアアップ！</div>
   </div>
+
+  <div class="video-section-title" id="videoListTitle">⚡ SAMURAI RESET · 動画一覧</div>
+  <div class="video-list" id="samuraiVideoList"></div>
 </section>
 
 <!-- PREMIUM CONTENT -->
@@ -563,6 +590,17 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   </div>
 </section>
 
+<!-- Video Player Overlay -->
+<div class="video-overlay" id="videoOverlay">
+  <div class="video-header">
+    <button class="video-close" onclick="closeVideo()">✕</button>
+    <div class="video-title-bar" id="videoTitleBar"></div>
+  </div>
+  <div class="video-frame-wrap">
+    <iframe id="videoFrame" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+  </div>
+</div>
+
 <!-- Lang Guide Overlay -->
 <div class="lang-guide-overlay" id="langGuideOverlay">
   <div class="lang-guide-card">
@@ -609,6 +647,64 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 </div>
 
 <script>
+// ===== SAMURAI RESET VIDEO LIST =====
+const samuraiVideos = [
+  { id: 'MJdYrTwRizo', ja: 'サムライリセット とは', es: 'Qué es el Samurai Reset', en: 'What is Samurai Reset' },
+  { id: 'udnT_eKAHKE', ja: 'サムライリセット 概要', es: 'Descripción general', en: 'Overview' },
+  { id: 'skuQ_-udIrc', ja: 'ゼロポジション', es: 'Posición cero', en: 'Zero Position' },
+  { id: 'rii9Pp9r4gU', ja: 'バナナストレッチ', es: 'Estiramiento plátano', en: 'Banana Stretch' },
+  { id: 'eaCjAaU9A0g', ja: '松の木ストレッチ', es: 'Estiramiento pino', en: 'Pine Tree Stretch' },
+  { id: 'jnVkUgoAqXo', ja: '飛び込みポーズストレッチ', es: 'Estiramiento salto', en: 'Dive Pose Stretch' },
+  { id: 'f5MYfcqMJSQ', ja: 'サボテンダンス', es: 'Danza del cactus', en: 'Cactus Dance' },
+  { id: 'zysryq4DWe0', ja: '片手サボテン', es: 'Cactus de una mano', en: 'One-Hand Cactus' },
+  { id: 'eys2u7m2xYs', ja: '空を見上げる', es: 'Mirar al cielo', en: 'Looking Up at the Sky' },
+  { id: 'K8wyj1Pff_0', ja: 'お相撲ポーズストレッチ', es: 'Estiramiento sumo', en: 'Sumo Pose Stretch' },
+  { id: '4ywrNvk8zP0', ja: 'ヘビエクササイズ', es: 'Ejercicio serpiente', en: 'Snake Exercise' },
+  { id: 'K0J8hz8J0Ls', ja: 'ワニエクササイズ', es: 'Ejercicio cocodrilo', en: 'Crocodile Exercise' },
+  { id: 'A08_K2ijrY8', ja: 'トカゲエクササイズ 1', es: 'Ejercicio lagarto 1', en: 'Lizard Exercise 1' },
+  { id: 'mKQelQXpSCE', ja: 'トカゲエクササイズ 2', es: 'Ejercicio lagarto 2', en: 'Lizard Exercise 2' },
+  { id: 'CbiYcdrOvRc', ja: 'ネコエクササイズ', es: 'Ejercicio gato', en: 'Cat Exercise' },
+];
+
+function renderVideoList() {
+  const container = document.getElementById('samuraiVideoList');
+  if (!container) return;
+  const titleEl = document.getElementById('videoListTitle');
+  const titles = { ja: '⚡ SAMURAI RESET · 動画一覧', es: '⚡ SAMURAI RESET · Lista de videos', en: '⚡ SAMURAI RESET · Video List' };
+  if (titleEl) titleEl.textContent = titles[currentLang] || titles.ja;
+
+  container.innerHTML = samuraiVideos.map((v, i) => {
+    const title = currentLang === 'es' ? v.es : currentLang === 'en' ? v.en : v.ja;
+    const num = String(i + 1).padStart(2, '0');
+    return `<div class="video-card" onclick="playVideo('${v.id}', '${title.replace(/'/g, "\'")}')">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${title}" loading="lazy" onerror="this.style.display='none'">
+        <div class="video-thumb-play"><span>▶</span></div>
+      </div>
+      <div class="video-card-info">
+        <div class="video-card-num">${num}</div>
+        <div class="video-card-title">${title}</div>
+        <div class="video-card-title-sub">${v.ja !== title ? v.ja : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function playVideo(videoId, title) {
+  const alreadySet = localStorage.getItem('yoshiSamuraiLangSet');
+  document.getElementById('videoTitleBar').textContent = title;
+  document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  document.getElementById('videoOverlay').classList.add('show');
+  giveScoreBonus();
+  if (!alreadySet) {
+    localStorage.setItem('yoshiSamuraiLangSet', '1');
+  }
+}
+
+function closeVideo() {
+  document.getElementById('videoOverlay').classList.remove('show');
+  document.getElementById('videoFrame').src = '';
+}
 // ===== LANGUAGE =====
 let currentLang = 'ja';
 const translations = {
@@ -705,6 +801,7 @@ function setLang(lang) {
   document.getElementById('reminderText').textContent = t.reminderMsg;
   updateScore(); updateStreakDisplay();
   updateLangGuideContent();
+  renderVideoList();
 }
 
 // ===== DATE & STREAK =====
@@ -1099,6 +1196,7 @@ function closeQuote() {
   localStorage.setItem('yoshiQuoteDate', new Date().toDateString());
 }
 updateLangGuideContent();
+renderVideoList();
 setTimeout(showDailyQuote, 800);
 
 // ===== ZEN BGM ENGINE =====
@@ -1250,6 +1348,9 @@ function startZenDrone() {
   setTimeout(zenGong, 500);
   bgmNodes.push(master);
 }
+
+
+
 </script>
 </body>
 </html>
