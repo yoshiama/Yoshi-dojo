@@ -52,10 +52,10 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .streak-display { font-size: 11px; letter-spacing: 0.2em; color: var(--gold); margin-top: 4px; }
 
 /* NAV */
-.nav { display: flex; justify-content: center; padding: 30px 10px 0; overflow-x: auto; gap: 0; }
-.nav-btn { background: none; border: none; font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 0.1em; color: var(--mist); padding: 10px 10px; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.4s; white-space: nowrap; }
-.nav-btn.active { color: var(--ink); border-bottom: 2px solid var(--gold); }
-.nav-btn:hover { color: var(--ink); }
+.nav { display: flex; justify-content: center; padding: 24px 10px 0; overflow-x: auto; gap: 0; border-bottom: 1px solid var(--mist); background: rgba(245,240,232,0.8); }
+.nav-btn { background: none; border: none; font-family: 'Noto Serif JP', serif; font-size: 12px; letter-spacing: 0.15em; color: #888; padding: 12px 12px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; white-space: nowrap; font-weight: 500; }
+.nav-btn.active { color: var(--ink); border-bottom: 3px solid var(--gold); background: rgba(201,168,76,0.06); }
+.nav-btn:hover { color: var(--ink); background: rgba(0,0,0,0.03); }
 
 /* SECTIONS */
 .section { display: none; padding: 40px 20px; max-width: 480px; margin: 0 auto; animation: fadeIn 0.6s ease; }
@@ -133,7 +133,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .saved-note { text-align: center; font-size: 12px; letter-spacing: 0.3em; color: var(--bamboo); margin-top: 10px; opacity: 0; transition: opacity 0.5s; }
 
 /* BODY CHECK */
-.body-section-title { font-size: 11px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 16px; text-align: center; }
+.body-section-title { font-size: 12px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 16px; text-align: center; font-weight: 500; }
 .body-check-item { background: rgba(255,255,255,0.5); border: 1px solid var(--mist); border-radius: 2px; padding: 18px; margin-bottom: 12px; transition: border-color 0.3s; }
 .body-check-item:hover { border-color: var(--gold); }
 .body-check-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -437,33 +437,33 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 
 <!-- BODY CHECK -->
 <section class="section" id="body">
-  <div class="body-section-title">身 体 感 覚 チェック</div>
+  <div class="body-section-title" id="bodyTitle">身 体 感 覚 チェック</div>
   <div class="body-check-item">
-    <div class="body-check-header"><div class="body-check-name">丹田</div><div class="body-check-kanji">丹</div></div>
-    <div class="body-check-desc">へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？</div>
+    <div class="body-check-header"><div class="body-check-name" id="body-name-1">丹田</div><div class="body-check-kanji">丹</div></div>
+    <div class="body-check-desc" id="body-desc-1">へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？</div>
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
-    <div class="level-labels"><span>感じない</span><span>強く感じる</span></div>
+    <div class="level-labels"><span id="body-low-1">感じない</span><span id="body-high-1">強く感じる</span></div>
   </div>
   <div class="body-check-item">
-    <div class="body-check-header"><div class="body-check-name">呼吸</div><div class="body-check-kanji">息</div></div>
-    <div class="body-check-desc">今の呼吸は深いですか？胸ではなく、腹で呼吸できていますか？</div>
+    <div class="body-check-header"><div class="body-check-name" id="body-name-2">呼吸</div><div class="body-check-kanji">息</div></div>
+    <div class="body-check-desc" id="body-desc-2">今の呼吸は深いですか？胸ではなく、腹で呼吸できていますか？</div>
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
-    <div class="level-labels"><span>浅い</span><span>深く豊か</span></div>
+    <div class="level-labels"><span id="body-low-2">浅い</span><span id="body-high-2">深く豊か</span></div>
   </div>
   <div class="body-check-item">
-    <div class="body-check-header"><div class="body-check-name">脱力</div><div class="body-check-kanji">緩</div></div>
-    <div class="body-check-desc">肩、首、顎の力は抜けていますか？不必要な緊張はありますか？</div>
+    <div class="body-check-header"><div class="body-check-name" id="body-name-3">脱力</div><div class="body-check-kanji">緩</div></div>
+    <div class="body-check-desc" id="body-desc-3">肩、首、顎の力は抜けていますか？不必要な緊張はありますか？</div>
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
-    <div class="level-labels"><span>緊張</span><span>完全脱力</span></div>
+    <div class="level-labels"><span id="body-low-3">緊張</span><span id="body-high-3">完全脱力</span></div>
   </div>
   <div class="body-check-item">
-    <div class="body-check-header"><div class="body-check-name">気の流れ</div><div class="body-check-kanji">気</div></div>
-    <div class="body-check-desc">身体全体にエネルギーや温かさが流れているのを感じますか？</div>
+    <div class="body-check-header"><div class="body-check-name" id="body-name-4">気の流れ</div><div class="body-check-kanji">気</div></div>
+    <div class="body-check-desc" id="body-desc-4">身体全体にエネルギーや温かさが流れているのを感じますか？</div>
     <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this); updateScore()">
-    <div class="level-labels"><span>滞っている</span><span>自由に流れる</span></div>
+    <div class="level-labels"><span id="body-low-4">滞っている</span><span id="body-high-4">自由に流れる</span></div>
   </div>
   <div class="body-summary">
-    <div class="body-summary-title">今の気 スコア</div>
+    <div class="body-summary-title" id="bodySummaryTitle">今の気 スコア</div>
     <div class="body-summary-score" id="scoreDisplay">50</div>
     <div class="body-summary-label" id="scoreLabel">調和の途中</div>
   </div>
@@ -728,6 +728,15 @@ const translations = {
     streakMsg: (n) => `🔥 ${n}日連続`,
     reminderMsg: '🌿 お帰りなさい。今日も気と共に。',
     scoreLabels: ['気の滞り','調和の途中','気が満ちてきた','気が充実している'],
+    bodyCheckSectionTitle: '身 体 感 覚 チェック',
+    bodyTitle: '身 体 感 覚 チェック',
+    bodySummaryTitle: '今の気 スコア',
+    bodyItems: [
+      { name:'丹田', desc:'へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？', low:'感じない', high:'強く感じる' },
+      { name:'呼吸', desc:'今の呼吸は深いですか？胸ではなく、腹で呼吸できていますか？', low:'浅い', high:'深く豊か' },
+      { name:'脱力', desc:'肩、首、顎の力は抜けていますか？不必要な緊張はありますか？', low:'緊張', high:'完全脱力' },
+      { name:'気の流れ', desc:'身体全体にエネルギーや温かさが流れているのを感じますか？', low:'滞っている', high:'自由に流れる' },
+    ],
     prompts: ['今日、身体はどんなことを感じていますか？','今この瞬間、何に感謝できますか？','今日の丁寧な行動は何でしたか？','夢に向かう今日の一歩は何でしたか？','身体の声は何を伝えていますか？','今日、流れに乗れた瞬間はありましたか？','今、気が求めていることは何ですか？'],
   },
   es: {
@@ -750,6 +759,15 @@ const translations = {
     streakMsg: (n) => `🔥 ${n} días seguidos`,
     reminderMsg: '🌿 Bienvenido. Hoy también, con ki.',
     scoreLabels: ['Ki bloqueado','En camino','Ki fluyendo','Ki en plenitud'],
+    bodyCheckSectionTitle: 'Chequeo · Sensación Corporal',
+    bodyTitle: 'Chequeo de sensación corporal',
+    bodySummaryTitle: 'Puntuación Ki actual',
+    bodyItems: [
+      { name:'Tanden', desc:'3 cm bajo el ombligo. ¿Sientes calor o peso en esta zona?', low:'No siento', high:'Lo siento fuerte' },
+      { name:'Respiración', desc:'¿Tu respiración es profunda? ¿Respiras con el abdomen, no con el pecho?', low:'Superficial', high:'Profunda y rica' },
+      { name:'Relajación', desc:'¿Has soltado la tensión de hombros, cuello y mandíbula?', low:'Tenso', high:'Completamente relajado' },
+      { name:'Flujo de Ki', desc:'¿Sientes energía o calor fluyendo por todo tu cuerpo?', low:'Bloqueado', high:'Fluyendo libremente' },
+    ],
     prompts: ['¿Qué sensaciones tiene tu cuerpo hoy?','¿De qué puedes estar agradecido ahora?','¿Cuál fue tu acción más cuidadosa de hoy?','¿Cuál fue tu paso hacia tu sueño hoy?','¿Qué te está diciendo tu cuerpo?','¿Hubo un momento en que fluiste hoy?','¿Qué está pidiendo tu ki?'],
   },
   en: {
@@ -772,6 +790,15 @@ const translations = {
     streakMsg: (n) => `🔥 ${n} day streak`,
     reminderMsg: '🌿 Welcome back. Today also, with ki.',
     scoreLabels: ['Ki blocked','Finding balance','Ki flowing','Ki in fullness'],
+    bodyCheckSectionTitle: 'Body Sensation Check',
+    bodyTitle: 'Body Sensation Check',
+    bodySummaryTitle: 'Current Ki Score',
+    bodyItems: [
+      { name:'Tanden', desc:'3cm below the navel. Do you feel warmth or heaviness here?', low:'Cannot feel', high:'Feel strongly' },
+      { name:'Breathing', desc:'Is your breathing deep? Are you breathing with your belly, not your chest?', low:'Shallow', high:'Deep & rich' },
+      { name:'Release', desc:'Have you released tension in your shoulders, neck and jaw?', low:'Tense', high:'Fully released' },
+      { name:'Ki Flow', desc:'Do you feel energy or warmth flowing throughout your body?', low:'Blocked', high:'Flowing freely' },
+    ],
     prompts: ['What sensations is your body feeling today?','What can you be grateful for right now?','What was your most mindful action today?','What was your step toward your dream today?','What is your body telling you?','Was there a moment you were in flow today?','What is your ki asking for?'],
   }
 };
@@ -802,13 +829,22 @@ function setLang(lang) {
   updateScore(); updateStreakDisplay();
   updateLangGuideContent();
   renderVideoList();
+  updateBodyCheckLang();
+  updateDateDisplay();
 }
 
 // ===== DATE & STREAK =====
 const now = new Date();
 const today = now.toDateString();
-document.getElementById('dateDisplay').textContent = now.toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
-document.getElementById('diaryDate').textContent = now.toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+
+function updateDateDisplay() {
+  const locales = { ja: 'ja-JP', es: 'es-ES', en: 'en-US' };
+  const locale = locales[currentLang] || 'ja-JP';
+  const dateStr = now.toLocaleDateString(locale, {year:'numeric', month:'long', day:'numeric', weekday:'long'});
+  document.getElementById('dateDisplay').textContent = dateStr;
+  document.getElementById('diaryDate').textContent = dateStr;
+}
+updateDateDisplay();
 
 let visitData = JSON.parse(localStorage.getItem('yoshiVisit') || '{"lastVisit":"","streak":0}');
 const yesterday = new Date(now); yesterday.setDate(yesterday.getDate()-1);
@@ -1197,6 +1233,7 @@ function closeQuote() {
 }
 updateLangGuideContent();
 renderVideoList();
+updateBodyCheckLang();
 setTimeout(showDailyQuote, 800);
 
 // ===== ZEN BGM ENGINE =====
@@ -1351,6 +1388,24 @@ function startZenDrone() {
 
 
 
+
+function updateBodyCheckLang() {
+  const t = translations[currentLang];
+  if (!t.bodyItems) return;
+  const el = (id) => document.getElementById(id);
+  if (el('bodyTitle')) el('bodyTitle').textContent = t.bodyTitle;
+  if (el('bodySummaryTitle')) el('bodySummaryTitle').textContent = t.bodySummaryTitle;
+  // Update diary prompt
+  const dow = new Date().getDay();
+  if (el('diaryPrompt')) el('diaryPrompt').textContent = t.prompts[dow];
+  t.bodyItems.forEach((item, i) => {
+    const n = i + 1;
+    if (el('body-name-' + n)) el('body-name-' + n).textContent = item.name;
+    if (el('body-desc-' + n)) el('body-desc-' + n).textContent = item.desc;
+    if (el('body-low-' + n)) el('body-low-' + n).textContent = item.low;
+    if (el('body-high-' + n)) el('body-high-' + n).textContent = item.high;
+  });
+}
 </script>
 </body>
 </html>
