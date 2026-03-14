@@ -742,7 +742,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div><div class="yoshi-name">ミニ Yoshi</div><div class="yoshi-status" id="yoshiStatus">Yoshi哲学エンジン · 無料版</div></div>
     <button class="yoshi-close-btn" onclick="toggleYoshi()">×</button>
   </div>
-  <div class="yoshi-disclaimer" id="yoshiDisclaimer">🌿 私はAIです。医療診断はできません。深刻な場合は必ず医療機関へご相談ください。</div>
+  <div class="yoshi-disclaimer" id="yoshiDisclaimer">🌿 私はAIです。医療診断はできません。深刻な場合は必ず医療機関へご相談ください。金色ボタンでClaudeと深く話せます。</div>
   <div class="yoshi-messages" id="yoshiMessages">
     <div class="msg yoshi" id="yoshiWelcome">こんにちは！ミニYoshiです😊 身体・気・人生のこと何でも聞いてください。深く話したい時は返答の下の金色ボタンでClaudeと直接話せます🌿🙏</div>
   </div>
@@ -1379,7 +1379,7 @@ async function sendYoshi() {
 
 function getYoshiSystemPrompt() {
   const lang = currentLang === 'ja' ? '日本語' : currentLang === 'es' ? 'スペイン語' : '英語';
-  return 'あなたはミニYoshi（中井常義）です。早稲田大学人間科学部スポーツ医学専攻、北京中医薬大学、ピッツバーグ大学で解剖実習。マドリード在住21年の整体指圧師。野口晴哉、甲野善紀、鈴木大拙、エックハルト・トール、苫米地英人、ルータイス、斎藤一人、小林正観、マーフィー、テスラの哲学に精通。大阪人のユーモアと日本人の丁寧さとラテンの温かさで' + lang + 'で答える。身体感覚・丹田・気・今に生きることが核心。医療診断不可。プライベートな質問はwww.shiatsuyoshi.comへ誘導。3〜5文で温かく具体的に答える。';
+  return 'あなたはミニYoshi（中井経賀）です。早稲田大学人間科学部スポーツ医学専攻、北京中医薬大学、ピッツバーグ大学で解剖実習。マドリード在住21年の整体指圧師。野口晴哉、甲野善紀、鈴木大拙、エックハルト・トール、苫米地英人、ルータイス、斎藤一人、小林正観、マーフィー、テスラの哲学に精通。大阪人のユーモアと日本人の丁寧さとラテンの温かさで' + lang + 'で答える。身体感覚・丹田・気・今に生きることが核心。医療診断不可。プライベートな質問はwww.shiatsuyoshi.comへ誘導。3〜5文で温かく具体的に答える。';
 }
 
 function addDeepTalkBtn(question) {
@@ -1394,14 +1394,20 @@ function addDeepTalkBtn(question) {
   const label = labels[currentLang] || labels.ja;
   const div = document.createElement('div');
   div.style.cssText = 'text-align:center;margin:4px 0 8px;';
-  div.innerHTML = '<a href="' + url + '" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#c9a84c,#e0be5a);color:#1a1612;font-family:Noto Serif JP,serif;font-size:11px;letter-spacing:0.2em;padding:8px 18px;border-radius:20px;text-decoration:none;font-weight:700;">🌿 ' + label + '</a>';
+  const warnings = {
+    ja: '※警告が出ますが安全です。そのまま送信してください',
+    es: '※Aparece una advertencia pero es seguro. Pulsa enviar.',
+    en: '※A warning appears but it is safe. Just press send.'
+  };
+  const warning = warnings[currentLang] || warnings.ja;
+  div.innerHTML = '<a href="' + url + '" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#c9a84c,#e0be5a);color:#1a1612;font-family:Noto Serif JP,serif;font-size:11px;letter-spacing:0.2em;padding:8px 18px;border-radius:20px;text-decoration:none;font-weight:700;">🌿 ' + label + '</a><div style="font-size:10px;color:#aaa;letter-spacing:0.05em;margin-top:4px;text-align:center;">' + warning + '</div>';
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
 function getDeepTalkPrompt(question) {
   const intro = {
-    ja: 'あなたはYoshi（中井常義）です。マドリードの整体指圧師。野口晴哉・甲野善紀・エックハルトトール・苫米地英人・斎藤一人の哲学に精通。大阪人のユーモアで丁寧に答えてください。質問：',
+    ja: 'あなたはYoshi（中井経賀）です。マドリードの整体指圧師。野口晴哉・甲野善紀・エックハルトトール・苫米地英人・斎藤一人の哲学に精通。大阪人のユーモアで丁寧に答えてください。質問：',
     es: 'Eres Yoshi (Tsuneyoshi Nakai), terapeuta de shiatsu y seitai en Madrid. Responde con la filosofia de Yoshi, con humor y calidez. Pregunta: ',
     en: 'You are Yoshi (Tsuneyoshi Nakai), shiatsu and seitai therapist in Madrid. Answer with Yoshi philosophy, warmth and humor. Question: '
   };
