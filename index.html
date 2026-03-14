@@ -1425,6 +1425,292 @@ function addMsg(text, type) {
   return div;
 }
 
+
+function updateBodyCheckLang() {
+  const t = translations[currentLang];
+  if (!t.bodyItems) return;
+  const el = (id) => document.getElementById(id);
+  if (el('bodyTitle')) el('bodyTitle').textContent = t.bodyTitle;
+  if (el('bodySummaryTitle')) el('bodySummaryTitle').textContent = t.bodySummaryTitle;
+  const dow = new Date().getDay();
+  if (el('diaryPrompt')) el('diaryPrompt').textContent = t.prompts[dow];
+  t.bodyItems.forEach((item, i) => {
+    const n = i + 1;
+    if (el('body-name-' + n)) el('body-name-' + n).textContent = item.name;
+    if (el('body-desc-' + n)) el('body-desc-' + n).textContent = item.desc;
+    if (el('body-low-' + n)) el('body-low-' + n).textContent = item.low;
+    if (el('body-high-' + n)) el('body-high-' + n).textContent = item.high;
+  });
+  // Update samurai desc
+  if (el('samuraiDesc')) el('samuraiDesc').textContent = t.samuraiDesc;
+  // Update score labels
+  updateScore();
+}
+
+const tandenContent = {
+  ja: {
+    label: '丹田とは',
+    sub: 'Tanden · Dan Tian · 丹田',
+    desc: '丹田は東洋医学・武道・指圧において最も重要な身体の中心点です。ここに意識を置くだけで、心が落ち着き、地に足がついた感覚が生まれます。Yoshiが20年間の施術で最も重視してきた場所です。',
+    point1Title: '場所',
+    point1Text: 'へそから約3センチ下、お腹の奥深く。手をお腹に当てると感じやすい。',
+    point2Title: '役割',
+    point2Text: '気（生命エネルギー）が集まり、全身に広がる源。ここが充実すると心身が安定し、自然な活力が湧いてくる。',
+    point3Title: '世界の共通概念',
+    point3Text: '日本：丹田 / 中国：Dan Tian / インド：第2・3チャクラ / スペイン：centro vital',
+    practiceTitle: '今すぐ試す',
+    practiceSteps: 'へそ下3センチに手を当てる|鼻からゆっくり息を吸う|息と共にお腹が膨らむのを感じる|ゆっくり吐きながら、手の温かさを感じる|そこに気が集まるイメージを持つ',
+    navelLabel: 'へそ',
+    closeBtn: '閉じる'
+  },
+  es: {
+    label: 'Que es el Tanden',
+    sub: 'Tanden · Dan Tian · 丹田',
+    desc: 'El Tanden es el centro energetico mas importante del cuerpo en la medicina oriental, las artes marciales y el shiatsu. Solo con llevar la consciencia aqui, la mente se calma y el cuerpo encuentra estabilidad. Es el punto que Yoshi mas trabaja en sus 20 anos de practica.',
+    point1Title: 'Ubicacion',
+    point1Text: 'Aproximadamente 3 cm por debajo del ombligo, en la profundidad del abdomen.',
+    point2Title: 'Funcion',
+    point2Text: 'Es la fuente donde se acumula el Ki y desde donde se distribuye por todo el cuerpo. Cuando esta pleno, la mente y el cuerpo se estabilizan.',
+    point3Title: 'Concepto universal',
+    point3Text: 'Japon: Tanden / China: Dan Tian / India: 2 y 3 Chakra / Occidente: centro vital',
+    practiceTitle: 'Pruebalo ahora',
+    practiceSteps: 'Pon la mano 3 cm bajo el ombligo|Inhala lentamente por la nariz|Siente como el abdomen se expande|Al exhalar, siente el calor de tu mano|Imagina el Ki acumulandose alli',
+    navelLabel: 'Ombligo',
+    closeBtn: 'Cerrar'
+  },
+  en: {
+    label: 'What is the Tanden',
+    sub: 'Tanden · Dan Tian · 丹田',
+    desc: 'The Tanden is the most important energy center in the body according to Eastern medicine, martial arts, and shiatsu. Simply bringing awareness here calms the mind and grounds the body. It is the point Yoshi has focused on most throughout 20 years of practice.',
+    point1Title: 'Location',
+    point1Text: 'Approximately 3cm below your navel, deep inside the abdomen. You can sense it by placing your hand on your lower belly.',
+    point2Title: 'Function',
+    point2Text: 'This is where Ki gathers and spreads throughout the body. When it is full, the mind and body stabilize naturally.',
+    point3Title: 'Universal concept',
+    point3Text: 'Japan: Tanden / China: Dan Tian / India: 2nd and 3rd Chakra / Western: center of gravity',
+    practiceTitle: 'Try it now',
+    practiceSteps: 'Place your hand 3cm below your navel|Inhale slowly through your nose|Feel your belly expand with the breath|As you exhale, feel the warmth of your hand|Visualize Ki gathering in that spot',
+    navelLabel: 'Navel',
+    closeBtn: 'Close'
+  }
+};
+
+function showTandenInfo() {
+  const c = tandenContent[currentLang] || tandenContent.en;
+  const el = (id) => document.getElementById(id);
+  if (el('tandenLabel')) el('tandenLabel').textContent = c.label;
+  if (el('tandenSub')) el('tandenSub').textContent = c.sub;
+  if (el('tandenDesc')) el('tandenDesc').textContent = c.desc;
+  if (el('tandenPoint1Title')) el('tandenPoint1Title').textContent = c.point1Title;
+  if (el('tandenPoint1Text')) el('tandenPoint1Text').textContent = c.point1Text;
+  if (el('tandenPoint2Title')) el('tandenPoint2Title').textContent = c.point2Title;
+  if (el('tandenPoint2Text')) el('tandenPoint2Text').textContent = c.point2Text;
+  if (el('tandenPoint3Title')) el('tandenPoint3Title').textContent = c.point3Title;
+  if (el('tandenPoint3Text')) el('tandenPoint3Text').textContent = c.point3Text;
+  if (el('tandenPracticeTitle')) el('tandenPracticeTitle').textContent = c.practiceTitle;
+  if (el('tandenPracticeSteps')) el('tandenPracticeSteps').innerHTML = c.practiceSteps.split('|').map(s => '<div style="padding:3px 0;border-bottom:1px solid rgba(0,0,0,0.05)">' + s + '</div>').join('');
+  if (el('navelLabel')) el('navelLabel').textContent = c.navelLabel;
+  if (el('tandenCloseBtn')) el('tandenCloseBtn').textContent = c.closeBtn;
+  el('tandenOverlay').classList.add('show');
+}
+
+function closeTandenInfo(event) {
+  if (event === null || event.target === document.getElementById('tandenOverlay')) {
+    document.getElementById('tandenOverlay').classList.remove('show');
+  }
+}
+
+
+// ===== BGM ENGINE =====
+let audioCtx = null, bgmNodes = [], selectedBgm = 'bowl', bgmPlaying = false, bgmMuted = false;
+
+function toggleMute() {
+  bgmMuted = !bgmMuted;
+  const btn = document.getElementById('bgmMuteBtn');
+  const btns = document.getElementById('bgmBtns');
+  btn.textContent = bgmMuted ? '🔇' : '🔊';
+  btn.classList.toggle('muted', bgmMuted);
+  btns.classList.toggle('muted', bgmMuted);
+  if (bgmMuted && bgmPlaying) stopBgm();
+  else if (!bgmMuted && breathingActive) startBgm();
+}
+
+function selectBgm(type, btn) {
+  selectedBgm = type;
+  document.querySelectorAll('.bgm-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (bgmPlaying) { stopBgm(); if (!bgmMuted) startBgm(); }
+}
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function stopBgm() {
+  bgmNodes.forEach(n => { try { n.stop(); } catch(e){} });
+  bgmNodes = []; bgmPlaying = false;
+}
+
+function startBgm() {
+  if (bgmMuted) return;
+  initAudio();
+  if (selectedBgm === 'bowl') startSingingBowl();
+  else if (selectedBgm === 'forest') startForest();
+  else if (selectedBgm === 'drone') startZenDrone();
+  bgmPlaying = true;
+}
+
+function startSingingBowl() {
+  const master = audioCtx.createGain();
+  master.gain.setValueAtTime(0, audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 3);
+  master.connect(audioCtx.destination);
+  const freqs = [432, 864, 1296, 540, 270];
+  const gains = [0.5, 0.25, 0.12, 0.15, 0.08];
+  freqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.frequency.value = 0.3 + i * 0.1;
+    lfoGain.gain.value = freq * 0.002;
+    lfo.connect(lfoGain); lfoGain.connect(osc.frequency); lfo.start();
+    g.gain.value = gains[i];
+    osc.connect(g); g.connect(master); osc.start();
+    bgmNodes.push(osc, lfo);
+  });
+  function bowlStrike() {
+    if (!bgmPlaying) return;
+    const sg = audioCtx.createGain();
+    sg.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    sg.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 4);
+    sg.connect(master);
+    const so = audioCtx.createOscillator();
+    so.type = 'sine';
+    so.frequency.setValueAtTime(432, audioCtx.currentTime);
+    so.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 4);
+    so.connect(sg); so.start(); so.stop(audioCtx.currentTime + 5);
+    setTimeout(bowlStrike, 8000 + Math.random() * 4000);
+  }
+  setTimeout(bowlStrike, 1000);
+  bgmNodes.push(master);
+}
+
+function startForest() {
+  const master = audioCtx.createGain();
+  master.gain.setValueAtTime(0, audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 2);
+  master.connect(audioCtx.destination);
+  const bufferSize = audioCtx.sampleRate * 4;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+  for (let i = 0; i < bufferSize; i++) {
+    const w = Math.random()*2-1;
+    b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759; b2=0.96900*b2+w*0.1538520;
+    b3=0.86650*b3+w*0.3104856; b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980;
+    data[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11; b6=w*0.115926;
+  }
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer; source.loop = true;
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass'; filter.frequency.value = 800;
+  source.connect(filter); filter.connect(master); source.start();
+  bgmNodes.push(source, master);
+  function birdChirp() {
+    if (!bgmPlaying) return;
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0, audioCtx.currentTime);
+    g.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    g.connect(audioCtx.destination);
+    const o = audioCtx.createOscillator();
+    const bf = 2000 + Math.random()*1500;
+    o.frequency.setValueAtTime(bf, audioCtx.currentTime);
+    o.frequency.linearRampToValueAtTime(bf*1.3, audioCtx.currentTime+0.15);
+    o.frequency.linearRampToValueAtTime(bf*0.9, audioCtx.currentTime+0.35);
+    o.connect(g); o.start(); o.stop(audioCtx.currentTime+0.45);
+    setTimeout(birdChirp, 3000+Math.random()*7000);
+  }
+  setTimeout(birdChirp, 2000);
+}
+
+function startZenDrone() {
+  const master = audioCtx.createGain();
+  master.gain.setValueAtTime(0, audioCtx.currentTime);
+  master.gain.linearRampToValueAtTime(0.14, audioCtx.currentTime + 4);
+  master.connect(audioCtx.destination);
+  [{freq:528,gain:0.4},{freq:396,gain:0.25},{freq:174,gain:0.2},{freq:1056,gain:0.1},{freq:264,gain:0.15}].forEach(({freq,gain},i) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.frequency.value = freq;
+    const lfo = audioCtx.createOscillator();
+    const lfoG = audioCtx.createGain();
+    lfo.frequency.value = 0.1+i*0.05; lfoG.gain.value = freq*0.001;
+    lfo.connect(lfoG); lfoG.connect(osc.frequency); lfo.start();
+    g.gain.value = gain*0.5;
+    osc.connect(g); g.connect(master); osc.start();
+    bgmNodes.push(osc, lfo);
+  });
+  function zenGong() {
+    if (!bgmPlaying) return;
+    const g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+6);
+    g.connect(audioCtx.destination);
+    const o = audioCtx.createOscillator();
+    o.frequency.setValueAtTime(528, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(520, audioCtx.currentTime+6);
+    o.connect(g); o.start(); o.stop(audioCtx.currentTime+7);
+    setTimeout(zenGong, 12000+Math.random()*6000);
+  }
+  setTimeout(zenGong, 500);
+  bgmNodes.push(master);
+}
+
+// ===== DAILY YOSHI QUOTES =====
+const yoshiQuotes = [
+  { kanji:'今', text:'今に生きよう', sub:'過去でも未来でもなく、今この瞬間を感じること。身体が今ここにあるように、心も今ここに置こう。', source:'Yoshi YouTube', es:{text:'Vive el presente', sub:'No en el pasado ni en el futuro. Siente este momento.'}, en:{text:'Live in the present', sub:'Not in the past or future. Feel this moment.'} },
+  { kanji:'感', text:'感じることが答え', sub:'考えすぎると迷子になる。身体が感じていることに、すべての答えがある。', source:'Podcast', es:{text:'Sentir es la respuesta', sub:'Pensar demasiado nos pierde. Las respuestas estan en el cuerpo.'}, en:{text:'Feeling is the answer', sub:'Overthinking leads astray. All answers lie in what your body feels.'} },
+  { kanji:'脱', text:'力を抜けば、気が流れる', sub:'頑張ることと力むことは違う。余分な力を抜いた時、本当の力が出てくる。', source:'Podcast', es:{text:'Al soltar, fluye el ki', sub:'Cuando sueltas la tension innecesaria, emerge tu verdadera fuerza.'}, en:{text:'Release tension, ki flows', sub:'When you release unnecessary force, your true power emerges.'} },
+  { kanji:'気', text:'気を感じれば、世界が変わる', sub:'ビジョンを持った時のエネルギー、それこそが気。身体感覚を研ぎ澄ますと、その流れを感じ始める。', source:'shiatsuyoshi.com', es:{text:'Siente el ki, cambia el mundo', sub:'La energia de tener una vision, eso es el ki.'}, en:{text:'Feel ki, change your world', sub:'The energy of having a vision, that is ki.'} },
+  { kanji:'丹', text:'丹田が中心', sub:'へそ下3センチ、丹田はあなたの重心。ここに意識を置くだけで、心が落ち着く。', source:'Yoshi YouTube', es:{text:'El tanden es tu centro', sub:'3 cm bajo el ombligo. Solo poniendo consciencia aqui, la mente se calma.'}, en:{text:'Tanden is your center', sub:'3cm below your navel. Simply bringing awareness here calms the mind.'} },
+  { kanji:'息', text:'呼吸が全てを変える', sub:'不安な時、ただ呼吸に戻ろう。鼻からゆっくり吸って、ゆっくり吐く。それだけで、今に戻れる。', source:'Podcast', es:{text:'La respiracion cambia todo', sub:'Cuando sientes ansiedad, vuelve a la respiracion. Inhala y exhala lento.'}, en:{text:'Breathing changes everything', sub:'When anxious, return to breathing. Slowly inhale and exhale.'} },
+  { kanji:'流', text:'流れに乗る生き方', sub:'川の水は岩に逆らわず、自然に流れる。人生も同じ。抵抗せず、今の流れを感じよう。', source:'Yoshi YouTube', es:{text:'Vivir fluyendo', sub:'El agua fluye naturalmente. Sin resistir, siente el flujo.'}, en:{text:'Living in the flow', sub:'Water flows naturally. Without resisting, feel the current.'} },
+];
+
+function showDailyQuote() {
+  const lastShown = localStorage.getItem('yoshiQuoteDate');
+  if (lastShown === new Date().toDateString()) return;
+  const dayIndex = Math.floor((new Date() - new Date('2024-01-01')) / 86400000) % yoshiQuotes.length;
+  const q = yoshiQuotes[dayIndex];
+  const t = currentLang === 'es' ? q.es : currentLang === 'en' ? q.en : q;
+  document.getElementById('quoteKanji').textContent = q.kanji;
+  document.getElementById('quoteText').textContent = t.text;
+  document.getElementById('quoteSub').textContent = t.sub;
+  document.getElementById('quoteSource').textContent = q.source;
+  const labels = {ja:'今日のYoshiの言葉', es:'Palabra de Yoshi de hoy', en:"Today's Word from Yoshi"};
+  const btns = {ja:'今日も、気と共に', es:'Hoy tambien, con ki', en:'Today also, with ki'};
+  document.getElementById('quoteLabelTop').textContent = labels[currentLang];
+  document.getElementById('quoteCloseBtn').textContent = btns[currentLang];
+  document.getElementById('dailyQuoteOverlay').classList.add('show');
+}
+
+function closeQuote() {
+  document.getElementById('dailyQuoteOverlay').classList.remove('show');
+  localStorage.setItem('yoshiQuoteDate', new Date().toDateString());
+}
+
+// ===== INIT =====
+updateLangGuideContent();
+renderVideoList();
+updateBodyCheckLang();
+updateDateDisplay();
+setTimeout(showDailyQuote, 800);
+
 </script>
 </body>
 </html>
