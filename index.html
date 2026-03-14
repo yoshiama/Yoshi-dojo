@@ -732,6 +732,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 <div class="footer-seal">
   <div class="seal">今</div>
   <div>身体感覚 × 気 × 今に生きる</div>
+  <div style="margin-top:12px;font-size:10px;color:#aaa;letter-spacing:0.2em;">© 2026 Yoshi Dojo · 中井経賀 · All Rights Reserved</div>
 </div>
 
 <!-- Mini Yoshi AI -->
@@ -1709,6 +1710,12 @@ updateLangGuideContent();
 renderVideoList();
 updateBodyCheckLang();
 updateDateDisplay();
+setTimeout(showDailyQuote, 800);
+
+// ===== INIT =====
+updateBodyCheckLang();
+updateLangGuideContent();
+renderVideoList();
 setTimeout(showDailyQuote, 800);
 
 </script>
