@@ -365,13 +365,13 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 <!-- Visualization Overlay -->
 <div class="viz-overlay" id="vizOverlay">
   <div class="viz-card">
-    <div class="viz-title" id="vizTitle">毎朝のビジョン視覚化</div>
+    <div class="viz-title" id="vizOverlayTitle">毎朝のビジョン視覚化</div>
     <div class="viz-domain" id="vizDomainIcon">🌿</div>
     <div class="viz-domain" id="vizDomainName" style="font-size:14px;letter-spacing:0.4em;margin-bottom:16px;"></div>
     <div class="viz-text" id="vizText">目を閉じて、この願望が既に実現している映像を感じてください</div>
     <div class="viz-progress" id="vizProgress"></div>
     <div class="viz-nav">
-      <button class="viz-btn" onclick="closeViz()">終了</button>
+      <button class="viz-btn" id="vizCloseBtn" onclick="closeViz()">終了</button>
       <button class="viz-btn primary" id="vizNextBtn" onclick="nextViz()">次へ →</button>
     </div>
   </div>
@@ -552,7 +552,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <div class="samurai-reset" id="samuraiReset">
     <div class="samurai-title">⚡ SAMURAI RESET</div>
     <div class="samurai-desc" id="samuraiDesc">スコアを上げたいですか？Yoshiの動画で身体を整えましょう。</div>
-    <button class="samurai-btn" onclick="openSamuraiVideo()">▶ 動画を見てスコアアップ</button>
+    <button class="samurai-btn" id="samuraiVideoBtn" onclick="openSamuraiVideo()">▶ 動画を見てスコアアップ</button>
     <div class="score-up-badge" id="scoreUpBadge">🎉 ＋10 気スコアアップ！</div>
   </div>
   <div class="video-section-title" id="videoListTitle">⚡ SAMURAI RESET · 動画一覧</div>
@@ -618,9 +618,9 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 <!-- PREMIUM -->
 <section class="section" id="premium">
   <div class="premium-hero">
-    <div class="premium-hero-label">YOSHI DOJO · 有料コンテンツ</div>
-    <div class="premium-hero-title">気の道を深める</div>
-    <div class="premium-hero-sub">20年の経験から生まれた<br>Yoshiの本物の教えへ</div>
+    <div class="premium-hero-label" id="premiumLabel">YOSHI DOJO · 有料コンテンツ</div>
+    <div class="premium-hero-title" id="premiumHeroTitle">気の道を深める</div>
+    <div class="premium-hero-sub" id="premiumHeroSub">20年の経験から生まれた<br>Yoshiの本物の教えへ</div>
   </div>
   <div class="premium-cards">
     <div class="premium-card">
@@ -628,63 +628,63 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="premium-card-top">
         <div class="premium-card-icon">📖</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">書籍 · LIBRO</div>
+          <div class="premium-card-tag" id="premTag1">書籍 · LIBRO</div>
           <div class="premium-card-title">身体感覚という名の羅針盤<br><span style="font-size:12px;color:#888">La Brújula de la Sensación Corporal</span></div>
-          <div class="premium-card-price">€18 <span>/ 電子書籍</span></div>
+          <div class="premium-card-price">€18 <span id="premPrice1">/ 電子書籍</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">Yoshiが20年間マドリードで積み重ねた、身体感覚・気・今に生きる哲学の集大成。あなたの人生の羅針盤になる一冊。</div>
-      <button class="premium-card-btn gold" onclick="handlePremium('book')">📖 予約購入する</button>
+      <div class="premium-card-desc" id="premDesc1">Yoshiが20年間マドリードで積み重ねた、身体感覚・気・今に生きる哲学の集大成。あなたの人生の羅針盤になる一冊。</div>
+      <button class="premium-card-btn gold" id="premBtn1" onclick="handlePremium('book')">📖 予約購入する</button>
     </div>
     <div class="premium-card">
       <div class="premium-badge">人気</div>
       <div class="premium-card-top">
         <div class="premium-card-icon">🎓</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">オンライン講座 · CURSO</div>
-          <div class="premium-card-title">丹田覚醒 7日間プログラム</div>
-          <div class="premium-card-price">€97 <span>/ 一括</span></div>
+          <div class="premium-card-tag" id="premTag2">オンライン講座 · CURSO</div>
+          <div class="premium-card-title" id="premTitle2">丹田覚醒 7日間プログラム</div>
+          <div class="premium-card-price">€97 <span id="premPrice2">/ 一括</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。</div>
-      <button class="premium-card-btn" onclick="handlePremium('course7')">▶ 講座を見る</button>
+      <div class="premium-card-desc" id="premDesc2">7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。</div>
+      <button class="premium-card-btn" id="premBtn2" onclick="handlePremium('course7')">▶ 講座を見る</button>
     </div>
     <div class="premium-card">
       <div class="premium-card-top">
         <div class="premium-card-icon">🌿</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">月額メンバーシップ · MEMBRESÍA</div>
-          <div class="premium-card-title">Yoshi Dojo メンバー</div>
-          <div class="premium-card-price">€19 <span>/ 月</span></div>
+          <div class="premium-card-tag" id="premTag3">月額メンバーシップ · MEMBRESÍA</div>
+          <div class="premium-card-title" id="premTitle3">Yoshi Dojo メンバー</div>
+          <div class="premium-card-price">€19 <span id="premPrice3">/ 月</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">毎月新しい身体感覚ワーク動画・Yoshiとのグループセッション・限定ポッドキャストへアクセス。世界のメンバーと共に気を深める。</div>
-      <button class="premium-card-btn gold" onclick="handlePremium('membership')">🌿 メンバーになる</button>
+      <div class="premium-card-desc" id="premDesc3">毎月新しい身体感覚ワーク動画・Yoshiとのグループセッション・限定ポッドキャストへアクセス。世界のメンバーと共に気を深める。</div>
+      <button class="premium-card-btn gold" id="premBtn3" onclick="handlePremium('membership')">🌿 メンバーになる</button>
     </div>
     <div class="premium-card">
       <div class="premium-card-top">
         <div class="premium-card-icon">🎯</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">個人セッション · SESIÓN PERSONAL</div>
-          <div class="premium-card-title">Yoshiとのオンライン個人セッション</div>
-          <div class="premium-card-price">€120 <span>/ 60分</span></div>
+          <div class="premium-card-tag" id="premTag4">個人セッション · SESIÓN PERSONAL</div>
+          <div class="premium-card-title" id="premTitle4">Yoshiとのオンライン個人セッション</div>
+          <div class="premium-card-price">€120 <span id="premPrice4">/ 60分</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">Zoom・世界どこからでも。身体感覚・気・人生の流れについてYoshi本人と直接セッション。マドリードの哲学をあなたへ。</div>
-      <button class="premium-card-btn" onclick="handlePremium('session')">📅 セッションを予約</button>
+      <div class="premium-card-desc" id="premDesc4">Zoom・世界どこからでも。身体感覚・気・人生の流れについてYoshi本人と直接セッション。マドリードの哲学をあなたへ。</div>
+      <button class="premium-card-btn" id="premBtn4" onclick="handlePremium('session')">📅 セッションを予約</button>
     </div>
   </div>
   <div class="stripe-notice">
-    <div class="stripe-notice-title">安全な決済 · PAGO SEGURO</div>
-    <div class="stripe-notice-text">Stripeによる安全な決済対応予定。<br>クレジットカード・PayPal・Apple Pay対応。</div>
+    <div class="stripe-notice-title" id="stripeTitle">安全な決済 · PAGO SEGURO</div>
+    <div class="stripe-notice-text" id="stripeText">Stripeによる安全な決済対応予定。<br>クレジットカード・PayPal・Apple Pay対応。</div>
     <div class="stripe-icons">💳 🔒 ✓</div>
   </div>
   <div class="zen-divider">道</div>
   <div class="meditation-guide">
-    <div class="guide-title">なぜ有料コンテンツが必要か</div>
-    <div class="guide-step">本物の変化には、深い実践と継続的なガイドが必要</div>
-    <div class="guide-step">20年間の経験は、動画や本では伝えきれない部分がある</div>
-    <div class="guide-step">あなたの投資が、世界へこの哲学を届ける力になる</div>
+    <div class="guide-title" id="premGuideTitle">なぜ有料コンテンツが必要か</div>
+    <div class="guide-step" id="premG1">本物の変化には、深い実践と継続的なガイドが必要</div>
+    <div class="guide-step" id="premG2">20年間の経験は、動画や本では伝えきれない部分がある</div>
+    <div class="guide-step" id="premG3">あなたの投資が、世界へこの哲学を届ける力になる</div>
   </div>
 </section>
 
@@ -1049,8 +1049,7 @@ function setLang(lang) {
   // Vision
   const vt = document.getElementById('visionTitle'); if(vt) vt.textContent=t.visionTitle;
   const vb = document.getElementById('vizBtn'); if(vb) vb.textContent=t.vizBtn;
-  const vgt = document.getElementById('visionGuideTitle'); if(vgt) vgt.textContent=t.visionGuideTitle;
-  t.visionG.forEach((g,i) => { const el=document.getElementById('visionG'+(i+1)); if(el) el.textContent=g; });
+  // visionGuideTitle and visionG handled below in full vision block
   // Diary
   const mt = document.getElementById('moodTitle'); if(mt) mt.textContent=t.moodTitle;
   document.getElementById('diaryText').placeholder = t.diaryPlaceholder;
@@ -1073,6 +1072,113 @@ function setLang(lang) {
   const sgt = document.getElementById('sessionGuideTitle'); if(sgt) sgt.textContent=t.sessionGuideTitle;
   t.sessionG.forEach((g,i) => { const el=document.getElementById('sessionG'+(i+1)); if(el) el.textContent=g; });
   updateScore(); updateStreakDisplay();
+  // Vision section
+  const vst = document.getElementById('visionSectionTitle');
+  if(vst) { const vs = {ja:'人 生 全 分 野 の 願 望', es:'Visión de Vida · Todos los Ámbitos', en:'Life Vision · All Domains'}; vst.textContent = vs[lang]||vs.ja; }
+  const vsb = document.getElementById('vizStartBtn');
+  if(vsb) { const vbTxt = {ja:'🌅 毎朝のビジョン視覚化を始める', es:'🌅 Comenzar visualización matutina', en:'🌅 Start morning vision visualization'}; vsb.textContent = vbTxt[lang]||vbTxt.ja; }
+  const vot = document.getElementById('vizOverlayTitle');
+  if(vot) { const vov = {ja:'毎朝のビジョン視覚化', es:'Visualización matutina', en:'Morning Vision Visualization'}; vot.textContent = vov[lang]||vov.ja; }
+  const vcb = document.getElementById('vizCloseBtn');
+  if(vcb) { const vc = {ja:'終了', es:'Cerrar', en:'Close'}; vcb.textContent = vc[lang]||vc.ja; }
+  const vtitle = document.getElementById('visionTitle');
+  if(vtitle) { const vts = {ja:'人 生 全 分 野 の 願 望', es:'Visión · Todos los Ámbitos', en:'Life Vision · All Domains'}; vtitle.textContent = vts[lang]||vts.ja; }
+  const vizBtnEl = document.getElementById('vizBtn');
+  if(vizBtnEl) { const vbe = {ja:'🌅 毎朝のビジョン視覚化を始める', es:'🌅 Comenzar visualización', en:'🌅 Start morning visualization'}; vizBtnEl.textContent = vbe[lang]||vbe.ja; }
+  const vgt = document.getElementById('visionGuideTitle');
+  if(vgt) { const vg = {ja:'ビジョンの使い方', es:'Cómo usar la visión', en:'How to use vision'}; vgt.textContent = vg[lang]||vg.ja; }
+  const visionGs = {
+    ja: ['毎朝「視覚化を始める」を押して全分野を映像化する','執着せず「すでに在る」感覚で受け取る','仕事だけでなく、全分野が整う時、本当の幸せが生まれる','丁寧な今日の行動が、自然に夢を引き寄せる'],
+    es: ['Pulsa "Comenzar visualización" cada mañana para visualizar todos los ámbitos','Recíbelo sin apego, con la sensación de que ya existe','La verdadera felicidad surge cuando todos los ámbitos están en armonía','Las acciones cuidadosas de hoy atraen naturalmente tus sueños'],
+    en: ['Press "Start visualization" every morning to visualize all domains','Receive it without attachment, feeling it already exists','True happiness arises when all life domains are in harmony','Mindful actions today naturally attract your dreams']
+  };
+  (visionGs[lang]||visionGs.ja).forEach((g,i) => { const el=document.getElementById('visionG'+(i+1)); if(el) el.textContent=g; });
+  renderVisionDomains();
+  // Premium / Cursos section
+  const premiumData = {
+    ja: {
+      label: 'YOSHI DOJO · 有料コンテンツ',
+      heroTitle: '気の道を深める',
+      heroSub: '20年の経験から生まれた<br>Yoshiの本物の教えへ',
+      badge1: 'NEW', badge2: '人気',
+      tags: ['書籍 · LIBRO','オンライン講座 · CURSO','月額メンバーシップ · MEMBRESÍA','個人セッション · SESIÓN PERSONAL'],
+      title2: '丹田覚醒 7日間プログラム',
+      title3: 'Yoshi Dojo メンバー',
+      title4: 'Yoshiとのオンライン個人セッション',
+      prices: ['/ 電子書籍','/ 一括','/ 月','/ 60分'],
+      descs: [
+        'Yoshiが20年間マドリードで積み重ねた、身体感覚・気・今に生きる哲学の集大成。あなたの人生の羅針盤になる一冊。',
+        '7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。',
+        '毎月新しい身体感覚ワーク動画・Yoshiとのグループセッション・限定ポッドキャストへアクセス。世界のメンバーと共に気を深める。',
+        'Zoom・世界どこからでも。身体感覚・気・人生の流れについてYoshi本人と直接セッション。マドリードの哲学をあなたへ。'
+      ],
+      btns: ['📖 予約購入する','▶ 講座を見る','🌿 メンバーになる','📅 セッションを予約'],
+      stripeTitle: '安全な決済 · PAGO SEGURO',
+      stripeText: 'Stripeによる安全な決済対応予定。<br>クレジットカード・PayPal・Apple Pay対応。',
+      guideTitle: 'なぜ有料コンテンツが必要か',
+      guide: ['本物の変化には、深い実践と継続的なガイドが必要','20年間の経験は、動画や本では伝えきれない部分がある','あなたの投資が、世界へこの哲学を届ける力になる']
+    },
+    es: {
+      label: 'YOSHI DOJO · CONTENIDO PREMIUM',
+      heroTitle: 'Profundizar en el Ki',
+      heroSub: 'Las enseñanzas auténticas de Yoshi<br>nacidas de 20 años de experiencia',
+      badge1: 'NUEVO', badge2: 'Popular',
+      tags: ['Libro · LIBRO','Curso online · CURSO','Membresía mensual · MEMBRESÍA','Sesión personal · SESIÓN PERSONAL'],
+      title2: 'Programa 7 días: Despertar del Tanden',
+      title3: 'Miembro Yoshi Dojo',
+      title4: 'Sesión personal online con Yoshi',
+      prices: ['/ libro digital','/ único pago','/ mes','/ 60 min'],
+      descs: [
+        'La síntesis de 20 años de práctica de Yoshi en Madrid sobre la sensación corporal, el Ki y vivir el presente. Una brújula para tu vida.',
+        'Programa práctico de 7 días para despertar el Tanden. 15 min de video guía diario + práctica. Disponible desde cualquier parte del mundo.',
+        'Acceso mensual a nuevos videos de trabajo corporal, sesiones grupales con Yoshi y podcasts exclusivos. Profundiza el Ki con miembros de todo el mundo.',
+        'Por Zoom desde cualquier lugar del mundo. Sesión directa con el propio Yoshi sobre sensación corporal, Ki y el fluir de la vida.'
+      ],
+      btns: ['📖 Reservar compra','▶ Ver curso','🌿 Hacerse miembro','📅 Reservar sesión'],
+      stripeTitle: 'Pago seguro · PAGO SEGURO',
+      stripeText: 'Pago seguro con Stripe próximamente.<br>Tarjeta de crédito, PayPal, Apple Pay.',
+      guideTitle: '¿Por qué contenido premium?',
+      guide: ['El cambio real requiere práctica profunda y guía continua','20 años de experiencia no caben solo en videos','Tu inversión ayuda a llevar esta filosofía al mundo']
+    },
+    en: {
+      label: 'YOSHI DOJO · PREMIUM CONTENT',
+      heroTitle: 'Deepen Your Ki Path',
+      heroSub: "Yoshi's authentic teachings<br>born from 20 years of experience",
+      badge1: 'NEW', badge2: 'Popular',
+      tags: ['Book · LIBRO','Online Course · CURSO','Monthly Membership · MEMBRESÍA','Personal Session · SESIÓN PERSONAL'],
+      title2: '7-Day Tanden Awakening Program',
+      title3: 'Yoshi Dojo Member',
+      title4: 'Personal Online Session with Yoshi',
+      prices: ['/ e-book','/ one-time','/ month','/ 60 min'],
+      descs: [
+        "The culmination of Yoshi's 20 years in Madrid on body sensation, Ki, and living in the present. A compass for your life.",
+        'Practical 7-day program to awaken the Tanden. 15-min daily video guide + practice work. Available from anywhere in the world.',
+        'Monthly access to new body sensation workout videos, group sessions with Yoshi and exclusive podcasts. Deepen Ki with members worldwide.',
+        'Via Zoom from anywhere in the world. Direct session with Yoshi himself on body sensation, Ki and the flow of life.'
+      ],
+      btns: ['📖 Pre-order','▶ View course','🌿 Become a member','📅 Book session'],
+      stripeTitle: 'Secure payment · PAGO SEGURO',
+      stripeText: 'Secure Stripe payment coming soon.<br>Credit card, PayPal, Apple Pay supported.',
+      guideTitle: 'Why premium content?',
+      guide: ['Real change requires deep practice and continuous guidance','20 years of experience cannot be fully conveyed in videos alone','Your investment helps bring this philosophy to the world']
+    }
+  };
+  const pd = premiumData[lang] || premiumData.ja;
+  const el2 = (id) => document.getElementById(id);
+  if(el2('premiumLabel')) el2('premiumLabel').textContent = pd.label;
+  if(el2('premiumHeroTitle')) el2('premiumHeroTitle').textContent = pd.heroTitle;
+  if(el2('premiumHeroSub')) el2('premiumHeroSub').innerHTML = pd.heroSub;
+  pd.tags.forEach((tag,i) => { const e=el2('premTag'+(i+1)); if(e) e.textContent=tag; });
+  if(el2('premTitle2')) el2('premTitle2').textContent = pd.title2;
+  if(el2('premTitle3')) el2('premTitle3').textContent = pd.title3;
+  if(el2('premTitle4')) el2('premTitle4').textContent = pd.title4;
+  pd.prices.forEach((p,i) => { const e=el2('premPrice'+(i+1)); if(e) e.textContent=p; });
+  pd.descs.forEach((d,i) => { const e=el2('premDesc'+(i+1)); if(e) e.textContent=d; });
+  pd.btns.forEach((b,i) => { const e=el2('premBtn'+(i+1)); if(e) e.textContent=b; });
+  if(el2('stripeTitle')) el2('stripeTitle').textContent = pd.stripeTitle;
+  if(el2('stripeText')) el2('stripeText').innerHTML = pd.stripeText;
+  if(el2('premGuideTitle')) el2('premGuideTitle').textContent = pd.guideTitle;
+  pd.guide.forEach((g,i) => { const e=el2('premG'+(i+1)); if(e) e.textContent=g; });
   updateLangGuideContent();
   renderVideoList();
   updateBodyCheckLang();
@@ -1227,7 +1333,7 @@ function showVizSlide() {
   document.getElementById('vizDomainName').textContent = nm;
   document.getElementById('vizText').textContent = visionData[d.id];
   document.getElementById('vizProgress').innerHTML = vizDomains.map((_,i) => `<div class="viz-dot${i===vizIndex?' active':''}"></div>`).join('');
-  document.getElementById('vizNextBtn').textContent = vizIndex < vizDomains.length-1 ? '次へ →' : '完了 🙏';
+  document.getElementById('vizNextBtn').textContent=(function(){const n={ja:'次へ →',es:'Siguiente →',en:'Next →'};const d={ja:'完了 🙏',es:'Listo 🙏',en:'Done 🙏'};return vizIndex<vizDomains.length-1?(n[currentLang]||'次へ →'):(d[currentLang]||'完了 🙏');})();
 }
 function nextViz() { if (vizIndex < vizDomains.length-1) { vizIndex++; showVizSlide(); } else closeViz(); }
 function closeViz() { document.getElementById('vizOverlay').classList.remove('show'); }
@@ -1297,6 +1403,8 @@ function updateBodyCheckLang() {
     if(el('body-high-'+n)) el('body-high-'+n).textContent = item.high;
   });
   if(el('samuraiDesc')) el('samuraiDesc').textContent = t.samuraiDesc;
+  const svBtn = el('samuraiVideoBtn');
+  if(svBtn) { const svt = {ja:'▶ 動画を見てスコアアップ', es:'▶ Ver video y subir puntuación', en:'▶ Watch video & boost score'}; svBtn.textContent = svt[currentLang]||svt.ja; }
   updateScore();
 }
 
@@ -1331,13 +1439,63 @@ function openBooking() { window.open('https://www.shiatsuyoshi.com', '_blank'); 
 
 // ===== PREMIUM =====
 function handlePremium(type) {
-  const messages = {
-    book: '📖 ありがとうございます！\n\n本の出版準備中です。\ninfo@shiatsuyoshi.com\nまでご連絡ください。',
-    course7: '🎓 丹田覚醒7日間プログラム\n\n現在準備中です。\ninfo@shiatsuyoshi.com\nまでご連絡ください。',
-    membership: '🌿 Yoshi Dojoメンバーシップ\n\nまもなく開始予定です。\ninfo@shiatsuyoshi.com\nまでご連絡ください。',
-    session: '🎯 オンライン個人セッション\n\nご予約はこちら：\ninfo@shiatsuyoshi.com\nまたはWhatsApp: 606 054 229'
+  const msgs = {
+    ja: {
+      book: '📖 ありがとうございます！
+
+本の出版準備中です。
+info@shiatsuyoshi.com
+までご連絡ください。',
+      course7: '🎓 丹田覚醒7日間プログラム
+
+現在準備中です。
+info@shiatsuyoshi.com
+までご連絡ください。',
+      membership: '🌿 Yoshi Dojoメンバーシップ
+
+まもなく開始予定です。
+info@shiatsuyoshi.com
+までご連絡ください。',
+      session: '🎯 オンライン個人セッション
+
+info@shiatsuyoshi.com または WhatsApp: 606 054 229'
+    },
+    es: {
+      book: '📖 ¡Gracias!
+
+El libro está en preparación.
+Contacta: info@shiatsuyoshi.com',
+      course7: '🎓 Programa 7 días
+
+En preparación.
+Contacta: info@shiatsuyoshi.com',
+      membership: '🌿 Membresía Yoshi Dojo
+
+Próximamente.
+Contacta: info@shiatsuyoshi.com',
+      session: '🎯 Sesión personal online
+
+info@shiatsuyoshi.com o WhatsApp: 606 054 229'
+    },
+    en: {
+      book: '📖 Thank you!
+
+The book is in preparation.
+Contact: info@shiatsuyoshi.com',
+      course7: '🎓 7-Day Tanden Program
+
+In preparation.
+Contact: info@shiatsuyoshi.com',
+      membership: '🌿 Yoshi Dojo Membership
+
+Coming soon.
+Contact: info@shiatsuyoshi.com',
+      session: '🎯 Personal online session
+
+info@shiatsuyoshi.com or WhatsApp: 606 054 229'
+    }
   };
-  alert(messages[type]);
+  alert((msgs[currentLang]||msgs.ja)[type]);
 }
 
 // ===== YOSHI AI =====
