@@ -786,6 +786,23 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   </div>
 </div>
 
+
+<!-- Booking Popup Overlay -->
+<div id="bookingPopup" style="display:none;position:fixed;inset:0;background:rgba(26,22,18,0.88);z-index:900;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:var(--paper);max-width:360px;width:100%;border-radius:4px;overflow:hidden;animation:quoteAppear 0.5s ease;">
+    <div style="background:linear-gradient(135deg,var(--teal),#1a4a5a);padding:24px;text-align:center;position:relative;">
+      <div style="font-size:9px;letter-spacing:0.6em;color:rgba(245,240,232,0.7);margin-bottom:8px;" id="popupLabel">身 体 が サ イ ン を 送 っ て い ま す</div>
+      <div style="font-family:'Zen Antique',serif;font-size:36px;color:#c9a84c;line-height:1;">🏥</div>
+      <div style="font-size:16px;color:var(--paper);letter-spacing:0.1em;margin-top:10px;line-height:1.6;" id="popupTitle">今、プロの調整が必要かもしれません</div>
+    </div>
+    <div style="padding:20px 24px;">
+      <div style="font-size:13px;color:#555;line-height:1.9;letter-spacing:0.05em;margin-bottom:16px;padding:12px 14px;background:rgba(42,107,124,0.07);border-left:2px solid var(--teal);" id="popupDesc">気スコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？</div>
+      <button onclick="openBooking();closeBookingPopup();" style="width:100%;background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:13px;letter-spacing:0.3em;padding:14px;cursor:pointer;border-radius:1px;font-weight:700;margin-bottom:8px;" id="popupBtn">🗓 Clínica Yoshiを予約する</button>
+      <button onclick="closeBookingPopup();" style="width:100%;background:none;border:1px solid var(--mist);color:#888;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.2em;padding:10px;cursor:pointer;border-radius:1px;" id="popupSkip">今は続ける</button>
+    </div>
+  </div>
+</div>
+
 <!-- Footer -->
 <div class="footer-seal">
   <div class="seal">今</div>
@@ -1093,6 +1110,7 @@ function setLang(lang) {
   renderVideoList();
   updateBodyCheckLang();
   updateDateDisplay();
+  updatePopupLang();
 }
 
 function updateSelfcareLang(t) {
@@ -1296,6 +1314,8 @@ function updateScore() {
   const idx = ranges.find(r => total>=r[0] && total<r[1]);
   document.getElementById('scoreLabel').textContent = t.scoreLabels[idx ? idx[2] : 3];
   document.getElementById('samuraiReset').style.display = total < 60 ? 'block' : 'none';
+  // スコアが40以下でポップアップ表示
+  if (total <= 40) { showBookingPopup(); }
 }
 function updateBodyCheckLang() {
   const t = translations[currentLang];
@@ -1343,6 +1363,57 @@ function updateLangGuideContent() {
   document.getElementById('lgSteps').innerHTML = g.steps.map(s => `<div class="lg-step">${s}</div>`).join('');
   document.getElementById('lgBtn').textContent = g.btn;
   document.getElementById('lgSkip').textContent = g.skip;
+}
+
+
+// ===== BOOKING POPUP =====
+let bookingPopupShown = false;
+
+function showBookingPopup() {
+  if (bookingPopupShown) return;
+  bookingPopupShown = true;
+  const popup = document.getElementById('bookingPopup');
+  popup.style.display = 'flex';
+  updatePopupLang();
+}
+
+function closeBookingPopup() {
+  document.getElementById('bookingPopup').style.display = 'none';
+  // 1時間後にリセット（再度表示可能に）
+  setTimeout(() => { bookingPopupShown = false; }, 3600000);
+}
+
+function updatePopupLang() {
+  const texts = {
+    ja: {
+      label: '身 体 が サ イ ン を 送 っ て い ま す',
+      title: '今、プロの調整が必要かもしれません',
+      desc: '気スコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？',
+      btn: '🗓 Clínica Yoshiを予約する',
+      skip: '今は続ける'
+    },
+    es: {
+      label: 'T U   C U E R P O   E N V Í A   S E Ñ A L E S',
+      title: 'Tu cuerpo puede necesitar ajuste profesional',
+      desc: 'Tu puntuación Ki ha bajado. ¿Te gustaría recibir un reequilibrio profesional en la Clínica Yoshi?',
+      btn: '🗓 Reservar en Clínica Yoshi',
+      skip: 'Continuar por ahora'
+    },
+    en: {
+      label: 'Y O U R   B O D Y   I S   S E N D I N G   S I G N A L S',
+      title: 'Your body may need professional tuning',
+      desc: 'Your Ki score has dropped. Would you like to receive a professional body realignment at Clínica Yoshi?',
+      btn: '🗓 Book at Clínica Yoshi',
+      skip: 'Continue for now'
+    }
+  };
+  const t = texts[currentLang] || texts.ja;
+  const el = (id) => document.getElementById(id);
+  if(el('popupLabel')) el('popupLabel').textContent = t.label;
+  if(el('popupTitle')) el('popupTitle').textContent = t.title;
+  if(el('popupDesc')) el('popupDesc').textContent = t.desc;
+  if(el('popupBtn')) el('popupBtn').textContent = t.btn;
+  if(el('popupSkip')) el('popupSkip').textContent = t.skip;
 }
 
 // ===== SELFCARE VIDEOS =====
