@@ -569,7 +569,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="body-check-kanji">食</div>
     </div>
     <div class="selfcare-card-desc" id="sc-food-desc">身体が喜ぶ食事とは何か。東洋医学の視点から食を見直す。</div>
-    <button class="selfcare-btn green" onclick="window.open('https://www.youtube.com/@yoshishiatsu','_blank')" id="sc-food-btn">▶ Yoshiの動画チャンネルへ</button>
+    <button class="selfcare-btn green" id="sc-food-btn" onclick="playSelfcareVideo('pflekvdwGNc', 'food')">▶ Yoshiの食事動画を見る</button>
   </div>
 
   <div class="selfcare-card">
@@ -597,6 +597,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     </div>
     <div class="selfcare-card-desc" id="sc-mental-desc">不安・ストレスは身体から解放する。Yoshiのポッドキャストで心を整える。</div>
     <button class="selfcare-btn" style="background:var(--teal)" onclick="window.open('https://podcasts.apple.com/es/podcast/id1659916913','_blank')" id="sc-mental-btn">🎙 Yoshiポッドキャストを聴く</button>
+    <button class="selfcare-btn" style="background:var(--bamboo);margin-top:8px" id="sc-selfcare-btn" onclick="playSelfcareVideo('B-o0CINuUZQ', 'selfcare')">▶ セルフケア動画を見る</button>
   </div>
 
   <div class="samurai-reset" style="display:block">
@@ -902,10 +903,10 @@ const translations = {
     prompts: ['今日、身体はどんなことを感じていますか？','今この瞬間、何に感謝できますか？','今日の丁寧な行動は何でしたか？','夢に向かう今日の一歩は何でしたか？','身体の声は何を伝えていますか？','今日、流れに乗れた瞬間はありましたか？','今、気が求めていることは何ですか？'],
     selfcareTitle: '養 生 · セルフケア',
     sc: {
-      food: {title:'🥗 食事・栄養', desc:'身体が喜ぶ食事とは何か。東洋医学の視点から食を見直す。', btn:'▶ Yoshiの動画チャンネルへ'},
+      food: {title:'🥗 食事・栄養', desc:'身体が喜ぶ食事とは何か。東洋医学の視点から食を見直す。', btn:'▶ Yoshiの食事動画を見る'},
       exercise: {title:'🤸 体操・エクササイズ', desc:'サムライリセット体操で毎日の身体を整える。全動画を身体タブで見られます。', btn:'▶ サムライリセット動画一覧へ'},
       sleep: {title:'🌙 睡眠・休養', desc:'良質な睡眠は最大の養生。寝る前の丹田呼吸で深い眠りへ。', btn:'▶ 瞑想・呼吸で眠りを整える'},
-      mental: {title:'🧘 メンタルケア', desc:'不安・ストレスは身体から解放する。Yoshiのポッドキャストで心を整える。', btn:'🎙 Yoshiポッドキャストを聴く'},
+      mental: {title:'🧘 メンタルケア', desc:'不安・ストレスは身体から解放する。Yoshiのポッドキャストで心を整える。', btn:'🎙 Yoshiポッドキャストを聴く', selfcareBtn:'▶ セルフケア動画を見る'},
       pro: {title:'🏥 専門家に相談する', desc:'身体の不調が続く場合は、Yoshiのクリニックまたは医療機関にご相談ください。'},
       guideTitle: '養生の基本',
       g: ['食・動・眠・心の4つのバランスが養生の基本','毎日少しずつ丁寧に。急激な変化より継続が力','身体の声を聴くことが、最良のセルフケア','困ったときはYoshiに相談。一人で抱え込まない'],
@@ -957,10 +958,10 @@ const translations = {
     prompts: ['¿Qué sensaciones tiene tu cuerpo hoy?','¿De qué puedes estar agradecido ahora?','¿Cuál fue tu acción más cuidadosa de hoy?','¿Cuál fue tu paso hacia tu sueño hoy?','¿Qué te está diciendo tu cuerpo?','¿Hubo un momento en que fluiste hoy?','¿Qué está pidiendo tu ki?'],
     selfcareTitle: 'Autocuidado · 養生',
     sc: {
-      food: {title:'🥗 Alimentación', desc:'Nutricion que alegra al cuerpo. Una vision desde la medicina oriental.', btn:'▶ Canal de videos de Yoshi'},
+      food: {title:'🥗 Alimentación', desc:'Nutricion que alegra al cuerpo. Una vision desde la medicina oriental.', btn:'▶ Ver video de alimentación'},
       exercise: {title:'🤸 Ejercicio', desc:'Ejercicios Samurai Reset para cuidar tu cuerpo cada dia. Ver todos los videos en Cuerpo.', btn:'▶ Ir a la lista de videos'},
       sleep: {title:'🌙 Sueño y descanso', desc:'El sueno de calidad es el mejor autocuidado. Respiracion del tanden antes de dormir.', btn:'▶ Meditación y respiración'},
-      mental: {title:'🧘 Cuidado mental', desc:'Libera la ansiedad a traves del cuerpo. El podcast de Yoshi equilibra la mente.', btn:'🎙 Escuchar podcast de Yoshi'},
+      mental: {title:'🧘 Cuidado mental', desc:'Libera la ansiedad a traves del cuerpo. El podcast de Yoshi equilibra la mente.', btn:'🎙 Escuchar podcast de Yoshi', selfcareBtn:'▶ Ver video de autocuidado'},
       pro: {title:'🏥 Consultar a un profesional', desc:'Si las molestias persisten, consulta la clinica de Yoshi o un medico.'},
       guideTitle: 'Fundamentos del autocuidado',
       g: ['El equilibrio de alimentacion, movimiento, sueno y mente es la base','Poco a poco cada dia. La continuidad supera al cambio brusco','Escuchar la voz del cuerpo es el mejor autocuidado','Cuando tengas dudas, consulta a Yoshi. No lo lleves todo solo'],
@@ -1012,10 +1013,10 @@ const translations = {
     prompts: ['What sensations is your body feeling today?','What can you be grateful for right now?','What was your most mindful action today?','What was your step toward your dream today?','What is your body telling you?','Was there a moment you were in flow today?','What is your ki asking for?'],
     selfcareTitle: 'Self-Care · 養生',
     sc: {
-      food: {title:'🥗 Nutrition', desc:'Food that nourishes the body. Reviewing diet from an Eastern medicine perspective.', btn:'▶ Yoshi YouTube Channel'},
+      food: {title:'🥗 Nutrition', desc:'Food that nourishes the body. Reviewing diet from an Eastern medicine perspective.', btn:'▶ Watch nutrition video'},
       exercise: {title:'🤸 Exercise', desc:'Samurai Reset exercises to care for your body every day. See all videos in Body tab.', btn:'▶ Go to Samurai Reset videos'},
       sleep: {title:'🌙 Sleep & Rest', desc:'Quality sleep is the greatest self-care. Tanden breathing before bed for deep sleep.', btn:'▶ Meditation & breathing'},
-      mental: {title:'🧘 Mental Care', desc:'Release anxiety through the body. Yoshi podcast helps balance the mind.', btn:'🎙 Listen to Yoshi podcast'},
+      mental: {title:'🧘 Mental Care', desc:'Release anxiety through the body. Yoshi podcast helps balance the mind.', btn:'🎙 Listen to Yoshi podcast', selfcareBtn:'▶ Watch self-care video'},
       pro: {title:'🏥 Consult a Professional', desc:'If body issues persist, please consult Yoshi clinic or a medical professional.'},
       guideTitle: 'Self-Care Foundations',
       g: ['Balance of food, movement, sleep and mind is the foundation','A little each day. Consistency beats sudden change','Listening to your body is the best self-care','When in doubt, consult Yoshi. Do not carry it alone'],
@@ -1096,6 +1097,7 @@ function updateSelfcareLang(t) {
   if(e('sc-mental-title')) e('sc-mental-title').textContent = sc.mental.title;
   if(e('sc-mental-desc')) e('sc-mental-desc').textContent = sc.mental.desc;
   if(e('sc-mental-btn')) e('sc-mental-btn').textContent = sc.mental.btn;
+  if(e('sc-selfcare-btn') && sc.mental.selfcareBtn) e('sc-selfcare-btn').textContent = sc.mental.selfcareBtn;
   if(e('sc-pro-title')) e('sc-pro-title').textContent = sc.pro.title;
   if(e('sc-pro-desc')) e('sc-pro-desc').textContent = sc.pro.desc;
   if(e('sc-guide-title')) e('sc-guide-title').textContent = sc.guideTitle;
@@ -1327,6 +1329,19 @@ function updateLangGuideContent() {
   document.getElementById('lgBtn').textContent = g.btn;
   document.getElementById('lgSkip').textContent = g.skip;
 }
+
+// ===== SELFCARE VIDEOS =====
+function playSelfcareVideo(videoId, type) {
+  const titles = {
+    food: {ja:'食事と身体感覚', es:'Alimentación y sensación corporal', en:'Nutrition and body sensation'},
+    selfcare: {ja:'セルフケア実践', es:'Práctica de autocuidado', en:'Self-care practice'}
+  };
+  const title = (titles[type] || titles.food)[currentLang] || (titles[type] || titles.food).ja;
+  document.getElementById('videoTitleBar').textContent = title;
+  document.getElementById('videoFrame').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+  document.getElementById('videoOverlay').classList.add('show');
+}
+
 function openBooking() { window.open('https://www.shiatsuyoshi.com', '_blank'); }
 
 // ===== PREMIUM =====
