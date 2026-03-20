@@ -694,18 +694,18 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <div class="booking-section">
     <div class="booking-card">
       <div class="booking-title">Clínica Yoshi</div>
-      <div class="booking-sub">マドリード · MADRID · 整体指圧</div>
+      <div class="booking-sub" id="bookingSub">マドリード · MADRID · 整体指圧</div>
       <button class="booking-btn" id="bookingBtn" onclick="openBooking()">🗓 オンライン予約</button>
     </div>
     <div class="clinic-info">
       <div class="clinic-info-item"><span class="clinic-info-icon">📍</span><span>Calle Velázquez, 73 Bajo B.<br>28006 Madrid</span></div>
-      <div class="clinic-info-item"><span class="clinic-info-icon">🕐</span><span>月〜金 10:00–21:00<br>土 10:00–14:00 / 日 休</span></div>
-      <div class="clinic-info-item"><span class="clinic-info-icon">📞</span><span>606 054 229（WhatsApp可）</span></div>
+      <div class="clinic-info-item"><span class="clinic-info-icon">🕐</span><span id="clinicHours">月〜金 10:00–21:00<br>土 10:00–14:00 / 日 休</span></div>
+      <div class="clinic-info-item"><span class="clinic-info-icon">📞</span><span id="clinicPhone">606 054 229（WhatsApp可）</span></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">🎙</span><a href="https://podcasts.apple.com/es/podcast/id1659916913" target="_blank" style="color:var(--teal);text-decoration:none">Yoshiの聞く(効く)チャンネル · 292話</a></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">📺</span><a href="https://youtu.be/MJdYrTwRizo" target="_blank" style="color:var(--teal);text-decoration:none">YouTube: Yoshi clínica de Seitai shiatsu</a></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">📸</span><a href="https://www.instagram.com/yoshishiatsu" target="_blank" style="color:var(--teal);text-decoration:none">Instagram: @yoshishiatsu</a></div>
     </div>
-    <div class="zen-divider">縁</div>
+    <div class="zen-divider" id="bookingDivider">縁</div>
     <div class="meditation-guide">
       <div class="guide-title" id="sessionGuideTitle">セッションの流れ</div>
       <div class="guide-step" id="sessionG1">① まず「本物のリラクゼーション」を体験する</div>
@@ -911,6 +911,10 @@ const translations = {
       guideTitle: '養生の基本',
       g: ['食・動・眠・心の4つのバランスが養生の基本','毎日少しずつ丁寧に。急激な変化より継続が力','身体の声を聴くことが、最良のセルフケア','困ったときはYoshiに相談。一人で抱え込まない'],
     },
+    bookingSub: 'マドリード · MADRID · 整体指圧',
+    clinicHours: '月〜金 10:00–21:00<br>土 10:00–14:00 / 日 休',
+    clinicPhone: '606 054 229（WhatsApp可）',
+    bookingDivider: '縁',
     sessionGuideTitle: 'セッションの流れ',
     sessionG: ['① まず「本物のリラクゼーション」を体験する','② 日常でその感覚を自分で再現できるようになる','③ 他者にも分かち合えるようになる','④ 気を感じる生き方が自然に広がる'],
     termsTitle: '利用規約',
@@ -966,6 +970,10 @@ const translations = {
       guideTitle: 'Fundamentos del autocuidado',
       g: ['El equilibrio de alimentacion, movimiento, sueno y mente es la base','Poco a poco cada dia. La continuidad supera al cambio brusco','Escuchar la voz del cuerpo es el mejor autocuidado','Cuando tengas dudas, consulta a Yoshi. No lo lleves todo solo'],
     },
+    bookingSub: 'Madrid · MADRID · Shiatsu y Seitai',
+    clinicHours: 'Lun-Vie 10:00–21:00<br>Sáb 10:00–14:00 / Dom cerrado',
+    clinicPhone: '606 054 229 (WhatsApp disponible)',
+    bookingDivider: '縁',
     sessionGuideTitle: 'Cómo es la sesión',
     sessionG: ['① Primero experimenta la relajación auténtica','② Aprende a reproducir esa sensación en tu vida diaria','③ Compártela con otros','④ El estilo de vida sintiendo el ki se expande naturalmente'],
     termsTitle: 'Términos de uso',
@@ -1021,6 +1029,10 @@ const translations = {
       guideTitle: 'Self-Care Foundations',
       g: ['Balance of food, movement, sleep and mind is the foundation','A little each day. Consistency beats sudden change','Listening to your body is the best self-care','When in doubt, consult Yoshi. Do not carry it alone'],
     },
+    bookingSub: 'Madrid · MADRID · Shiatsu & Seitai',
+    clinicHours: 'Mon–Fri 10:00–21:00<br>Sat 10:00–14:00 / Sun closed',
+    clinicPhone: '606 054 229 (WhatsApp available)',
+    bookingDivider: '縁',
     sessionGuideTitle: 'How sessions work',
     sessionG: ['① First experience authentic relaxation','② Learn to recreate that sensation in daily life','③ Share it with others','④ A life feeling ki naturally spreads'],
     termsTitle: 'Terms of Use',
@@ -1064,6 +1076,9 @@ function setLang(lang) {
   const sb = document.getElementById('scoreUpBadge'); if(sb) sb.textContent=t.scoreUp;
   // Booking
   const bb = document.getElementById('bookingBtn'); if(bb) bb.textContent=t.bookingBtn;
+  const bkSub = document.getElementById('bookingSub'); if(bkSub && t.bookingSub) bkSub.textContent=t.bookingSub;
+  const bkHrs = document.getElementById('clinicHours'); if(bkHrs && t.clinicHours) bkHrs.innerHTML=t.clinicHours;
+  const bkPh = document.getElementById('clinicPhone'); if(bkPh && t.clinicPhone) bkPh.textContent=t.clinicPhone;
   // Yoshi
   document.getElementById('yoshiDisclaimer').textContent = t.yoshiDisclaimer;
   document.getElementById('yoshiInput').placeholder = t.yoshiPlaceholder;
