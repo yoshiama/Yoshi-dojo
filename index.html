@@ -403,7 +403,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       </div>
       <div class="terms-section">
         <div class="terms-section-title" id="terms-t5">お問い合わせ</div>
-        <div class="terms-text" id="terms-b5">info@shiatsuyoshi.com / www.shiatsuyoshi.com</div>
+        <div class="terms-text" id="terms-b5"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfb6b1b9b09facb7b6beabacaaa6b0acb7b6f1bcb0b2">[email&#160;protected]</a> / www.shiatsuyoshi.com</div>
       </div>
     </div>
     <div class="terms-footer">© 2026 Yoshi Dojo · 中井経賀 · All Rights Reserved</div>
@@ -817,7 +817,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ===== VIDEOS =====
 const samuraiVideos = [
   { id:'MJdYrTwRizo', ja:'サムライリセット とは', es:'Qué es el Samurai Reset', en:'What is Samurai Reset' },
@@ -1073,10 +1073,10 @@ function setLang(lang) {
   t.sessionG.forEach((g,i) => { const el=document.getElementById('sessionG'+(i+1)); if(el) el.textContent=g; });
   updateScore(); updateStreakDisplay();
   // Vision section
-  const vst = document.getElementById('visionSectionTitle');
-  if(vst) { const vs = {ja:'人 生 全 分 野 の 願 望', es:'Visión de Vida · Todos los Ámbitos', en:'Life Vision · All Domains'}; vst.textContent = vs[lang]||vs.ja; }
-  const vsb = document.getElementById('vizStartBtn');
-  if(vsb) { const vbTxt = {ja:'🌅 毎朝のビジョン視覚化を始める', es:'🌅 Comenzar visualización matutina', en:'🌅 Start morning vision visualization'}; vsb.textContent = vbTxt[lang]||vbTxt.ja; }
+  const _vst = document.getElementById('visionTitle');
+  if(_vst) { const _vs = {ja:'人 生 全 分 野 の 願 望', es:'Visión · Todos los Ámbitos', en:'Life Vision · All Domains'}; _vst.textContent = _vs[lang]||_vs.ja; }
+  const _vsb = document.getElementById('vizBtn');
+  if(_vsb) { const _vbTxt = {ja:'🌅 毎朝のビジョン視覚化を始める', es:'🌅 Comenzar visualización matutina', en:'🌅 Start morning vision visualization'}; _vsb.textContent = _vbTxt[lang]||_vbTxt.ja; }
   const vot = document.getElementById('vizOverlayTitle');
   if(vot) { const vov = {ja:'毎朝のビジョン視覚化', es:'Visualización matutina', en:'Morning Vision Visualization'}; vot.textContent = vov[lang]||vov.ja; }
   const vcb = document.getElementById('vizCloseBtn');
@@ -1807,15 +1807,4 @@ function showTerms() {
   });
   document.getElementById('termsOverlay').classList.add('show');
 }
-function closeTerms() { document.getElementById('termsOverlay').classList.remove('show'); }
-
-// ===== INIT =====
-updateLangGuideContent();
-renderVideoList();
-updateBodyCheckLang();
-updateDateDisplay();
-updateSelfcareLang(translations[currentLang]);
-setTimeout(showDailyQuote, 800);
-</script>
-</body>
-</html>
+function closeTerms() { document.getElementById('termsOverlay').classList.re
