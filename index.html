@@ -1418,14 +1418,8 @@ function updatePopupLang() {
 
 // ===== SELFCARE VIDEOS =====
 function playSelfcareVideo(videoId, type) {
-  const titles = {
-    food: {ja:'食事と身体感覚', es:'Alimentación y sensación corporal', en:'Nutrition and body sensation'},
-    selfcare: {ja:'セルフケア実践', es:'Práctica de autocuidado', en:'Self-care practice'}
-  };
-  const title = (titles[type] || titles.food)[currentLang] || (titles[type] || titles.food).ja;
-  document.getElementById('videoTitleBar').textContent = title;
-  document.getElementById('videoFrame').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
-  document.getElementById('videoOverlay').classList.add('show');
+  // エラー153対策：埋め込み不可の動画はYouTubeで直接開く
+  window.open('https://www.youtube.com/watch?v=' + videoId, '_blank');
 }
 
 function openBooking() { window.open('https://www.shiatsuyoshi.com', '_blank'); }
