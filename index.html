@@ -416,12 +416,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <button class="reminder-close" onclick="dismissReminder()">×</button>
 </div>
 
-<!-- Language Bar -->
-<div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
-  <button class="lang-btn" onclick="setLang('es')">Español</button>
-  <button class="lang-btn" onclick="setLang('en')">English</button>
-</div>
+
 
 <!-- Header -->
 <div class="header">
@@ -810,7 +805,12 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <div style="margin-top:12px;font-size:10px;color:#aaa;letter-spacing:0.2em;">© 2026 Yoshi Dojo · 中井経賀 · All Rights Reserved</div>
   <div style="margin-top:6px"><button onclick="showTerms()" style="background:none;border:none;font-size:10px;color:#aaa;cursor:pointer;letter-spacing:0.2em;text-decoration:underline" id="termsBtn">利用規約 · Terms · Términos</button></div>
 </div>
-
+<!-- Language Float -->
+<div id="langFloat" style="position:fixed;bottom:24px;right:88px;display:flex;gap:6px;z-index:201;">
+  <button onclick="setLang('ja')" id="flag-ja" style="width:42px;height:42px;border-radius:50%;border:2px solid #c9a84c;background:#1a1612;font-size:20px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="日本語">🇯🇵</button>
+  <button onclick="setLang('es')" id="flag-es" style="width:42px;height:42px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:20px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="Español">🇪🇸</button>
+  <button onclick="setLang('en')" id="flag-gb" style="width:42px;height:42px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:20px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="English">🇬🇧</button>
+</div>
 <!-- Mini Yoshi AI -->
 <button class="yoshi-toggle" onclick="toggleYoshi()">賀</button>
 <div class="yoshi-panel" id="yoshiPanel">
@@ -1066,8 +1066,14 @@ const translations = {
 
 function setLang(lang) {
   currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+ document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const lbEl = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
+  if(lbEl) lbEl.classList.add('active');
+  ['ja','es','en'].forEach(l => {
+    const ids = {ja:'flag-ja',es:'flag-es',en:'flag-gb'};
+    const f = document.getElementById(ids[l]);
+    if(f){ f.style.borderColor = l===lang?'#c9a84c':'transparent'; f.style.opacity = l===lang?'1':'0.5'; }
+  });
   const t = translations[lang];
   const navIds = ['meditation','vision','diary','body','selfcare','premium','booking'];
   navIds.forEach((id,i) => { const el=document.getElementById('nav-'+id); if(el) el.textContent=t.nav[i]; });
