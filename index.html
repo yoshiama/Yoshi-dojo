@@ -438,6 +438,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <button class="nav-btn" onclick="showSection('selfcare',this)" id="nav-selfcare">養　生</button>
   <button class="nav-btn" onclick="showSection('premium',this)" id="nav-premium">講　座</button>
   <button class="nav-btn" onclick="showSection('booking',this)" id="nav-booking">予　約</button>
+  <button class="nav-btn" onclick="showSection('wheel',this)" id="nav-wheel">車　輪</button>
 </nav>
 
 <!-- MEDITATION -->
@@ -630,7 +631,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
         </div>
       </div>
       <div class="premium-card-desc">Yoshiが20年間マドリードで積み重ねた、身体感覚・気・今に生きる哲学の集大成。あなたの人生の羅針盤になる一冊。</div>
-      <button class="premium-card-btn gold" onclick="handlePremium('book')">📖 予約購入する</button>
+      <button class="premium-card-btn gold" onclick="window.open('https://www.amazon.co.jp/dp/B0GWWJVSTN','_blank')">📖 Kindleで今すぐ読む</button>
     </div>
     <div class="premium-card">
       <div class="premium-badge">人気</div>
@@ -670,6 +671,18 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <button class="premium-card-btn" onclick="handlePremium('session')">📅 セッションを予約</button>
     </div>
   </div>
+  <!-- MailChimp Newsletter -->
+  <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(42,107,124,0.05));border:1px solid var(--mist);border-radius:3px;padding:20px 24px;margin-bottom:16px;">
+    <div style="font-size:10px;letter-spacing:0.5em;color:var(--gold);margin-bottom:8px;" id="mcTitle">📩 無料ニュースレター</div>
+    <div style="font-size:12px;color:#666;line-height:1.8;margin-bottom:14px;" id="mcDesc">Yoshiの気・身体感覚の知恵を毎週お届け。登録無料。</div>
+    <form action="https://shiatsuyoshi.us21.list-manage.com/subscribe/post" method="POST" target="_blank" style="display:flex;gap:8px;">
+      <input type="hidden" name="u" value="MAILCHIMP_U">
+      <input type="hidden" name="id" value="MAILCHIMP_ID">
+      <input type="email" name="EMAIL" id="mcEmail" required placeholder="your@email.com" style="flex:1;background:rgba(255,255,255,0.8);border:1px solid var(--mist);border-radius:2px;padding:10px 12px;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ink);outline:none;">
+      <button type="submit" style="background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.2em;padding:10px 18px;cursor:pointer;border-radius:1px;font-weight:700;white-space:nowrap;" id="mcBtn">登録</button>
+    </form>
+  </div>
+
   <div class="stripe-notice">
     <div class="stripe-notice-title">安全な決済 · PAGO SEGURO</div>
     <div class="stripe-notice-text">Stripeによる安全な決済対応予定。<br>クレジットカード・PayPal・Apple Pay対応。</div>
@@ -798,6 +811,23 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   </div>
 </div>
 
+<!-- WHEEL OF LIFE -->
+<section class="section" id="wheel">
+  <div class="section-title" id="wheelTitle">人 生 の 車 輪</div>
+  <div style="text-align:center;margin-bottom:16px;">
+    <canvas id="wheelChart" width="300" height="300" style="max-width:100%;"></canvas>
+  </div>
+  <div id="wheelSliders" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;"></div>
+  <button onclick="renderWheel()" style="width:100%;background:var(--ink);color:var(--paper);border:none;font-family:'Noto Serif JP',serif;font-size:13px;letter-spacing:0.4em;padding:14px;cursor:pointer;border-radius:1px;margin-bottom:16px;" id="wheelUpdateBtn">車輪を更新する</button>
+  <div class="meditation-guide">
+    <div class="guide-title" id="wheelGuideTitle">車輪の使い方</div>
+    <div class="guide-step" id="wheelG1">各分野を10点満点で評価する</div>
+    <div class="guide-step" id="wheelG2">バランスの取れた円形になるほど、人生が安定している</div>
+    <div class="guide-step" id="wheelG3">低いスコアの分野に、今週の意識を向けてみる</div>
+    <div class="guide-step" id="wheelG4">毎月記録して、成長の軌跡を確認する</div>
+  </div>
+</section>
+
 <!-- Footer -->
 <div class="footer-seal">
   <div class="seal">今</div>
@@ -806,10 +836,14 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <div style="margin-top:6px"><button onclick="showTerms()" style="background:none;border:none;font-size:10px;color:#aaa;cursor:pointer;letter-spacing:0.2em;text-decoration:underline" id="termsBtn">利用規約 · Terms · Términos</button></div>
 </div>
 <!-- Language Float -->
-<div id="langFloat" style="position:fixed;bottom:24px;right:88px;display:flex;gap:6px;z-index:201;">
-  <button onclick="setLang('ja')" id="flag-ja" style="width:42px;height:42px;border-radius:50%;border:2px solid #c9a84c;background:#1a1612;font-size:20px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="日本語">🇯🇵</button>
-  <button onclick="setLang('es')" id="flag-es" style="width:42px;height:42px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:20px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="Español">🇪🇸</button>
-  <button onclick="setLang('en')" id="flag-gb" style="width:42px;height:42px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:20px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="English">🇬🇧</button>
+<div id="langFloat" style="position:fixed;bottom:24px;right:88px;display:grid;grid-template-columns:repeat(4,36px);grid-template-rows:repeat(2,36px);gap:4px;z-index:201;">
+  <button onclick="setLang('ja')" id="flag-ja" style="width:36px;height:36px;border-radius:50%;border:2px solid #c9a84c;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:1;" title="日本語">🇯🇵</button>
+  <button onclick="setLang('es')" id="flag-es" style="width:36px;height:36px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="Español">🇪🇸</button>
+  <button onclick="setLang('en')" id="flag-gb" style="width:36px;height:36px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="English">🇬🇧</button>
+  <button onclick="setLang('fr')" id="flag-fr" style="width:36px;height:36px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="Français">🇫🇷</button>
+  <button onclick="setLang('pt')" id="flag-pt" style="width:36px;height:36px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="Português">🇧🇷</button>
+  <button onclick="setLang('zh')" id="flag-zh" style="width:36px;height:36px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="中文">🇨🇳</button>
+  <button onclick="setLang('ko')" id="flag-ko" style="width:36px;height:36px;border-radius:50%;border:2px solid transparent;background:#1a1612;font-size:17px;cursor:pointer;transition:all 0.2s;opacity:0.5;" title="한국어">🇰🇷</button>
 </div>
 <!-- Mini Yoshi AI -->
 <button class="yoshi-toggle" onclick="toggleYoshi()">賀</button>
@@ -934,6 +968,10 @@ const translations = {
     bookingDivider: '縁',
     sessionGuideTitle: 'セッションの流れ',
     sessionG: ['① まず「本物のリラクゼーション」を体験する','② 日常でその感覚を自分で再現できるようになる','③ 他者にも分かち合えるようになる','④ 気を感じる生き方が自然に広がる'],
+    wheelTitle: '人 生 の 車 輪',
+    wheelUpdateBtn: '車輪を更新する',
+    wheelGuideTitle: '車輪の使い方',
+    wheelG: ['各分野を10点満点で評価する','バランスの取れた円形になるほど、人生が安定している','低いスコアの分野に、今週の意識を向けてみる','毎月記録して、成長の軌跡を確認する'],
     termsTitle: '利用規約',
     termsT: ['サービスについて','免責事項','AIについて','著作権','お問い合わせ'],
     termsB: [
@@ -993,6 +1031,10 @@ const translations = {
     bookingDivider: '縁',
     sessionGuideTitle: 'Cómo es la sesión',
     sessionG: ['① Primero experimenta la relajación auténtica','② Aprende a reproducir esa sensación en tu vida diaria','③ Compártela con otros','④ El estilo de vida sintiendo el ki se expande naturalmente'],
+    wheelTitle: 'Rueda de la vida',
+    wheelUpdateBtn: 'Actualizar la rueda',
+    wheelGuideTitle: 'Cómo usar la rueda',
+    wheelG: ['Evalúa cada dominio sobre 10','Cuanto más equilibrado el círculo, más estable es la vida','Enfoca tu atención esta semana en los dominios con puntuación baja','Registra mensualmente para ver tu progreso'],
     termsTitle: 'Términos de uso',
     termsT: ['Acerca del servicio','Descargo de responsabilidad','Sobre la IA','Derechos de autor','Contacto'],
     termsB: [
@@ -1003,8 +1045,236 @@ const translations = {
       'info@shiatsuyoshi.com / www.shiatsuyoshi.com'
     ],
   },
+  fr: {
+    nav: ['Méditation','Vision','Journal','Corps','Soins','Cours','Réserver','Roue'],
+    logoSub: 'Sensation corporelle · Ki · Vivre le présent',
+    breathStart: 'Commencer la méditation', breathStop: 'Terminer',
+    breathBegin: 'Inspirez lentement…', breathDone: 'Bien fait 🙏',
+    breathTap: 'Touchez le cercle pour commencer',
+    phases: [{text:'Inspirez 4s',dur:4000},{text:'Retenez 7s',dur:7000},{text:'Expirez 8s',dur:8000}],
+    guideTitle: 'Invitation au présent',
+    steps: ['① Redressez le dos, portez la conscience au tanden','② Inspirez 4s, retenez 7s, expirez 8s','③ Si des pensées arrivent, remarquez et revenez','④ Sentez le ki remplir tout votre corps'],
+    visionTitle: 'Vision de vie · Tous les domaines',
+    vizBtn: '🌅 Commencer la visualisation matinale',
+    visionGuideTitle: 'Comment utiliser la vision',
+    visionG: ['Appuyez chaque matin pour visualiser tous les domaines','Recevez sans attachement, comme si cela existait déjà','Le vrai bonheur naît quand tous les domaines sont en harmonie','Les actions soigneuses d\'aujourd\'hui attirent naturellement vos rêves'],
+    moodTitle: 'Humeur du jour',
+    saveDiary: 'Sauvegarder la note', savedNote: '✓ Sauvegardé',
+    diaryPlaceholder: 'Écrivez votre réflexion du jour…',
+    samuraiDesc: 'Regardez la vidéo Samurai Reset de Yoshi pour rééquilibrer votre corps.',
+    scoreUp: '🎉 ＋10 Score Ki augmenté!',
+    bookingBtn: '🗓 Réserver en ligne',
+    yoshiDisclaimer: '🌿 Je suis une IA. Je ne peux pas faire de diagnostics médicaux.',
+    yoshiPlaceholder: 'Parlez à Yoshi…',
+    streakMsg: (n) => `🔥 ${n} jours consécutifs`,
+    reminderMsg: '🌿 Bienvenue. Aujourd\'hui aussi, avec ki.',
+    scoreLabels: ['Ki bloqué','En chemin','Ki coule','Ki en plénitude'],
+    bodyTitle: 'Vérification de sensation corporelle',
+    bodySummaryTitle: 'Score Ki actuel',
+    bodyItems: [
+      {name:'Tanden', desc:'3 cm sous le nombril. Ressentez-vous chaleur ou lourdeur?', low:'Ne ressens pas', high:'Je le ressens fort'},
+      {name:'Respiration', desc:'Respirez-vous profondément? Avec le ventre, pas la poitrine?', low:'Superficielle', high:'Profonde et riche'},
+      {name:'Relâchement', desc:'Avez-vous relâché la tension des épaules, cou et mâchoire?', low:'Tendu', high:'Complètement relâché'},
+      {name:'Flux de Ki', desc:'Sentez-vous de l\'énergie ou chaleur dans tout votre corps?', low:'Bloqué', high:'Coulant librement'},
+    ],
+    prompts: ['Quelles sensations a votre corps aujourd\'hui?','De quoi pouvez-vous être reconnaissant?','Quelle a été votre action la plus soigneuse?','Quel était votre pas vers votre rêve?','Que vous dit votre corps?','Y a-t-il eu un moment de fluidité?','Que demande votre ki?'],
+    selfcareTitle: 'Soins personnels · 養生',
+    sc: {
+      food: {title:'🥗 Alimentation', desc:'Nutrition qui réjouit le corps. Vision de la médecine orientale.', btn:'▶ Voir vidéo nutrition'},
+      exercise: {title:'🤸 Exercice', desc:'Exercices Samurai Reset pour prendre soin du corps chaque jour.', btn:'▶ Aller aux vidéos'},
+      sleep: {title:'🌙 Sommeil et repos', desc:'Un sommeil de qualité est le meilleur soin. Respiration tanden avant de dormir.', btn:'▶ Méditation et respiration'},
+      mental: {title:'🧘 Soin mental', desc:'Libérez l\'anxiété par le corps. Le podcast de Yoshi équilibre l\'esprit.', btn:'🎙 Écouter le podcast', selfcareBtn:'▶ Voir vidéo de soins'},
+      pro: {title:'🏥 Consulter un professionnel', desc:'Si les inconforts persistent, consultez la clinique Yoshi ou un médecin.'},
+      guideTitle: 'Fondements des soins',
+      g: ['L\'équilibre alimentation, mouvement, sommeil et esprit est la base','Un peu chaque jour. La continuité dépasse le changement brusque','Écouter la voix du corps est le meilleur soin','En cas de doute, consultez Yoshi'],
+    },
+    bookingSub: 'Madrid · MADRID · Shiatsu et Seitai',
+    clinicHours: 'Lun–Ven 10:00–21:00<br>Sam 10:00–14:00 / Dim fermé',
+    clinicPhone: '606 054 229 (WhatsApp disponible)',
+    bookingDivider: '縁',
+    sessionGuideTitle: 'Comment se déroule la séance',
+    sessionG: ['① Expérimentez d\'abord la vraie relaxation','② Apprenez à recréer cette sensation','③ Partagez-la avec les autres','④ Une vie ressentant le ki se répand naturellement'],
+    termsTitle: 'Conditions d\'utilisation',
+    termsT: ['À propos du service','Avertissement','À propos de l\'IA','Droits d\'auteur','Contact'],
+    termsB: ['Yoshi Dojo est une application de bien-être.','L\'information est générale, non médicale.','Mini Yoshi est une IA automatique, pas le vrai Yoshi.','© 2026 Yoshi Dojo · Nakai Tsuneyoshi · All Rights Reserved.','info@shiatsuyoshi.com / www.shiatsuyoshi.com'],
+    wheelTitle: 'Roue de la vie',
+    wheelUpdateBtn: 'Mettre à jour la roue',
+    wheelGuideTitle: 'Comment utiliser la roue',
+    wheelG: ['Évaluez chaque domaine sur 10','Plus le cercle est équilibré, plus la vie est stable','Portez votre attention sur les domaines à faible score','Enregistrez chaque mois pour voir votre progression'],
+  },
+  pt: {
+    nav: ['Meditação','Visão','Diário','Corpo','Autocuidado','Cursos','Reserva','Roda'],
+    logoSub: 'Sensação corporal · Ki · Viver o presente',
+    breathStart: 'Começar meditação', breathStop: 'Terminar',
+    breathBegin: 'Inspire lentamente…', breathDone: 'Muito bem 🙏',
+    breathTap: 'Toque o círculo para começar',
+    phases: [{text:'Inspire 4s',dur:4000},{text:'Segure 7s',dur:7000},{text:'Expire 8s',dur:8000}],
+    guideTitle: 'Convite ao presente',
+    steps: ['① Endireite as costas, leve a consciência ao tanden','② Inspire 4s, segure 7s, expire 8s','③ Se pensamentos chegarem, note e volte','④ Sinta o ki preenchendo todo o corpo'],
+    visionTitle: 'Visão de vida · Todos os domínios',
+    vizBtn: '🌅 Começar visualização matinal',
+    visionGuideTitle: 'Como usar a visão',
+    visionG: ['Pressione cada manhã para visualizar todos os domínios','Receba sem apego, sentindo que já existe','A verdadeira felicidade surge quando todos os domínios estão em harmonia','Ações cuidadosas hoje atraem naturalmente seus sonhos'],
+    moodTitle: 'Humor hoje',
+    saveDiary: 'Salvar nota', savedNote: '✓ Salvo',
+    diaryPlaceholder: 'Escreva sua reflexão do dia…',
+    samuraiDesc: 'Assista o vídeo Samurai Reset do Yoshi.',
+    scoreUp: '🎉 ＋10 Pontuação Ki aumentada!',
+    bookingBtn: '🗓 Reservar online',
+    yoshiDisclaimer: '🌿 Sou uma IA. Não posso fazer diagnósticos médicos.',
+    yoshiPlaceholder: 'Fale com Yoshi…',
+    streakMsg: (n) => `🔥 ${n} dias seguidos`,
+    reminderMsg: '🌿 Bem-vindo. Hoje também, com ki.',
+    scoreLabels: ['Ki bloqueado','No caminho','Ki fluindo','Ki em plenitude'],
+    bodyTitle: 'Verificação de sensação corporal',
+    bodySummaryTitle: 'Pontuação Ki atual',
+    bodyItems: [
+      {name:'Tanden', desc:'3cm abaixo do umbigo. Sente calor ou peso?', low:'Não sinto', high:'Sinto forte'},
+      {name:'Respiração', desc:'Sua respiração é profunda? Com o abdômen?', low:'Superficial', high:'Profunda e rica'},
+      {name:'Relaxamento', desc:'Soltou a tensão dos ombros, pescoço e mandíbula?', low:'Tenso', high:'Completamente relaxado'},
+      {name:'Fluxo de Ki', desc:'Sente energia ou calor fluindo pelo corpo?', low:'Bloqueado', high:'Fluindo livremente'},
+    ],
+    prompts: ['Que sensações seu corpo sente hoje?','Do que você pode ser grato agora?','Qual foi sua ação mais cuidadosa hoje?','Qual foi seu passo em direção ao sonho?','O que seu corpo está dizendo?','Houve um momento de fluidez hoje?','O que seu ki está pedindo?'],
+    selfcareTitle: 'Autocuidado · 養生',
+    sc: {
+      food: {title:'🥗 Alimentação', desc:'Nutrição que alegra o corpo. Visão da medicina oriental.', btn:'▶ Ver vídeo de alimentação'},
+      exercise: {title:'🤸 Exercício', desc:'Exercícios Samurai Reset para cuidar do corpo.', btn:'▶ Ir para a lista de vídeos'},
+      sleep: {title:'🌙 Sono e descanso', desc:'Sono de qualidade é o melhor autocuidado.', btn:'▶ Meditação e respiração'},
+      mental: {title:'🧘 Cuidado mental', desc:'Libere a ansiedade através do corpo.', btn:'🎙 Ouvir podcast de Yoshi', selfcareBtn:'▶ Ver vídeo de autocuidado'},
+      pro: {title:'🏥 Consultar um profissional', desc:'Se os problemas persistirem, consulte a clínica Yoshi.'},
+      guideTitle: 'Fundamentos do autocuidado',
+      g: ['Equilíbrio de alimentação, movimento, sono e mente é a base','Um pouco cada dia. A continuidade supera a mudança brusca','Ouvir a voz do corpo é o melhor autocuidado','Em caso de dúvida, consulte Yoshi'],
+    },
+    bookingSub: 'Madrid · MADRID · Shiatsu e Seitai',
+    clinicHours: 'Seg–Sex 10:00–21:00<br>Sáb 10:00–14:00 / Dom fechado',
+    clinicPhone: '606 054 229 (WhatsApp disponível)',
+    bookingDivider: '縁',
+    sessionGuideTitle: 'Como funciona a sessão',
+    sessionG: ['① Primeiro experiencie o relaxamento autêntico','② Aprenda a recriar essa sensação','③ Compartilhe com os outros','④ Uma vida sentindo ki se expande naturalmente'],
+    termsTitle: 'Termos de uso',
+    termsT: ['Sobre o serviço','Aviso legal','Sobre a IA','Direitos autorais','Contato'],
+    termsB: ['Yoshi Dojo é um app de bem-estar.','A informação é geral, não médica.','Mini Yoshi é uma IA automática.','© 2026 Yoshi Dojo · All Rights Reserved.','info@shiatsuyoshi.com'],
+    wheelTitle: 'Roda da vida',
+    wheelUpdateBtn: 'Atualizar a roda',
+    wheelGuideTitle: 'Como usar a roda',
+    wheelG: ['Avalie cada domínio de 0 a 10','Quanto mais equilibrado o círculo, mais estável é a vida','Foque nos domínios com pontuação baixa esta semana','Registre mensalmente para ver seu progresso'],
+  },
+  zh: {
+    nav: ['冥想','愿望','日记','身体','养生','课程','预约','生命轮'],
+    logoSub: '身体感觉 · 气 · 活在当下',
+    breathStart: '开始冥想', breathStop: '结束',
+    breathBegin: '慢慢吸气…', breathDone: '做得好 🙏',
+    breathTap: '点击圆圈开始',
+    phases: [{text:'吸气 4秒',dur:4000},{text:'屏息 7秒',dur:7000},{text:'呼气 8秒',dur:8000}],
+    guideTitle: '回到当下',
+    steps: ['① 自然挺背，将意识置于丹田','② 吸气4秒，屏息7秒，呼气8秒','③ 思绪来了，察觉后轻轻回来','④ 感受气充满全身'],
+    visionTitle: '人生全领域愿望',
+    vizBtn: '🌅 开始每日晨间观想',
+    visionGuideTitle: '愿望板使用方法',
+    visionG: ['每天早上按下"开始观想"，在脑海中呈现各领域','不执着地接受，感受它已经存在','当生活各领域都调和时，真正的幸福才会来临','今天细心的行动，自然引来梦想'],
+    moodTitle: '今日心情',
+    saveDiary: '保存今日感悟', savedNote: '✓ 已保存',
+    diaryPlaceholder: '写下今日的感悟…',
+    samuraiDesc: '观看Yoshi的武士重置视频来调整身体。',
+    scoreUp: '🎉 ＋10 气分提升！',
+    bookingBtn: '🗓 在线预约',
+    yoshiDisclaimer: '🌿 我是AI，无法进行医疗诊断。',
+    yoshiPlaceholder: '向Yoshi提问…',
+    streakMsg: (n) => `🔥 连续${n}天`,
+    reminderMsg: '🌿 欢迎回来。今天也与气同在。',
+    scoreLabels: ['气滞','调和中','气在充盈','气充沛'],
+    bodyTitle: '身体感觉检查',
+    bodySummaryTitle: '当前气分',
+    bodyItems: [
+      {name:'丹田', desc:'脐下3厘米。感受这里的温热或沉重感？', low:'感觉不到', high:'感觉强烈'},
+      {name:'呼吸', desc:'你的呼吸深吗？是腹式呼吸吗？', low:'浅', high:'深且丰富'},
+      {name:'放松', desc:'肩膀、颈部、下颌的力气放下了吗？', low:'紧张', high:'完全放松'},
+      {name:'气的流动', desc:'感受到能量或温热在全身流动吗？', low:'滞塞', high:'自由流动'},
+    ],
+    prompts: ['今天身体有什么感觉？','现在有什么可以感恩的？','今天最细心的行动是什么？','今天向梦想迈进了一步是什么？','身体在告诉你什么？','今天有流畅的时刻吗？','气在寻求什么？'],
+    selfcareTitle: '养生 · 自我关爱',
+    sc: {
+      food: {title:'🥗 饮食营养', desc:'令身体欢喜的饮食。从东方医学角度重新审视饮食。', btn:'▶ 观看饮食视频'},
+      exercise: {title:'🤸 体操运动', desc:'武士重置体操，每天调整身体。', btn:'▶ 前往视频列表'},
+      sleep: {title:'🌙 睡眠休息', desc:'高质量睡眠是最好的养生。', btn:'▶ 冥想与呼吸'},
+      mental: {title:'🧘 心理保健', desc:'通过身体释放焦虑。Yoshi播客调和心灵。', btn:'🎙 收听Yoshi播客', selfcareBtn:'▶ 观看自我关爱视频'},
+      pro: {title:'🏥 咨询专业人士', desc:'若身体不适持续，请咨询Yoshi诊所或医疗机构。'},
+      guideTitle: '养生基础',
+      g: ['食动眠心四方面的平衡是养生基础','每天一点点，细水长流胜于急剧变化','倾听身体的声音是最好的自我关爱','有困惑时请向Yoshi咨询，不要一个人扛'],
+    },
+    bookingSub: '马德里 · MADRID · 整体指压',
+    clinicHours: '周一至周五 10:00–21:00<br>周六 10:00–14:00 / 周日休息',
+    clinicPhone: '606 054 229（可用WhatsApp）',
+    bookingDivider: '縁',
+    sessionGuideTitle: '疗程流程',
+    sessionG: ['① 首先体验真正的放松','② 学会在日常中自我重现这种感觉','③ 与他人分享','④ 感受气的生活方式自然扩展'],
+    termsTitle: '使用条款',
+    termsT: ['关于服务','免责声明','关于AI','版权','联系方式'],
+    termsB: ['Yoshi Dojo是基于身体感觉哲学的健康应用。','本应用信息仅供参考，不构成医疗行为。','迷你Yoshi是AI自动应答系统，非真实Yoshi。','© 2026 Yoshi Dojo · All Rights Reserved.','info@shiatsuyoshi.com'],
+    wheelTitle: '生命之轮',
+    wheelUpdateBtn: '更新生命轮',
+    wheelGuideTitle: '如何使用生命轮',
+    wheelG: ['为每个领域打分（0-10分）','圆形越均匀，生活越平衡','将本周的注意力放在低分领域','每月记录，追踪成长轨迹'],
+  },
+  ko: {
+    nav: ['명상','비전','일기','신체','자기관리','강좌','예약','생명의 수레바퀴'],
+    logoSub: '신체 감각 · 기 · 현재를 살다',
+    breathStart: '명상 시작', breathStop: '종료',
+    breathBegin: '코로 천천히 들이쉬세요…', breathDone: '잘 하셨습니다 🙏',
+    breathTap: '원을 탭하여 시작하세요',
+    phases: [{text:'들이쉬기 4초',dur:4000},{text:'유지 7초',dur:7000},{text:'내쉬기 8초',dur:8000}],
+    guideTitle: '현재로의 초대',
+    steps: ['① 자연스럽게 등을 펴고 단전에 의식을 둔다','② 코로 4초 들이쉬고, 7초 유지, 8초 내쉰다','③ 생각이 오면 알아차리고 부드럽게 돌아온다','④ 기가 온몸에 가득 찬 것을 느낀다'],
+    visionTitle: '인생 전 분야의 비전',
+    vizBtn: '🌅 아침 비전 시각화 시작',
+    visionGuideTitle: '비전 활용법',
+    visionG: ['매일 아침 "시각화 시작"을 눌러 모든 분야를 이미지화한다','집착하지 않고 "이미 있는" 감각으로 받아들인다','모든 분야가 조화로울 때 진정한 행복이 생긴다','오늘의 정성스러운 행동이 자연스럽게 꿈을 끌어당긴다'],
+    moodTitle: '오늘의 기분',
+    saveDiary: '오늘의 깨달음 기록', savedNote: '✓ 저장되었습니다',
+    diaryPlaceholder: '오늘의 깨달음을 있는 그대로…',
+    samuraiDesc: 'Yoshi의 사무라이 리셋 영상으로 몸을 정돈하세요.',
+    scoreUp: '🎉 ＋10 기 점수 상승！',
+    bookingBtn: '🗓 온라인 예약',
+    yoshiDisclaimer: '🌿 저는 AI입니다. 의료 진단은 불가합니다.',
+    yoshiPlaceholder: 'Yoshi에게 말하기…',
+    streakMsg: (n) => `🔥 ${n}일 연속`,
+    reminderMsg: '🌿 어서오세요. 오늘도 기와 함께.',
+    scoreLabels: ['기의 정체','조화 중','기가 흐른다','기 충만'],
+    bodyTitle: '신체 감각 체크',
+    bodySummaryTitle: '현재 기 점수',
+    bodyItems: [
+      {name:'단전', desc:'배꼽 아래 3cm. 따뜻함이나 무게감을 느끼시나요?', low:'못 느낌', high:'강하게 느낌'},
+      {name:'호흡', desc:'호흡이 깊으신가요? 복식 호흡을 하고 있나요?', low:'얕다', high:'깊고 풍부'},
+      {name:'이완', desc:'어깨, 목, 턱의 힘이 빠졌나요?', low:'긴장', high:'완전 이완'},
+      {name:'기의 흐름', desc:'에너지나 따뜻함이 온몸에 흐르는 것을 느끼나요?', low:'막혀있다', high:'자유롭게 흐른다'},
+    ],
+    prompts: ['오늘 몸은 어떤 것을 느끼고 있나요?','지금 이 순간 무엇에 감사할 수 있나요?','오늘 가장 정성스러운 행동은 무엇이었나요?','꿈을 향한 오늘의 한 걸음은?','몸이 무엇을 전하고 있나요?','오늘 흐름을 탄 순간이 있었나요?','기가 원하는 것은 무엇인가요?'],
+    selfcareTitle: '양생 · 자기관리',
+    sc: {
+      food: {title:'🥗 식사·영양', desc:'몸이 기뻐하는 식사. 동양의학적 시각에서 식생활을 재고.', btn:'▶ Yoshi의 식사 영상 보기'},
+      exercise: {title:'🤸 체조·운동', desc:'사무라이 리셋 체조로 매일의 몸을 정돈하세요.', btn:'▶ 사무라이 리셋 영상 목록으로'},
+      sleep: {title:'🌙 수면·휴양', desc:'양질의 수면이 최고의 양생입니다.', btn:'▶ 명상·호흡으로 수면 정돈'},
+      mental: {title:'🧘 멘탈 케어', desc:'불안·스트레스를 몸에서 해방하세요.', btn:'🎙 Yoshi 팟캐스트 듣기', selfcareBtn:'▶ 셀프케어 영상 보기'},
+      pro: {title:'🏥 전문가 상담', desc:'신체 불편이 계속될 경우 Yoshi 클리닉 또는 의료기관에 상담하세요.'},
+      guideTitle: '양생의 기본',
+      g: ['식·동·면·심 네 가지 균형이 양생의 기본','매일 조금씩 정성스럽게. 급격한 변화보다 지속이 힘','몸의 소리를 듣는 것이 최고의 셀프케어','어려울 때는 Yoshi에게 상담하세요'],
+    },
+    bookingSub: '마드리드 · MADRID · 정체지압',
+    clinicHours: '월~금 10:00–21:00<br>토 10:00–14:00 / 일 휴무',
+    clinicPhone: '606 054 229（WhatsApp 가능）',
+    bookingDivider: '縁',
+    sessionGuideTitle: '세션 흐름',
+    sessionG: ['① 먼저 "진정한 이완"을 체험한다','② 일상에서 그 감각을 스스로 재현할 수 있게 된다','③ 타인과 나눌 수 있게 된다','④ 기를 느끼는 삶의 방식이 자연스럽게 퍼져나간다'],
+    termsTitle: '이용약관',
+    termsT: ['서비스 소개','면책사항','AI에 대하여','저작권','문의'],
+    termsB: ['Yoshi Dojo는 신체감각 철학 기반 웰니스 앱입니다.','본 앱의 정보는 일반적인 건강 정보 제공을 목적으로 합니다.','미니Yoshi는 AI 자동응답 시스템으로 실제 Yoshi가 아닙니다.','© 2026 Yoshi Dojo · All Rights Reserved.','info@shiatsuyoshi.com'],
+    wheelTitle: '생명의 수레바퀴',
+    wheelUpdateBtn: '수레바퀴 업데이트',
+    wheelGuideTitle: '수레바퀴 활용법',
+    wheelG: ['각 분야를 10점 만점으로 평가하세요','원형에 가까울수록 인생이 균형잡혀 있습니다','이번 주는 점수가 낮은 분야에 의식을 기울여보세요','매월 기록하여 성장의 궤적을 확인하세요'],
+  },
   en: {
-    nav: ['Meditation','Vision','Journal','Body','Self-Care','Courses','Booking'],
+    nav: ['Meditation','Vision','Journal','Body','Self-Care','Courses','Booking','Wheel'],
     logoSub: 'Body Sensation · Ki · Living the Present',
     breathStart: 'Begin meditation', breathStop: 'End',
     breathBegin: 'Inhale slowly…', breathDone: 'Well done 🙏',
@@ -1061,6 +1331,10 @@ const translations = {
       '© 2026 Yoshi Dojo · Nakai Tsuneyoshi · All Rights Reserved. Unauthorized reproduction of this app content is prohibited.',
       'info@shiatsuyoshi.com / www.shiatsuyoshi.com'
     ],
+    wheelTitle: 'Wheel of Life',
+    wheelUpdateBtn: 'Update the wheel',
+    wheelGuideTitle: 'How to use the wheel',
+    wheelG: ['Rate each domain out of 10','The more balanced the circle, the more stable life is','Focus your attention this week on low-scoring domains','Record monthly to track your growth'],
   }
 };
 
@@ -1069,14 +1343,31 @@ function setLang(lang) {
  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   const lbEl = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
   if(lbEl) lbEl.classList.add('active');
-  ['ja','es','en'].forEach(l => {
-    const ids = {ja:'flag-ja',es:'flag-es',en:'flag-gb'};
+  ['ja','es','en','fr','pt','zh','ko'].forEach(l => {
+    const ids = {ja:'flag-ja',es:'flag-es',en:'flag-gb',fr:'flag-fr',pt:'flag-pt',zh:'flag-zh',ko:'flag-ko'};
     const f = document.getElementById(ids[l]);
     if(f){ f.style.borderColor = l===lang?'#c9a84c':'transparent'; f.style.opacity = l===lang?'1':'0.5'; }
   });
   const t = translations[lang];
-  const navIds = ['meditation','vision','diary','body','selfcare','premium','booking'];
-  navIds.forEach((id,i) => { const el=document.getElementById('nav-'+id); if(el) el.textContent=t.nav[i]; });
+  const navIds = ['meditation','vision','diary','body','selfcare','premium','booking','wheel'];
+  navIds.forEach((id,i) => { const el=document.getElementById('nav-'+id); if(el && t.nav[i]) el.textContent=t.nav[i]; });
+  // Wheel of Life
+  const wt = document.getElementById('wheelTitle'); if(wt && t.wheelTitle) wt.textContent=t.wheelTitle;
+  const wb = document.getElementById('wheelUpdateBtn'); if(wb && t.wheelUpdateBtn) wb.textContent=t.wheelUpdateBtn;
+  const wgt = document.getElementById('wheelGuideTitle'); if(wgt && t.wheelGuideTitle) wgt.textContent=t.wheelGuideTitle;
+  if(t.wheelG) t.wheelG.forEach((g,i) => { const el=document.getElementById('wheelG'+(i+1)); if(el) el.textContent=g; });
+  // MailChimp
+  const mct = document.getElementById('mcTitle');
+  const mcd = document.getElementById('mcDesc');
+  const mcb = document.getElementById('mcBtn');
+  const mce = document.getElementById('mcEmail');
+  const mcTexts = {ja:{title:'📩 無料ニュースレター',desc:'Yoshiの気・身体感覚の知恵を毎週お届け。登録無料。',btn:'登録',ph:'your@email.com'},es:{title:'📩 Newsletter gratuito',desc:'Sabiduría de Yoshi sobre el Ki cada semana. Gratis.',btn:'Suscribirse',ph:'tu@email.com'},en:{title:'📩 Free Newsletter',desc:"Yoshi's weekly wisdom on Ki and body sensation. Free.",btn:'Subscribe',ph:'your@email.com'},fr:{title:'📩 Newsletter gratuite',desc:'La sagesse Ki de Yoshi chaque semaine. Gratuit.',btn:"S'abonner",ph:'votre@email.com'},pt:{title:'📩 Newsletter gratuita',desc:'Sabedoria de Yoshi sobre Ki toda semana. Gratuito.',btn:'Inscrever',ph:'seu@email.com'},zh:{title:'📩 免费通讯',desc:'每周收到Yoshi关于气和身体感觉的智慧。免费。',btn:'订阅',ph:'your@email.com'},ko:{title:'📩 무료 뉴스레터',desc:'매주 Yoshi의 기와 신체 감각 지혜를 받아보세요. 무료.',btn:'구독',ph:'your@email.com'}};
+  const mc = mcTexts[lang]||mcTexts.en;
+  if(mct) mct.textContent=mc.title;
+  if(mcd) mcd.textContent=mc.desc;
+  if(mcb) mcb.textContent=mc.btn;
+  if(mce) mce.placeholder=mc.ph;
+  renderWheelSliders();
   document.getElementById('logoSub').textContent = t.logoSub;
   document.getElementById('startBtn').textContent = breathingActive ? t.breathStop : t.breathStart;
   document.getElementById('breathInstruction').textContent = breathingActive ? '' : t.breathTap;
@@ -1753,6 +2044,137 @@ function showTerms() {
 }
 function closeTerms() { document.getElementById('termsOverlay').classList.remove('show');
 }
+
+// ===== WHEEL OF LIFE =====
+const wheelDomains = [
+  {id:'wh_health', icon:'🌿', name:'健康・身体', nameEs:'Salud', nameEn:'Health', nameFr:'Santé', namePt:'Saúde', nameZh:'健康', nameKo:'건강'},
+  {id:'wh_work',   icon:'💼', name:'仕事・使命', nameEs:'Trabajo', nameEn:'Work', nameFr:'Travail', namePt:'Trabalho', nameZh:'工作', nameKo:'일'},
+  {id:'wh_money',  icon:'✨', name:'豊かさ・お金', nameEs:'Abundancia', nameEn:'Abundance', nameFr:'Abondance', namePt:'Abundância', nameZh:'财富', nameKo:'풍요'},
+  {id:'wh_relation',icon:'🌸',name:'人間関係・愛', nameEs:'Relaciones', nameEn:'Relationships', nameFr:'Relations', namePt:'Relacionamentos', nameZh:'人际关系', nameKo:'인간관계'},
+  {id:'wh_family', icon:'👨‍👩‍👧', name:'家族・パートナー', nameEs:'Familia', nameEn:'Family', nameFr:'Famille', namePt:'Família', nameZh:'家庭', nameKo:'가족'},
+  {id:'wh_growth', icon:'🌱', name:'成長・学び', nameEs:'Crecimiento', nameEn:'Growth', nameFr:'Croissance', namePt:'Crescimento', nameZh:'成长', nameKo:'성장'},
+  {id:'wh_spirit', icon:'🧘', name:'精神・魂', nameEs:'Espíritu', nameEn:'Spirit', nameFr:'Esprit', namePt:'Espírito', nameZh:'精神', nameKo:'정신'},
+  {id:'wh_freedom',icon:'🦋', name:'自由・時間', nameEs:'Libertad', nameEn:'Freedom', nameFr:'Liberté', namePt:'Liberdade', nameZh:'自由', nameKo:'자유'},
+  {id:'wh_society',icon:'🌍', name:'社会・貢献', nameEs:'Sociedad', nameEn:'Society', nameFr:'Société', namePt:'Sociedade', nameZh:'社会贡献', nameKo:'사회'},
+  {id:'wh_play',   icon:'🎨', name:'趣味・遊び', nameEs:'Hobbies', nameEn:'Hobbies', nameFr:'Loisirs', namePt:'Lazer', nameZh:'爱好', nameKo:'취미'},
+];
+let wheelData = JSON.parse(localStorage.getItem('yoshiWheelData') || '{}');
+
+function getWheelName(d) {
+  const names = {ja:d.name,es:d.nameEs,en:d.nameEn,fr:d.nameFr,pt:d.namePt,zh:d.nameZh,ko:d.nameKo};
+  return names[currentLang] || d.name;
+}
+
+function renderWheelSliders() {
+  const container = document.getElementById('wheelSliders');
+  if (!container) return;
+  container.innerHTML = '';
+  wheelDomains.forEach(d => {
+    const val = wheelData[d.id] !== undefined ? wheelData[d.id] : 5;
+    const div = document.createElement('div');
+    div.style.cssText = 'background:rgba(255,255,255,0.5);border:1px solid var(--mist);border-radius:2px;padding:12px 16px;';
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-size:13px;letter-spacing:0.1em;">${d.icon} ${getWheelName(d)}</span>
+      <span id="wval-${d.id}" style="font-family:'Zen Antique',serif;font-size:18px;color:var(--gold);">${val}</span>
+    </div>
+    <input type="range" class="level-slider" min="0" max="10" value="${val}" oninput="wheelData['${d.id}']=parseInt(this.value);document.getElementById('wval-${d.id}').textContent=this.value;updateSlider(this);">`;
+    const slider = div.querySelector('input');
+    updateSlider(slider);
+    container.appendChild(div);
+  });
+}
+
+function renderWheel() {
+  wheelDomains.forEach(d => {
+    const slider = document.querySelector(`#wheelSliders input[oninput*="${d.id}"]`);
+    if (slider) wheelData[d.id] = parseInt(slider.value);
+  });
+  localStorage.setItem('yoshiWheelData', JSON.stringify(wheelData));
+  drawRadarChart();
+}
+
+function drawRadarChart() {
+  const canvas = document.getElementById('wheelChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, R = Math.min(W,H)/2 - 30;
+  const n = wheelDomains.length;
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid rings
+  for (let r = 1; r <= 5; r++) {
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const angle = (i/n)*2*Math.PI - Math.PI/2;
+      const x = cx + (R*r/5)*Math.cos(angle);
+      const y = cy + (R*r/5)*Math.sin(angle);
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = r===5 ? '#d4cfc4' : 'rgba(212,207,196,0.4)';
+    ctx.lineWidth = r===5 ? 1.5 : 0.8;
+    ctx.stroke();
+  }
+
+  // Axis lines
+  for (let i = 0; i < n; i++) {
+    const angle = (i/n)*2*Math.PI - Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R*Math.cos(angle), cy + R*Math.sin(angle));
+    ctx.strokeStyle = 'rgba(212,207,196,0.5)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  // Data polygon
+  ctx.beginPath();
+  for (let i = 0; i < n; i++) {
+    const d = wheelDomains[i];
+    const val = (wheelData[d.id] !== undefined ? wheelData[d.id] : 5) / 10;
+    const angle = (i/n)*2*Math.PI - Math.PI/2;
+    const x = cx + R*val*Math.cos(angle);
+    const y = cy + R*val*Math.sin(angle);
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(201,168,76,0.2)';
+  ctx.fill();
+  ctx.strokeStyle = '#c9a84c';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Data points
+  for (let i = 0; i < n; i++) {
+    const d = wheelDomains[i];
+    const val = (wheelData[d.id] !== undefined ? wheelData[d.id] : 5) / 10;
+    const angle = (i/n)*2*Math.PI - Math.PI/2;
+    const x = cx + R*val*Math.cos(angle);
+    const y = cy + R*val*Math.sin(angle);
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, 2*Math.PI);
+    ctx.fillStyle = '#c9a84c';
+    ctx.fill();
+  }
+
+  // Labels
+  ctx.font = '11px Noto Serif JP, serif';
+  ctx.fillStyle = '#555';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < n; i++) {
+    const d = wheelDomains[i];
+    const angle = (i/n)*2*Math.PI - Math.PI/2;
+    const lR = R + 20;
+    const x = cx + lR*Math.cos(angle);
+    const y = cy + lR*Math.sin(angle);
+    ctx.fillText(d.icon, x, y);
+  }
+}
+
+renderWheelSliders();
+drawRadarChart();
 
 // ===== INIT =====
 renderVideoList();
