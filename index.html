@@ -100,6 +100,32 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .zen-divider::after { right: 0; }
 .section-title { font-family: 'Zen Antique', serif; font-size: 11px; letter-spacing: 0.5em; color: var(--gold); text-align: center; margin-bottom: 24px; }
 
+/* 100-DAY CHALLENGE */
+.hyaku-hero { background: linear-gradient(135deg, var(--ink), #2a1a0a); border-radius: 4px; padding: 24px; text-align: center; margin-bottom: 20px; position: relative; overflow: hidden; }
+.hyaku-hero::before { content: '百'; position: absolute; right: -10px; top: -20px; font-family: 'Zen Antique', serif; font-size: 130px; color: rgba(255,255,255,0.03); }
+.hyaku-label { font-size: 9px; letter-spacing: 0.6em; color: var(--gold); margin-bottom: 8px; }
+.hyaku-title { font-family: 'Zen Antique', serif; font-size: 26px; color: var(--paper); letter-spacing: 0.2em; margin-bottom: 6px; }
+.hyaku-sub { font-size: 12px; color: rgba(245,240,232,0.6); letter-spacing: 0.15em; }
+.hyaku-belt { display: inline-block; font-size: 11px; letter-spacing: 0.3em; padding: 4px 16px; border-radius: 20px; margin-top: 10px; font-weight: 700; }
+.hyaku-belt.white { background: #f5f0e8; color: var(--ink); }
+.hyaku-belt.brown { background: #8B4513; color: white; }
+.hyaku-belt.black { background: #1a1612; color: var(--gold); border: 1px solid var(--gold); }
+.hyaku-progress-wrap { margin: 16px 0; }
+.hyaku-progress-label { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.2em; color: #888; margin-bottom: 8px; }
+.hyaku-progress-bar { width: 100%; height: 8px; background: var(--mist); border-radius: 4px; overflow: hidden; }
+.hyaku-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #e0be5a); border-radius: 4px; transition: width 0.8s ease; }
+.hyaku-checkin-btn { width: 100%; background: linear-gradient(135deg, var(--gold), #e0be5a); color: var(--ink); border: none; font-family: 'Noto Serif JP', serif; font-size: 14px; letter-spacing: 0.4em; padding: 18px; cursor: pointer; border-radius: 2px; font-weight: 700; margin: 16px 0; transition: all 0.3s; }
+.hyaku-checkin-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(201,168,76,0.4); }
+.hyaku-checkin-btn:disabled { background: var(--mist); color: #888; cursor: default; transform: none; box-shadow: none; }
+.hyaku-calendar { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin: 16px 0; }
+.hyaku-day { aspect-ratio: 1; border-radius: 2px; background: rgba(255,255,255,0.3); border: 1px solid var(--mist); display: flex; align-items: center; justify-content: center; font-size: 8px; color: #aaa; }
+.hyaku-day.done { background: linear-gradient(135deg, var(--gold), #e0be5a); border-color: var(--gold); color: var(--ink); font-size: 10px; }
+.hyaku-day.today-empty { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
+.hyaku-unlock { display: none; background: linear-gradient(135deg, #1a1612, #2d2520); border: 1px solid var(--gold); border-radius: 4px; padding: 24px; text-align: center; margin-top: 16px; animation: quoteAppear 0.7s ease; }
+.hyaku-unlock.show { display: block; }
+.hyaku-unlock-title { font-family: 'Zen Antique', serif; font-size: 20px; color: var(--gold); margin-bottom: 12px; letter-spacing: 0.2em; }
+.hyaku-unlock-btn { background: var(--gold); color: var(--ink); border: none; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.3em; padding: 14px 32px; cursor: pointer; border-radius: 1px; font-weight: 700; margin-top: 12px; }
+
 /* VISION BOARD */
 .vision-domains { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
 .vision-domain-block { background: rgba(255,255,255,0.5); border: 1px solid var(--mist); border-radius: 3px; overflow: hidden; }
@@ -439,6 +465,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <button class="nav-btn" onclick="showSection('premium',this)" id="nav-premium">講　座</button>
   <button class="nav-btn" onclick="showSection('booking',this)" id="nav-booking">予　約</button>
   <button class="nav-btn" onclick="showSection('wheel',this)" id="nav-wheel">車　輪</button>
+  <button class="nav-btn" onclick="showSection('hyakunichi',this)" id="nav-hyakunichi">百　日</button>
 </nav>
 
 <!-- MEDITATION -->
@@ -811,6 +838,65 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   </div>
 </div>
 
+<!-- 100-DAY CHALLENGE -->
+<section class="section" id="hyakunichi">
+  <div class="hyaku-hero">
+    <div class="hyaku-label">SAMURAI · 100 DAY CHALLENGE</div>
+    <div class="hyaku-title" id="hyakuTitle">百 日 修 行</div>
+    <div class="hyaku-sub" id="hyakuSub">100日間、毎日身体感覚と向き合う</div>
+    <div id="hyakuBelt" class="hyaku-belt white">🥋 白帯 — 修行開始</div>
+  </div>
+
+  <div class="hyaku-progress-wrap">
+    <div class="hyaku-progress-label">
+      <span id="hyakuProgressLabel">修行の進捗</span>
+      <span id="hyakuCount">0 / 100日</span>
+    </div>
+    <div class="hyaku-progress-bar"><div class="hyaku-progress-fill" id="hyakuFill" style="width:0%"></div></div>
+  </div>
+
+  <button class="hyaku-checkin-btn" id="hyakuBtn" onclick="doCheckin()">🥋 今日の修行を記す</button>
+  <div id="hyakuDoneMsg" style="display:none;text-align:center;font-size:12px;color:var(--bamboo);letter-spacing:0.3em;margin-bottom:12px;">✓ 今日の修行は完了しています 🙏</div>
+
+  <div class="section-title" id="hyakuCalTitle" style="margin-top:8px;">修 行 の 記 録</div>
+  <div class="hyaku-calendar" id="hyakuCalendar"></div>
+
+  <div class="meditation-guide" style="margin-top:16px;">
+    <div class="guide-title" id="hyakuGuideTitle">帯の昇格条件</div>
+    <div class="guide-step" id="hyakuG1">🥋 白帯（1〜29日）— 修行の始まり</div>
+    <div class="guide-step" id="hyakuG2">🟫 茶帯（30〜99日）— 身体感覚が目覚める</div>
+    <div class="guide-step" id="hyakuG3">⬛ 黒帯（100日達成）— 伝説の修行者</div>
+    <div class="guide-step" id="hyakuG4">毎日1回チェックインで記録される</div>
+  </div>
+
+  <div class="hyaku-unlock" id="hyakuUnlock">
+    <div style="font-size:40px;margin-bottom:12px;">🏆</div>
+    <div class="hyaku-unlock-title" id="hyakuUnlockTitle">百日修行 · 完全達成</div>
+    <div style="font-size:13px;color:rgba(245,240,232,0.7);line-height:1.9;letter-spacing:0.05em;margin-bottom:12px;" id="hyakuUnlockMsg">
+      あなたは100日間、毎日身体と向き合い続けた。<br>これは真の武士のみが到達できる境地です。
+    </div>
+    <button class="hyaku-unlock-btn" onclick="playVideo('MJdYrTwRizo','🏆 伝説の修行者への贈り物')" id="hyakuVideoBtn">▶ 伝説の動画を解放する</button>
+    <div style="margin-top:16px;">
+      <button onclick="showCertificate()" style="background:none;border:1px solid var(--gold);color:var(--gold);font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.3em;padding:10px 24px;cursor:pointer;border-radius:1px;">📜 認定証を表示する</button>
+    </div>
+  </div>
+</section>
+
+<!-- Certificate Overlay -->
+<div id="certOverlay" style="display:none;position:fixed;inset:0;background:rgba(26,22,18,0.95);z-index:900;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:var(--paper);max-width:400px;width:100%;border-radius:4px;border:3px solid var(--gold);padding:40px 32px;text-align:center;position:relative;">
+    <div style="font-family:'Zen Antique',serif;font-size:11px;letter-spacing:0.6em;color:var(--gold);margin-bottom:16px;">YOSHI DOJO · 認定証</div>
+    <div style="font-family:'Zen Antique',serif;font-size:36px;color:var(--ink);letter-spacing:0.2em;margin-bottom:8px;">皆伝</div>
+    <div style="font-size:13px;color:#666;line-height:1.9;margin:16px 0;letter-spacing:0.05em;" id="certText">
+      あなたは100日間の身体感覚修行を<br>見事に完遂されました。<br>Yoshi道場・黒帯を授与します。
+    </div>
+    <div style="font-family:'Zen Antique',serif;font-size:48px;color:var(--gold);margin:12px 0;">賀</div>
+    <div style="font-size:10px;color:#aaa;letter-spacing:0.3em;">Clinica Yoshi · 中井経賀</div>
+    <div style="font-size:10px;color:#aaa;letter-spacing:0.2em;margin-top:4px;" id="certDate"></div>
+    <button onclick="document.getElementById('certOverlay').style.display='none'" style="margin-top:20px;background:var(--ink);color:var(--paper);border:none;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.3em;padding:12px 32px;cursor:pointer;border-radius:1px;">閉じる</button>
+  </div>
+</div>
+
 <!-- WHEEL OF LIFE -->
 <section class="section" id="wheel">
   <div class="section-title" id="wheelTitle">人 生 の 車 輪</div>
@@ -920,7 +1006,7 @@ function closeVideo() {
 let currentLang = 'ja';
 const translations = {
   ja: {
-    nav: ['瞑　想','願　望','気　づき','身　体','養　生','講　座','予　約'],
+    nav: ['瞑　想','願　望','気　づき','身　体','養　生','講　座','予　約','車　輪','百　日'],
     logoSub: '身体感覚 · 気 · 今に生きる',
     breathStart: '瞑想を始める', breathStop: '終了する',
     breathBegin: '鼻からゆっくり吸う…', breathDone: 'お疲れ様でした 🙏',
@@ -983,7 +1069,7 @@ const translations = {
     ],
   },
   es: {
-    nav: ['Meditación','Visión','Diario','Cuerpo','Autocuidado','Cursos','Reserva'],
+    nav: ['Meditación','Visión','Diario','Cuerpo','Autocuidado','Cursos','Reserva','Rueda','100 Días'],
     logoSub: 'Sensación corporal · Ki · Vivir el presente',
     breathStart: 'Comenzar meditación', breathStop: 'Terminar',
     breathBegin: 'Inhala lentamente…', breathDone: 'Bien hecho 🙏',
@@ -1046,7 +1132,7 @@ const translations = {
     ],
   },
   fr: {
-    nav: ['Méditation','Vision','Journal','Corps','Soins','Cours','Réserver','Roue'],
+    nav: ['Méditation','Vision','Journal','Corps','Soins','Cours','Réserver','Roue','100 Jours'],
     logoSub: 'Sensation corporelle · Ki · Vivre le présent',
     breathStart: 'Commencer la méditation', breathStop: 'Terminer',
     breathBegin: 'Inspirez lentement…', breathDone: 'Bien fait 🙏',
@@ -1103,7 +1189,7 @@ const translations = {
     wheelG: ['Évaluez chaque domaine sur 10','Plus le cercle est équilibré, plus la vie est stable','Portez votre attention sur les domaines à faible score','Enregistrez chaque mois pour voir votre progression'],
   },
   pt: {
-    nav: ['Meditação','Visão','Diário','Corpo','Autocuidado','Cursos','Reserva','Roda'],
+    nav: ['Meditação','Visão','Diário','Corpo','Autocuidado','Cursos','Reserva','Roda','100 Dias'],
     logoSub: 'Sensação corporal · Ki · Viver o presente',
     breathStart: 'Começar meditação', breathStop: 'Terminar',
     breathBegin: 'Inspire lentamente…', breathDone: 'Muito bem 🙏',
@@ -1160,7 +1246,7 @@ const translations = {
     wheelG: ['Avalie cada domínio de 0 a 10','Quanto mais equilibrado o círculo, mais estável é a vida','Foque nos domínios com pontuação baixa esta semana','Registre mensalmente para ver seu progresso'],
   },
   zh: {
-    nav: ['冥想','愿望','日记','身体','养生','课程','预约','生命轮'],
+    nav: ['冥想','愿望','日记','身体','养生','课程','预约','生命轮','百日修行'],
     logoSub: '身体感觉 · 气 · 活在当下',
     breathStart: '开始冥想', breathStop: '结束',
     breathBegin: '慢慢吸气…', breathDone: '做得好 🙏',
@@ -1217,7 +1303,7 @@ const translations = {
     wheelG: ['为每个领域打分（0-10分）','圆形越均匀，生活越平衡','将本周的注意力放在低分领域','每月记录，追踪成长轨迹'],
   },
   ko: {
-    nav: ['명상','비전','일기','신체','자기관리','강좌','예약','생명의 수레바퀴'],
+    nav: ['명상','비전','일기','신체','자기관리','강좌','예약','생명의 수레바퀴','100일 수행'],
     logoSub: '신체 감각 · 기 · 현재를 살다',
     breathStart: '명상 시작', breathStop: '종료',
     breathBegin: '코로 천천히 들이쉬세요…', breathDone: '잘 하셨습니다 🙏',
@@ -1274,7 +1360,7 @@ const translations = {
     wheelG: ['각 분야를 10점 만점으로 평가하세요','원형에 가까울수록 인생이 균형잡혀 있습니다','이번 주는 점수가 낮은 분야에 의식을 기울여보세요','매월 기록하여 성장의 궤적을 확인하세요'],
   },
   en: {
-    nav: ['Meditation','Vision','Journal','Body','Self-Care','Courses','Booking','Wheel'],
+    nav: ['Meditation','Vision','Journal','Body','Self-Care','Courses','Booking','Wheel','100 Days'],
     logoSub: 'Body Sensation · Ki · Living the Present',
     breathStart: 'Begin meditation', breathStop: 'End',
     breathBegin: 'Inhale slowly…', breathDone: 'Well done 🙏',
@@ -1349,7 +1435,7 @@ function setLang(lang) {
     if(f){ f.style.borderColor = l===lang?'#c9a84c':'transparent'; f.style.opacity = l===lang?'1':'0.5'; }
   });
   const t = translations[lang];
-  const navIds = ['meditation','vision','diary','body','selfcare','premium','booking','wheel'];
+  const navIds = ['meditation','vision','diary','body','selfcare','premium','booking','wheel','hyakunichi'];
   navIds.forEach((id,i) => { const el=document.getElementById('nav-'+id); if(el && t.nav[i]) el.textContent=t.nav[i]; });
   // Wheel of Life
   const wt = document.getElementById('wheelTitle'); if(wt && t.wheelTitle) wt.textContent=t.wheelTitle;
@@ -2044,6 +2130,108 @@ function showTerms() {
 }
 function closeTerms() { document.getElementById('termsOverlay').classList.remove('show');
 }
+
+// ===== 100-DAY CHALLENGE =====
+let hyakuData = JSON.parse(localStorage.getItem('yoshiHyaku') || '{"days":[],"startDate":null}');
+
+function initHyaku() {
+  renderHyakuCalendar();
+  updateHyakuStatus();
+}
+
+function doCheckin() {
+  const today = new Date().toDateString();
+  if (hyakuData.days.includes(today)) return;
+  if (!hyakuData.startDate) hyakuData.startDate = today;
+  hyakuData.days.push(today);
+  localStorage.setItem('yoshiHyaku', JSON.stringify(hyakuData));
+  renderHyakuCalendar();
+  updateHyakuStatus();
+  // 完了アニメ
+  const btn = document.getElementById('hyakuBtn');
+  btn.textContent = '✓ 今日の修行 完了！';
+  setTimeout(() => updateHyakuStatus(), 1500);
+}
+
+function renderHyakuCalendar() {
+  const cal = document.getElementById('hyakuCalendar');
+  if (!cal) return;
+  const today = new Date().toDateString();
+  cal.innerHTML = '';
+  for (let i = 1; i <= 100; i++) {
+    const div = document.createElement('div');
+    div.className = 'hyaku-day';
+    const dayDate = hyakuData.startDate ? getDayN(hyakuData.startDate, i-1) : null;
+    const isDone = dayDate && hyakuData.days.includes(dayDate);
+    const isToday = dayDate === today;
+    if (isDone) { div.classList.add('done'); div.textContent = '🥋'; }
+    else if (isToday && !isDone) { div.classList.add('today-empty'); div.textContent = i; }
+    else { div.textContent = i; }
+    cal.appendChild(div);
+  }
+}
+
+function getDayN(startDateStr, n) {
+  const d = new Date(startDateStr);
+  d.setDate(d.getDate() + n);
+  return d.toDateString();
+}
+
+function updateHyakuStatus() {
+  const count = hyakuData.days.length;
+  const today = new Date().toDateString();
+  const doneToday = hyakuData.days.includes(today);
+  const t = translations[currentLang] || translations.ja;
+
+  // progress
+  const fill = document.getElementById('hyakuFill');
+  const countEl = document.getElementById('hyakuCount');
+  if (fill) fill.style.width = (count / 100 * 100) + '%';
+  if (countEl) countEl.textContent = count + ' / 100日';
+
+  // button
+  const btn = document.getElementById('hyakuBtn');
+  const doneMsg = document.getElementById('hyakuDoneMsg');
+  if (btn && doneMsg) {
+    if (doneToday) {
+      btn.style.display = 'none';
+      doneMsg.style.display = 'block';
+    } else {
+      btn.style.display = 'block';
+      doneMsg.style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = '🥋 今日の修行を記す';
+    }
+  }
+
+  // belt
+  const belt = document.getElementById('hyakuBelt');
+  if (belt) {
+    if (count >= 100) {
+      belt.className = 'hyaku-belt black'; belt.textContent = '⬛ 黒帯 — 修行完遂';
+    } else if (count >= 30) {
+      belt.className = 'hyaku-belt brown'; belt.textContent = '🟫 茶帯 — ' + count + '日達成';
+    } else {
+      belt.className = 'hyaku-belt white'; belt.textContent = '🥋 白帯 — ' + count + '日目';
+    }
+  }
+
+  // unlock at 100
+  const unlock = document.getElementById('hyakuUnlock');
+  if (unlock) unlock.classList.toggle('show', count >= 100);
+}
+
+function showCertificate() {
+  const overlay = document.getElementById('certOverlay');
+  const dateEl = document.getElementById('certDate');
+  if (dateEl) {
+    const locales = {ja:'ja-JP',es:'es-ES',en:'en-US',fr:'fr-FR',pt:'pt-BR',zh:'zh-CN',ko:'ko-KR'};
+    dateEl.textContent = new Date().toLocaleDateString(locales[currentLang]||'ja-JP',{year:'numeric',month:'long',day:'numeric'});
+  }
+  overlay.style.display = 'flex';
+}
+
+initHyaku();
 
 // ===== WHEEL OF LIFE =====
 const wheelDomains = [
