@@ -459,12 +459,12 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 <nav class="nav">
   <button class="nav-btn active" onclick="showSection('meditation',this)" id="nav-meditation">瞑　想</button>
   <button class="nav-btn" onclick="showSection('vision',this)" id="nav-vision">願　望</button>
+  <button class="nav-btn" onclick="showSection('wheel',this)" id="nav-wheel">車　輪</button>
   <button class="nav-btn" onclick="showSection('diary',this)" id="nav-diary">気　づき</button>
   <button class="nav-btn" onclick="showSection('body',this)" id="nav-body">身　体</button>
   <button class="nav-btn" onclick="showSection('selfcare',this)" id="nav-selfcare">養　生</button>
   <button class="nav-btn" onclick="showSection('premium',this)" id="nav-premium">講　座</button>
   <button class="nav-btn" onclick="showSection('booking',this)" id="nav-booking">予　約</button>
-  <button class="nav-btn" onclick="showSection('wheel',this)" id="nav-wheel">車　輪</button>
   <button class="nav-btn" onclick="showSection('hyakunichi',this)" id="nav-hyakunichi">百　日</button>
 </nav>
 
@@ -1006,7 +1006,7 @@ function closeVideo() {
 let currentLang = 'ja';
 const translations = {
   ja: {
-    nav: ['瞑　想','願　望','気　づき','身　体','養　生','講　座','予　約','車　輪','百　日'],
+    nav: ['瞑　想','願　望','車　輪','気　づき','身　体','養　生','講　座','予　約','百　日'],
     logoSub: '身体感覚 · 気 · 今に生きる',
     breathStart: '瞑想を始める', breathStop: '終了する',
     breathBegin: '鼻からゆっくり吸う…', breathDone: 'お疲れ様でした 🙏',
@@ -1069,7 +1069,7 @@ const translations = {
     ],
   },
   es: {
-    nav: ['Meditación','Visión','Diario','Cuerpo','Autocuidado','Cursos','Reserva','Rueda','100 Días'],
+    nav: ['Meditación','Visión','Rueda','Diario','Cuerpo','Autocuidado','Cursos','Reserva','100 Días'],
     logoSub: 'Sensación corporal · Ki · Vivir el presente',
     breathStart: 'Comenzar meditación', breathStop: 'Terminar',
     breathBegin: 'Inhala lentamente…', breathDone: 'Bien hecho 🙏',
@@ -1132,7 +1132,7 @@ const translations = {
     ],
   },
   fr: {
-    nav: ['Méditation','Vision','Journal','Corps','Soins','Cours','Réserver','Roue','100 Jours'],
+    nav: ['Méditation','Vision','Roue','Journal','Corps','Soins','Cours','Réserver','100 Jours'],
     logoSub: 'Sensation corporelle · Ki · Vivre le présent',
     breathStart: 'Commencer la méditation', breathStop: 'Terminer',
     breathBegin: 'Inspirez lentement…', breathDone: 'Bien fait 🙏',
@@ -1189,7 +1189,7 @@ const translations = {
     wheelG: ['Évaluez chaque domaine sur 10','Plus le cercle est équilibré, plus la vie est stable','Portez votre attention sur les domaines à faible score','Enregistrez chaque mois pour voir votre progression'],
   },
   pt: {
-    nav: ['Meditação','Visão','Diário','Corpo','Autocuidado','Cursos','Reserva','Roda','100 Dias'],
+    nav: ['Meditação','Visão','Roda','Diário','Corpo','Autocuidado','Cursos','Reserva','100 Dias'],
     logoSub: 'Sensação corporal · Ki · Viver o presente',
     breathStart: 'Começar meditação', breathStop: 'Terminar',
     breathBegin: 'Inspire lentamente…', breathDone: 'Muito bem 🙏',
@@ -1246,7 +1246,7 @@ const translations = {
     wheelG: ['Avalie cada domínio de 0 a 10','Quanto mais equilibrado o círculo, mais estável é a vida','Foque nos domínios com pontuação baixa esta semana','Registre mensalmente para ver seu progresso'],
   },
   zh: {
-    nav: ['冥想','愿望','日记','身体','养生','课程','预约','生命轮','百日修行'],
+    nav: ['冥想','愿望','生命轮','日记','身体','养生','课程','预约','百日修行'],
     logoSub: '身体感觉 · 气 · 活在当下',
     breathStart: '开始冥想', breathStop: '结束',
     breathBegin: '慢慢吸气…', breathDone: '做得好 🙏',
@@ -1303,7 +1303,7 @@ const translations = {
     wheelG: ['为每个领域打分（0-10分）','圆形越均匀，生活越平衡','将本周的注意力放在低分领域','每月记录，追踪成长轨迹'],
   },
   ko: {
-    nav: ['명상','비전','일기','신체','자기관리','강좌','예약','생명의 수레바퀴','100일 수행'],
+    nav: ['명상','비전','생명의 수레바퀴','일기','신체','자기관리','강좌','예약','100일 수행'],
     logoSub: '신체 감각 · 기 · 현재를 살다',
     breathStart: '명상 시작', breathStop: '종료',
     breathBegin: '코로 천천히 들이쉬세요…', breathDone: '잘 하셨습니다 🙏',
@@ -1360,7 +1360,7 @@ const translations = {
     wheelG: ['각 분야를 10점 만점으로 평가하세요','원형에 가까울수록 인생이 균형잡혀 있습니다','이번 주는 점수가 낮은 분야에 의식을 기울여보세요','매월 기록하여 성장의 궤적을 확인하세요'],
   },
   en: {
-    nav: ['Meditation','Vision','Journal','Body','Self-Care','Courses','Booking','Wheel','100 Days'],
+    nav: ['Meditation','Vision','Wheel','Journal','Body','Self-Care','Courses','Booking','100 Days'],
     logoSub: 'Body Sensation · Ki · Living the Present',
     breathStart: 'Begin meditation', breathStop: 'End',
     breathBegin: 'Inhale slowly…', breathDone: 'Well done 🙏',
@@ -1435,7 +1435,7 @@ function setLang(lang) {
     if(f){ f.style.borderColor = l===lang?'#c9a84c':'transparent'; f.style.opacity = l===lang?'1':'0.5'; }
   });
   const t = translations[lang];
-  const navIds = ['meditation','vision','diary','body','selfcare','premium','booking','wheel','hyakunichi'];
+  const navIds = ['meditation','vision','wheel','diary','body','selfcare','premium','booking','hyakunichi'];
   navIds.forEach((id,i) => { const el=document.getElementById('nav-'+id); if(el && t.nav[i]) el.textContent=t.nav[i]; });
   // Wheel of Life
   const wt = document.getElementById('wheelTitle'); if(wt && t.wheelTitle) wt.textContent=t.wheelTitle;
