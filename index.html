@@ -568,15 +568,16 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div class="level-labels"><span id="body-low-4">滞っている</span><span id="body-high-4">自由に流れる</span></div>
   </div>
   <div class="body-summary">
-    <div class="body-summary-title" id="bodySummaryTitle">今の気 スコア</div>
+    <div class="body-summary-title" id="bodySummaryTitle">BQ 身 体 知 ス コ ア</div>
     <div class="body-summary-score" id="scoreDisplay">50</div>
     <div class="body-summary-label" id="scoreLabel">調和の途中</div>
+    <div style="font-size:9px;letter-spacing:0.3em;color:#aaa;margin-top:6px;">Body Intelligence Quotient</div>
   </div>
   <div class="samurai-reset" id="samuraiReset">
     <div class="samurai-title">⚡ SAMURAI RESET</div>
     <div class="samurai-desc" id="samuraiDesc">スコアを上げたいですか？Yoshiの動画で身体を整えましょう。</div>
     <button class="samurai-btn" onclick="openSamuraiVideo()">▶ 動画を見てスコアアップ</button>
-    <div class="score-up-badge" id="scoreUpBadge">🎉 ＋10 気スコアアップ！</div>
+    <div class="score-up-badge" id="scoreUpBadge">🎉 ＋10 BQスコアアップ！</div>
   </div>
   <div class="video-section-title" id="videoListTitle">⚡ SAMURAI RESET · 動画一覧</div>
   <div class="video-list" id="samuraiVideoList"></div>
@@ -646,6 +647,41 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div class="premium-hero-title">気の道を深める</div>
     <div class="premium-hero-sub">20年の経験から生まれた<br>Yoshiの本物の教えへ</div>
   </div>
+  <!-- YOSHI PHILOSOPHY -->
+  <div style="margin-bottom:24px;padding:24px 20px;background:linear-gradient(160deg,rgba(26,22,18,0.97),rgba(10,30,38,0.97));border-radius:4px;border:1px solid rgba(201,168,76,0.25);position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-16px;top:-20px;font-family:'Zen Antique',serif;font-size:100px;color:rgba(201,168,76,0.05);line-height:1;pointer-events:none;">哲</div>
+    <div style="font-size:8px;letter-spacing:0.6em;color:rgba(201,168,76,0.7);margin-bottom:6px;">YOSHI PHILOSOPHY · 哲学</div>
+    <div style="font-family:'Zen Antique',serif;font-size:22px;color:var(--paper);letter-spacing:0.2em;margin-bottom:4px;" id="philoTitle">エゴを手放し、今に生きる</div>
+    <div style="font-size:10px;color:rgba(245,240,232,0.5);letter-spacing:0.2em;margin-bottom:16px;" id="philoSubtitle">Soltar el ego · Live in the Present</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:18px;flex-shrink:0;">🌱</div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.2em;color:#c9a84c;margin-bottom:3px;" id="philoPrinciple1Title">身体は知っている</div>
+          <div style="font-size:12px;color:rgba(245,240,232,0.7);line-height:1.7;" id="philoPrinciple1Desc">頭より先に、身体はすでに答えを知っている。BQとは、その声を聞く力のこと。</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:18px;flex-shrink:0;">🍃</div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.2em;color:#c9a84c;margin-bottom:3px;" id="philoPrinciple2Title">エゴの手放し</div>
+          <div style="font-size:12px;color:rgba(245,240,232,0.7);line-height:1.7;" id="philoPrinciple2Desc">「こうあるべき」という思い込みを脱力で溶かす。力を抜いた時、本当の力が現れる。</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:18px;flex-shrink:0;">🌊</div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.2em;color:#c9a84c;margin-bottom:3px;" id="philoPrinciple3Title">今という流れに乗る</div>
+          <div style="font-size:12px;color:rgba(245,240,232,0.7);line-height:1.7;" id="philoPrinciple3Desc">過去を引きずらず、未来を恐れず。呼吸と共に「今」にいることが最高のパフォーマンスを生む。</div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(201,168,76,0.2);padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div style="font-size:10px;color:rgba(245,240,232,0.5);letter-spacing:0.1em;line-height:1.6;" id="philoBookNote">この哲学は Yoshi の著書<br>「エゴを手放し今に生きる」に詳しく書かれています</div>
+      <button onclick="window.open('https://www.amazon.co.jp/dp/B0GWWJVSTN','_blank')" style="flex-shrink:0;background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:11px;letter-spacing:0.15em;padding:10px 14px;cursor:pointer;border-radius:2px;font-weight:700;line-height:1.4;" id="philoBookBtn">📖 本を読む<br><span style="font-size:9px;font-weight:400">Kindle</span></button>
+    </div>
+  </div>
+
   <div class="premium-cards">
     <div class="premium-card">
       <div class="premium-badge new">NEW</div>
@@ -730,7 +766,13 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div class="booking-card">
       <div class="booking-title">Clínica Yoshi</div>
       <div class="booking-sub" id="bookingSub">マドリード · MADRID · 整体指圧</div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;">
+        <div style="font-size:11px;color:rgba(245,240,232,0.75);letter-spacing:0.15em;padding:5px 12px;border:1px solid rgba(201,168,76,0.4);border-radius:2px;" id="bookingProof1">⭐ 20年の実績</div>
+        <div style="font-size:11px;color:rgba(245,240,232,0.75);letter-spacing:0.15em;padding:5px 12px;border:1px solid rgba(201,168,76,0.4);border-radius:2px;" id="bookingProof2">🌏 日英西語対応</div>
+        <div style="font-size:11px;color:rgba(245,240,232,0.75);letter-spacing:0.15em;padding:5px 12px;border:1px solid rgba(201,168,76,0.4);border-radius:2px;" id="bookingProof3">🏥 初回体験あり</div>
+      </div>
       <button class="booking-btn" id="bookingBtn" onclick="openBooking()">🗓 オンライン予約</button>
+      <div style="font-size:10px;color:rgba(201,168,76,0.8);letter-spacing:0.2em;margin-top:10px;" id="bookingUrgencyLine">📅 今週の空き枠はわずかです</div>
     </div>
     <div class="clinic-info">
       <div class="clinic-info-item"><span class="clinic-info-icon">📍</span><span>Calle Velázquez, 73 Bajo B.<br>28006 Madrid</span></div>
@@ -747,6 +789,11 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="guide-step" id="sessionG2">② 日常でその感覚を自分で再現できるようになる</div>
       <div class="guide-step" id="sessionG3">③ 他者にも分かち合えるようになる</div>
       <div class="guide-step" id="sessionG4">④ 気を感じる生き方が自然に広がる</div>
+    </div>
+    <div style="margin-top:20px;padding:16px;background:rgba(42,107,124,0.08);border-radius:4px;border:1px solid rgba(42,107,124,0.2);text-align:center;">
+      <div style="font-size:11px;letter-spacing:0.3em;color:var(--teal);margin-bottom:10px;" id="bqBookingLabel">あなたのBQを確認する</div>
+      <div style="font-size:12px;color:#666;line-height:1.8;letter-spacing:0.05em;" id="bqBookingDesc">身体知チェックでBQスコアを計測してから<br>Yoshiと一緒に改善プランを立てましょう</div>
+      <button onclick="showSection('body',document.getElementById('nav-body'))" style="margin-top:12px;background:transparent;border:1px solid var(--teal);color:var(--teal);font-family:'Noto Serif JP',serif;font-size:11px;letter-spacing:0.3em;padding:8px 20px;cursor:pointer;border-radius:2px;" id="bqCheckBtn">→ BQチェックへ</button>
     </div>
   </div>
 </section>
@@ -827,11 +874,15 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <div style="background:var(--paper);max-width:360px;width:100%;border-radius:4px;overflow:hidden;animation:quoteAppear 0.5s ease;">
     <div style="background:linear-gradient(135deg,var(--teal),#1a4a5a);padding:24px;text-align:center;position:relative;">
       <div style="font-size:9px;letter-spacing:0.6em;color:rgba(245,240,232,0.7);margin-bottom:8px;" id="popupLabel">身 体 が サ イ ン を 送 っ て い ま す</div>
-      <div style="font-family:'Zen Antique',serif;font-size:36px;color:#c9a84c;line-height:1;">🏥</div>
-      <div style="font-size:16px;color:var(--paper);letter-spacing:0.1em;margin-top:10px;line-height:1.6;" id="popupTitle">今、プロの調整が必要かもしれません</div>
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:rgba(201,168,76,0.2);border:2px solid #c9a84c;margin:4px 0;">
+        <span style="font-family:'Zen Antique',serif;font-size:26px;color:#c9a84c;line-height:1;" id="popupBqScore">--</span>
+      </div>
+      <div style="font-size:8px;letter-spacing:0.4em;color:#c9a84c;margin:4px 0 8px;">BQ SCORE</div>
+      <div style="font-size:16px;color:var(--paper);letter-spacing:0.1em;line-height:1.6;" id="popupTitle">今、プロの調整が必要かもしれません</div>
     </div>
     <div style="padding:20px 24px;">
-      <div style="font-size:13px;color:#555;line-height:1.9;letter-spacing:0.05em;margin-bottom:16px;padding:12px 14px;background:rgba(42,107,124,0.07);border-left:2px solid var(--teal);" id="popupDesc">気スコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？</div>
+      <div style="font-size:13px;color:#555;line-height:1.9;letter-spacing:0.05em;margin-bottom:16px;padding:12px 14px;background:rgba(42,107,124,0.07);border-left:2px solid var(--teal);" id="popupDesc">BQスコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？</div>
+      <div style="font-size:10px;color:#c9a84c;letter-spacing:0.2em;text-align:center;margin-bottom:12px;padding:6px;background:rgba(201,168,76,0.08);border-radius:2px;" id="popupUrgency">🔥 今週の空き枠：残り少数</div>
       <button onclick="openBooking();closeBookingPopup();" style="width:100%;background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:13px;letter-spacing:0.3em;padding:14px;cursor:pointer;border-radius:1px;font-weight:700;margin-bottom:8px;" id="popupBtn">🗓 Clínica Yoshiを予約する</button>
       <button onclick="closeBookingPopup();" style="width:100%;background:none;border:1px solid var(--mist);color:#888;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.2em;padding:10px;cursor:pointer;border-radius:1px;" id="popupSkip">今は続ける</button>
     </div>
@@ -1022,15 +1073,15 @@ const translations = {
     saveDiary: '今日の気づきを記す', savedNote: '✓ 記録されました',
     diaryPlaceholder: '今日の気づきを、ありのままに…',
     samuraiDesc: 'Yoshiの「サムライリセット」動画で身体を整えましょう。',
-    scoreUp: '🎉 ＋10 気スコアアップ！',
+    scoreUp: '🎉 ＋10 BQスコアアップ！',
     bookingBtn: '🗓 オンライン予約',
     yoshiDisclaimer: '🌿 私はAIです。医療診断はできません。深刻な場合は必ず医療機関へご相談ください。',
     yoshiPlaceholder: 'Yoshiに話しかける…',
     streakMsg: (n) => `🔥 ${n}日連続`,
     reminderMsg: '🌿 お帰りなさい。今日も気と共に。',
-    scoreLabels: ['気の滞り','調和の途中','気が満ちてきた','気が充実している'],
+    scoreLabels: ['BQ：身体知の滞り','BQ：調和の途中','BQ：身体知が目覚める','BQ：身体知が充実'],
     bodyTitle: '身 体 感 覚 チェック',
-    bodySummaryTitle: '今の気 スコア',
+    bodySummaryTitle: 'BQ 身体知スコア',
     bodyItems: [
       {name:'丹田', desc:'へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？', low:'感じない', high:'強く感じる'},
       {name:'呼吸', desc:'今の呼吸は深いですか？胸ではなく、腹で呼吸できていますか？', low:'浅い', high:'深く豊か'},
@@ -1085,15 +1136,15 @@ const translations = {
     saveDiary: 'Guardar nota', savedNote: '✓ Guardado',
     diaryPlaceholder: 'Escribe tu reflexión de hoy…',
     samuraiDesc: 'Mira el video "Samurai Reset" de Yoshi para reequilibrar tu cuerpo.',
-    scoreUp: '🎉 ＋10 ¡Puntuación Ki aumentada!',
+    scoreUp: '🎉 ＋10 ¡BQ aumentado!',
     bookingBtn: '🗓 Reservar cita online',
     yoshiDisclaimer: '🌿 Soy una IA. No puedo hacer diagnósticos médicos. Para casos graves consulta a un médico.',
     yoshiPlaceholder: 'Habla con Yoshi…',
     streakMsg: (n) => `🔥 ${n} días seguidos`,
     reminderMsg: '🌿 Bienvenido. Hoy también, con ki.',
-    scoreLabels: ['Ki bloqueado','En camino','Ki fluyendo','Ki en plenitud'],
+    scoreLabels: ['BQ: Bloqueado','BQ: En camino','BQ: Fluyendo','BQ: Pleno'],
     bodyTitle: 'Chequeo de sensación corporal',
-    bodySummaryTitle: 'Puntuación Ki actual',
+    bodySummaryTitle: 'BQ — Body Intelligence',
     bodyItems: [
       {name:'Tanden', desc:'3 cm bajo el ombligo. ¿Sientes calor o peso en esta zona?', low:'No siento', high:'Lo siento fuerte'},
       {name:'Respiración', desc:'¿Tu respiración es profunda? ¿Respiras con el abdomen, no con el pecho?', low:'Superficial', high:'Profunda y rica'},
@@ -1148,15 +1199,15 @@ const translations = {
     saveDiary: 'Sauvegarder la note', savedNote: '✓ Sauvegardé',
     diaryPlaceholder: 'Écrivez votre réflexion du jour…',
     samuraiDesc: 'Regardez la vidéo Samurai Reset de Yoshi pour rééquilibrer votre corps.',
-    scoreUp: '🎉 ＋10 Score Ki augmenté!',
+    scoreUp: '🎉 ＋10 BQ augmenté!',
     bookingBtn: '🗓 Réserver en ligne',
     yoshiDisclaimer: '🌿 Je suis une IA. Je ne peux pas faire de diagnostics médicaux.',
     yoshiPlaceholder: 'Parlez à Yoshi…',
     streakMsg: (n) => `🔥 ${n} jours consécutifs`,
     reminderMsg: '🌿 Bienvenue. Aujourd\'hui aussi, avec ki.',
-    scoreLabels: ['Ki bloqué','En chemin','Ki coule','Ki en plénitude'],
+    scoreLabels: ['BQ: Bloqué','BQ: En chemin','BQ: Coule','BQ: Plein'],
     bodyTitle: 'Vérification de sensation corporelle',
-    bodySummaryTitle: 'Score Ki actuel',
+    bodySummaryTitle: 'BQ — Body Intelligence',
     bodyItems: [
       {name:'Tanden', desc:'3 cm sous le nombril. Ressentez-vous chaleur ou lourdeur?', low:'Ne ressens pas', high:'Je le ressens fort'},
       {name:'Respiration', desc:'Respirez-vous profondément? Avec le ventre, pas la poitrine?', low:'Superficielle', high:'Profonde et riche'},
@@ -1205,15 +1256,15 @@ const translations = {
     saveDiary: 'Salvar nota', savedNote: '✓ Salvo',
     diaryPlaceholder: 'Escreva sua reflexão do dia…',
     samuraiDesc: 'Assista o vídeo Samurai Reset do Yoshi.',
-    scoreUp: '🎉 ＋10 Pontuação Ki aumentada!',
+    scoreUp: '🎉 ＋10 Pontuação BQ aumentado!',
     bookingBtn: '🗓 Reservar online',
     yoshiDisclaimer: '🌿 Sou uma IA. Não posso fazer diagnósticos médicos.',
     yoshiPlaceholder: 'Fale com Yoshi…',
     streakMsg: (n) => `🔥 ${n} dias seguidos`,
     reminderMsg: '🌿 Bem-vindo. Hoje também, com ki.',
-    scoreLabels: ['Ki bloqueado','No caminho','Ki fluindo','Ki em plenitude'],
+    scoreLabels: ['BQ: Bloqueado','BQ: No caminho','BQ: Fluindo','BQ: Pleno'],
     bodyTitle: 'Verificação de sensação corporal',
-    bodySummaryTitle: 'Pontuação Ki atual',
+    bodySummaryTitle: 'BQ — Body Intelligence',
     bodyItems: [
       {name:'Tanden', desc:'3cm abaixo do umbigo. Sente calor ou peso?', low:'Não sinto', high:'Sinto forte'},
       {name:'Respiração', desc:'Sua respiração é profunda? Com o abdômen?', low:'Superficial', high:'Profunda e rica'},
@@ -1262,15 +1313,15 @@ const translations = {
     saveDiary: '保存今日感悟', savedNote: '✓ 已保存',
     diaryPlaceholder: '写下今日的感悟…',
     samuraiDesc: '观看Yoshi的武士重置视频来调整身体。',
-    scoreUp: '🎉 ＋10 气分提升！',
+    scoreUp: '🎉 ＋10 BQ提升！',
     bookingBtn: '🗓 在线预约',
     yoshiDisclaimer: '🌿 我是AI，无法进行医疗诊断。',
     yoshiPlaceholder: '向Yoshi提问…',
     streakMsg: (n) => `🔥 连续${n}天`,
     reminderMsg: '🌿 欢迎回来。今天也与气同在。',
-    scoreLabels: ['气滞','调和中','气在充盈','气充沛'],
+    scoreLabels: ['BQ：身体知滞','BQ：调和中','BQ：身体知觉醒','BQ：身体知充沛'],
     bodyTitle: '身体感觉检查',
-    bodySummaryTitle: '当前气分',
+    bodySummaryTitle: 'BQ — 身体知',
     bodyItems: [
       {name:'丹田', desc:'脐下3厘米。感受这里的温热或沉重感？', low:'感觉不到', high:'感觉强烈'},
       {name:'呼吸', desc:'你的呼吸深吗？是腹式呼吸吗？', low:'浅', high:'深且丰富'},
@@ -1319,15 +1370,15 @@ const translations = {
     saveDiary: '오늘의 깨달음 기록', savedNote: '✓ 저장되었습니다',
     diaryPlaceholder: '오늘의 깨달음을 있는 그대로…',
     samuraiDesc: 'Yoshi의 사무라이 리셋 영상으로 몸을 정돈하세요.',
-    scoreUp: '🎉 ＋10 기 점수 상승！',
+    scoreUp: '🎉 ＋10 BQ 상승！',
     bookingBtn: '🗓 온라인 예약',
     yoshiDisclaimer: '🌿 저는 AI입니다. 의료 진단은 불가합니다.',
     yoshiPlaceholder: 'Yoshi에게 말하기…',
     streakMsg: (n) => `🔥 ${n}일 연속`,
     reminderMsg: '🌿 어서오세요. 오늘도 기와 함께.',
-    scoreLabels: ['기의 정체','조화 중','기가 흐른다','기 충만'],
+    scoreLabels: ['BQ: 정체','BQ: 조화 중','BQ: 흐르는 중','BQ: 충만'],
     bodyTitle: '신체 감각 체크',
-    bodySummaryTitle: '현재 기 점수',
+    bodySummaryTitle: 'BQ — 신체지',
     bodyItems: [
       {name:'단전', desc:'배꼽 아래 3cm. 따뜻함이나 무게감을 느끼시나요?', low:'못 느낌', high:'강하게 느낌'},
       {name:'호흡', desc:'호흡이 깊으신가요? 복식 호흡을 하고 있나요?', low:'얕다', high:'깊고 풍부'},
@@ -1376,15 +1427,15 @@ const translations = {
     saveDiary: "Save today's insight", savedNote: '✓ Saved',
     diaryPlaceholder: 'Write your insight as it is…',
     samuraiDesc: "Watch Yoshi's \"Samurai Reset\" video to realign your body.",
-    scoreUp: '🎉 ＋10 Ki Score Boosted!',
+    scoreUp: '🎉 ＋10 BQ Boosted!',
     bookingBtn: '🗓 Book Online',
     yoshiDisclaimer: '🌿 I am an AI. I cannot make medical diagnoses. For serious issues consult a doctor.',
     yoshiPlaceholder: 'Talk to Yoshi…',
     streakMsg: (n) => `🔥 ${n} day streak`,
     reminderMsg: '🌿 Welcome back. Today also, with ki.',
-    scoreLabels: ['Ki blocked','Finding balance','Ki flowing','Ki in fullness'],
+    scoreLabels: ['BQ: Blocked','BQ: Finding balance','BQ: Flowing','BQ: Fullness'],
     bodyTitle: 'Body Sensation Check',
-    bodySummaryTitle: 'Current Ki Score',
+    bodySummaryTitle: 'BQ — Body Intelligence',
     bodyItems: [
       {name:'Tanden', desc:'3cm below the navel. Do you feel warmth or heaviness here?', low:'Cannot feel', high:'Feel strongly'},
       {name:'Breathing', desc:'Is your breathing deep? Are you breathing with your belly, not your chest?', low:'Shallow', high:'Deep & rich'},
@@ -1494,6 +1545,7 @@ function setLang(lang) {
   updateBodyCheckLang();
   updateDateDisplay();
   updatePopupLang();
+  updatePhilosophy();
   renderVisionDomains();  
 }
 
@@ -1758,6 +1810,11 @@ function showBookingPopup() {
   bookingPopupShown = true;
   const popup = document.getElementById('bookingPopup');
   popup.style.display = 'flex';
+  const scoreEl = document.getElementById('scoreDisplay');
+  if (scoreEl) {
+    const bqEl = document.getElementById('popupBqScore');
+    if (bqEl) bqEl.textContent = scoreEl.textContent;
+  }
   updatePopupLang();
 }
 
@@ -1772,21 +1829,56 @@ function updatePopupLang() {
     ja: {
       label: '身 体 が サ イ ン を 送 っ て い ま す',
       title: '今、プロの調整が必要かもしれません',
-      desc: '気スコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？',
+      desc: 'BQスコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？',
+      urgency: '🔥 今週の空き枠：残り少数',
       btn: '🗓 Clínica Yoshiを予約する',
       skip: '今は続ける'
     },
     es: {
       label: 'T U   C U E R P O   E N V Í A   S E Ñ A L E S',
       title: 'Tu cuerpo puede necesitar ajuste profesional',
-      desc: 'Tu puntuación Ki ha bajado. ¿Te gustaría recibir un reequilibrio profesional en la Clínica Yoshi?',
+      desc: 'Tu puntuación BQ ha bajado. ¿Te gustaría recibir un reequilibrio profesional en la Clínica Yoshi?',
+      urgency: '🔥 Esta semana: plazas muy limitadas',
       btn: '🗓 Reservar en Clínica Yoshi',
       skip: 'Continuar por ahora'
+    },
+    fr: {
+      label: 'V O T R E   C O R P S   E N V O I E   D E S   S I G N A U X',
+      title: 'Votre corps a peut-être besoin d\'un ajustement',
+      desc: 'Votre score BQ a baissé. Souhaitez-vous un rééquilibrage professionnel à la Clínica Yoshi?',
+      urgency: '🔥 Cette semaine: places très limitées',
+      btn: '🗓 Réserver à la Clínica Yoshi',
+      skip: 'Continuer pour l\'instant'
+    },
+    pt: {
+      label: 'S E U   C O R P O   E S T Á   E N V I A N D O   S I N A I S',
+      title: 'Seu corpo pode precisar de ajuste profissional',
+      desc: 'Sua pontuação BQ caiu. Gostaria de receber um reequilíbrio profissional na Clínica Yoshi?',
+      urgency: '🔥 Esta semana: vagas muito limitadas',
+      btn: '🗓 Reservar na Clínica Yoshi',
+      skip: 'Continuar por enquanto'
+    },
+    zh: {
+      label: '您 的 身 体 正 在 发 送 信 号',
+      title: '您的身体可能需要专业调整',
+      desc: '您的BQ分数下降了。想在Clínica Yoshi接受专业身体调整吗？',
+      urgency: '🔥 本周空位：剩余不多',
+      btn: '🗓 预约 Clínica Yoshi',
+      skip: '暂时继续'
+    },
+    ko: {
+      label: '당 신 의 몸 이 신 호 를 보 내 고 있 습 니 다',
+      title: '전문적인 조정이 필요할 수 있습니다',
+      desc: 'BQ 점수가 떨어졌습니다. Clínica Yoshi에서 전문적인 신체 재조율을 받아보시겠어요?',
+      urgency: '🔥 이번 주 남은 자리: 얼마 없음',
+      btn: '🗓 Clínica Yoshi 예약',
+      skip: '지금은 계속하기'
     },
     en: {
       label: 'Y O U R   B O D Y   I S   S E N D I N G   S I G N A L S',
       title: 'Your body may need professional tuning',
-      desc: 'Your Ki score has dropped. Would you like to receive a professional body realignment at Clínica Yoshi?',
+      desc: 'Your BQ score has dropped. Would you like to receive a professional body realignment at Clínica Yoshi?',
+      urgency: '🔥 This week: very limited availability',
       btn: '🗓 Book at Clínica Yoshi',
       skip: 'Continue for now'
     }
@@ -1796,8 +1888,108 @@ function updatePopupLang() {
   if(el('popupLabel')) el('popupLabel').textContent = t.label;
   if(el('popupTitle')) el('popupTitle').textContent = t.title;
   if(el('popupDesc')) el('popupDesc').textContent = t.desc;
+  if(el('popupUrgency')) el('popupUrgency').textContent = t.urgency;
   if(el('popupBtn')) el('popupBtn').textContent = t.btn;
   if(el('popupSkip')) el('popupSkip').textContent = t.skip;
+  // Update booking section copy
+  const bookingTexts = {
+    ja: { proof1:'⭐ 20年の実績', proof2:'🌏 日英西語対応', proof3:'🏥 初回体験あり', urgency:'📅 今週の空き枠はわずかです', bqLabel:'あなたのBQを確認する', bqDesc:'身体知チェックでBQスコアを計測してから\nYoshiと一緒に改善プランを立てましょう', bqBtn:'→ BQチェックへ' },
+    es: { proof1:'⭐ 20 años de experiencia', proof2:'🌏 Japonés · Inglés · Español', proof3:'🏥 Sesión de prueba', urgency:'📅 Plazas limitadas esta semana', bqLabel:'Comprueba tu BQ', bqDesc:'Mide tu puntuación BQ y\ncrea un plan de mejora con Yoshi', bqBtn:'→ Comprobar BQ' },
+    fr: { proof1:'⭐ 20 ans d\'expérience', proof2:'🌏 Japonais · Anglais · Espagnol', proof3:'🏥 Séance découverte', urgency:'📅 Places limitées cette semaine', bqLabel:'Vérifiez votre BQ', bqDesc:'Mesurez votre score BQ et\ncréez un plan d\'amélioration avec Yoshi', bqBtn:'→ Vérifier BQ' },
+    pt: { proof1:'⭐ 20 anos de experiência', proof2:'🌏 Japonês · Inglês · Espanhol', proof3:'🏥 Sessão de descoberta', urgency:'📅 Vagas limitadas esta semana', bqLabel:'Verifique seu BQ', bqDesc:'Meça sua pontuação BQ e\ncrie um plano de melhoria com Yoshi', bqBtn:'→ Verificar BQ' },
+    zh: { proof1:'⭐ 20年经验', proof2:'🌏 日英西语', proof3:'🏥 初次体验', urgency:'📅 本周空位有限', bqLabel:'查看您的BQ分数', bqDesc:'测量BQ分数后\n与Yoshi一起制定改善计划', bqBtn:'→ BQ检测' },
+    ko: { proof1:'⭐ 20년 경력', proof2:'🌏 일·영·스페인어', proof3:'🏥 첫 체험 가능', urgency:'📅 이번 주 자리 한정', bqLabel:'나의 BQ 확인하기', bqDesc:'BQ 점수를 측정하고\nYoshi와 함께 개선 계획을 세워보세요', bqBtn:'→ BQ 체크' },
+    en: { proof1:'⭐ 20 years experience', proof2:'🌏 Japanese · English · Spanish', proof3:'🏥 First session available', urgency:'📅 Limited spots this week', bqLabel:'Check your BQ score', bqDesc:'Measure your BQ and build\nan improvement plan with Yoshi', bqBtn:'→ Check BQ' }
+  };
+  const bt = bookingTexts[currentLang] || bookingTexts.ja;
+  if(el('bookingProof1')) el('bookingProof1').textContent = bt.proof1;
+  if(el('bookingProof2')) el('bookingProof2').textContent = bt.proof2;
+  if(el('bookingProof3')) el('bookingProof3').textContent = bt.proof3;
+  if(el('bookingUrgencyLine')) el('bookingUrgencyLine').textContent = bt.urgency;
+  if(el('bqBookingLabel')) el('bqBookingLabel').textContent = bt.bqLabel;
+  if(el('bqBookingDesc')) el('bqBookingDesc').innerHTML = bt.bqDesc.replace('\n','<br>');
+  if(el('bqCheckBtn')) el('bqCheckBtn').textContent = bt.bqBtn;
+}
+
+// ===== YOSHI PHILOSOPHY =====
+function updatePhilosophy() {
+  const el = (id) => document.getElementById(id);
+  const p = {
+    ja: {
+      title: 'エゴを手放し、今に生きる',
+      subtitle: 'Soltar el ego · Live in the Present',
+      p1t: '身体は知っている', p1d: '頭より先に、身体はすでに答えを知っている。BQとは、その声を聞く力のこと。',
+      p2t: 'エゴの手放し', p2d: '「こうあるべき」という思い込みを脱力で溶かす。力を抜いた時、本当の力が現れる。',
+      p3t: '今という流れに乗る', p3d: '過去を引きずらず、未来を恐れず。呼吸と共に「今」にいることが最高のパフォーマンスを生む。',
+      note: 'この哲学は Yoshi の著書\n「エゴを手放し今に生きる」に詳しく書かれています',
+      btn: '📖 本を読む'
+    },
+    es: {
+      title: 'Soltar el ego, vivir el presente',
+      subtitle: 'エゴを手放し今に生きる · Live in the Present',
+      p1t: 'El cuerpo lo sabe', p1d: 'Antes que la mente, el cuerpo ya conoce la respuesta. BQ es la capacidad de escuchar esa voz.',
+      p2t: 'Soltar el ego', p2d: 'Disuelve la tensión de "cómo debo ser". Al relajarte, aparece tu verdadera fuerza.',
+      p3t: 'Fluir en el presente', p3d: 'Sin aferrarte al pasado ni temer el futuro. Respirar en el "ahora" genera el máximo rendimiento.',
+      note: 'Esta filosofía se desarrolla en el libro de Yoshi\n"エゴを手放し今に生きる"',
+      btn: '📖 Leer el libro'
+    },
+    fr: {
+      title: 'Lâcher l\'ego, vivre le présent',
+      subtitle: 'Soltar el ego · エゴを手放し今に生きる',
+      p1t: 'Le corps sait', p1d: 'Avant que l\'esprit parle, le corps connaît déjà la réponse. Le BQ est la capacité d\'écouter cette voix.',
+      p2t: 'Lâcher l\'ego', p2d: 'Dissoudre la tension du "comment je devrais être". En se relâchant, la vraie force apparaît.',
+      p3t: 'Flotter dans le présent', p3d: 'Sans s\'accrocher au passé ni craindre le futur. Respirer dans le "maintenant" génère la performance maximale.',
+      note: 'Cette philosophie est détaillée dans le livre de Yoshi\n"エゴを手放し今に生きる"',
+      btn: '📖 Lire le livre'
+    },
+    pt: {
+      title: 'Soltar o ego, viver o presente',
+      subtitle: 'Soltar el ego · Live in the Present',
+      p1t: 'O corpo sabe', p1d: 'Antes da mente, o corpo já conhece a resposta. BQ é a capacidade de ouvir essa voz.',
+      p2t: 'Soltar o ego', p2d: 'Dissolva a tensão de "como devo ser". Ao relaxar, sua verdadeira força aparece.',
+      p3t: 'Fluir no presente', p3d: 'Sem se prender ao passado nem temer o futuro. Respirar no "agora" gera o máximo desempenho.',
+      note: 'Esta filosofia está detalhada no livro de Yoshi\n"エゴを手放し今に生きる"',
+      btn: '📖 Ler o livro'
+    },
+    zh: {
+      title: '放下自我，活在当下',
+      subtitle: 'Soltar el ego · Live in the Present',
+      p1t: '身体知道答案', p1d: '在大脑之前，身体已经知道了答案。BQ就是倾听这个声音的能力。',
+      p2t: '放下自我', p2d: '溶解"我应该如此"的执念。当你放松时，真正的力量才会出现。',
+      p3t: '活在当下之流', p3d: '不沉溺于过去，不恐惧未来。随呼吸活在"现在"，产生最高绩效。',
+      note: '这一哲学在Yoshi的著作\n"エゴを手放し今に生きる"中有详细阐述',
+      btn: '📖 读这本书'
+    },
+    ko: {
+      title: '에고를 놓고, 지금에 살다',
+      subtitle: 'Soltar el ego · Live in the Present',
+      p1t: '몸은 알고 있다', p1d: '마음보다 먼저, 몸은 이미 답을 알고 있습니다. BQ는 그 목소리를 듣는 능력입니다.',
+      p2t: '에고 내려놓기', p2d: '"이래야 한다"는 집착을 이완으로 녹여냅니다. 힘을 빼면 진정한 힘이 나타납니다.',
+      p3t: '지금의 흐름을 타다', p3d: '과거에 얽매이지 않고, 미래를 두려워하지 않으며. 호흡과 함께 "지금"에 있는 것이 최고의 퍼포먼스를 만듭니다.',
+      note: '이 철학은 Yoshi의 저서\n"エゴを手放し今に生きる"에 자세히 담겨 있습니다',
+      btn: '📖 책 읽기'
+    },
+    en: {
+      title: 'Let go of ego, live in the present',
+      subtitle: 'Soltar el ego · エゴを手放し今に生きる',
+      p1t: 'The body knows', p1d: 'Before the mind speaks, the body already knows the answer. BQ is the ability to listen to that voice.',
+      p2t: 'Releasing the ego', p2d: 'Dissolve the tension of "how I should be." When you relax, your true strength appears.',
+      p3t: 'Flowing in the present', p3d: 'Without clinging to the past or fearing the future. Breathing in the "now" generates peak performance.',
+      note: 'This philosophy is explored in depth in Yoshi\'s book\n"エゴを手放し今に生きる"',
+      btn: '📖 Read the book'
+    }
+  };
+  const t = p[currentLang] || p.ja;
+  if(el('philoTitle')) el('philoTitle').textContent = t.title;
+  if(el('philoSubtitle')) el('philoSubtitle').textContent = t.subtitle;
+  if(el('philoPrinciple1Title')) el('philoPrinciple1Title').textContent = t.p1t;
+  if(el('philoPrinciple1Desc')) el('philoPrinciple1Desc').textContent = t.p1d;
+  if(el('philoPrinciple2Title')) el('philoPrinciple2Title').textContent = t.p2t;
+  if(el('philoPrinciple2Desc')) el('philoPrinciple2Desc').textContent = t.p2d;
+  if(el('philoPrinciple3Title')) el('philoPrinciple3Title').textContent = t.p3t;
+  if(el('philoPrinciple3Desc')) el('philoPrinciple3Desc').textContent = t.p3d;
+  if(el('philoBookNote')) el('philoBookNote').innerHTML = t.note.replace('\n','<br>');
+  if(el('philoBookBtn')) el('philoBookBtn').innerHTML = t.btn + '<br><span style="font-size:9px;font-weight:400">Kindle</span>';
 }
 
 // ===== SELFCARE VIDEOS =====
@@ -2367,6 +2559,8 @@ drawRadarChart();
 // ===== INIT =====
 renderVideoList();
 setTimeout(showDailyQuote, 1500);
+updatePopupLang();
+updatePhilosophy();
 
 </script>
 </body>
