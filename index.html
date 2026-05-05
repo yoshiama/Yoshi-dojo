@@ -956,7 +956,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     </div>
     <button class="hyaku-unlock-btn" onclick="playVideo('MJdYrTwRizo','🏆 伝説の修行者への贈り物')" id="hyakuVideoBtn">▶ 伝説の動画を解放する</button>
     <div style="margin-top:16px;">
-      <button onclick="showCertificate()" style="background:none;border:1px solid var(--gold);color:var(--gold);font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.3em;padding:10px 24px;cursor:pointer;border-radius:1px;">📜 認定証を表示する</button>
+    <button onclick="showCertificate()" style="background:none;border:1px solid var(--gold);color:var(--gold);font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.3em;padding:10px 24px;cursor:pointer;border-radius:1px;" id="hyakuCertBtn">📜 認定証を表示する</button>
     </div>
   </div>
 </section>
@@ -964,7 +964,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 <!-- Certificate Overlay -->
 <div id="certOverlay" style="display:none;position:fixed;inset:0;background:rgba(26,22,18,0.95);z-index:900;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none'">
   <div style="background:var(--paper);max-width:400px;width:100%;border-radius:4px;border:3px solid var(--gold);padding:40px 32px;text-align:center;position:relative;">
-    <div style="font-family:'Zen Antique',serif;font-size:11px;letter-spacing:0.6em;color:var(--gold);margin-bottom:16px;">YOSHI DOJO · 認定証</div>
+    <div style="font-family:'Zen Antique',serif;font-size:11px;letter-spacing:0.6em;color:var(--gold);margin-bottom:16px;" id="certLabel">YOSHI DOJO · 認定証</div>
     <div style="font-family:'Zen Antique',serif;font-size:36px;color:var(--ink);letter-spacing:0.2em;margin-bottom:8px;">皆伝</div>
     <div style="font-size:13px;color:#666;line-height:1.9;margin:16px 0;letter-spacing:0.05em;" id="certText">
       あなたは100日間の身体感覚修行を<br>見事に完遂されました。<br>Yoshi道場・黒帯を授与します。
@@ -972,7 +972,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div style="font-family:'Zen Antique',serif;font-size:48px;color:var(--gold);margin:12px 0;">賀</div>
     <div style="font-size:10px;color:#aaa;letter-spacing:0.3em;">Clinica Yoshi · 中井経賀</div>
     <div style="font-size:10px;color:#aaa;letter-spacing:0.2em;margin-top:4px;" id="certDate"></div>
-    <button onclick="document.getElementById('certOverlay').style.display='none'" style="margin-top:20px;background:var(--ink);color:var(--paper);border:none;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.3em;padding:12px 32px;cursor:pointer;border-radius:1px;">閉じる</button>
+    <button onclick="document.getElementById('certOverlay').style.display='none'" style="margin-top:20px;background:var(--ink);color:var(--paper);border:none;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.3em;padding:12px 32px;cursor:pointer;border-radius:1px;" id="certCloseBtn">閉じる</button>
   </div>
 </div>
 
@@ -1574,6 +1574,7 @@ function setLang(lang) {
   updateDateDisplay();
   updatePopupLang();
   updatePhilosophy();
+  updateHyakuLang();
   renderVisionDomains();  
 }
 
@@ -2433,11 +2434,209 @@ function closeTerms() { document.getElementById('termsOverlay').classList.remove
 }
 
 // ===== 100-DAY CHALLENGE =====
+// ===== 100-DAY CHALLENGE TRANSLATIONS =====
+const hyakuTexts = {
+  ja: {
+    title: '百 日 修 行',
+    sub: '100日間、毎日身体感覚と向き合う',
+    progressLabel: '修行の進捗',
+    countSuffix: '日',
+    btn: '🥋 今日の修行を記す',
+    btnDone: '✓ 今日の修行 完了！',
+    doneMsg: '✓ 今日の修行は完了しています 🙏',
+    calTitle: '修 行 の 記 録',
+    guideTitle: '帯の昇格条件',
+    g1: '🥋 白帯（1〜29日）— 修行の始まり',
+    g2: '🟫 茶帯（30〜99日）— 身体感覚が目覚める',
+    g3: '⬛ 黒帯（100日達成）— 伝説の修行者',
+    g4: '毎日1回チェックインで記録される',
+    unlockTitle: '百日修行 · 完全達成',
+    unlockMsg: 'あなたは100日間、毎日身体と向き合い続けた。\nこれは真の武士のみが到達できる境地です。',
+    videoBtn: '▶ 伝説の動画を解放する',
+    certBtn: '📜 認定証を表示する',
+    certLabel: 'YOSHI DOJO · 認定証',
+    certText: 'あなたは100日間の身体感覚修行を\n見事に完遂されました。\nYoshi道場・黒帯を授与します。',
+    certClose: '閉じる',
+    beltWhite: (n) => `🥋 白帯 — ${n}日目`,
+    beltBrown: (n) => `🟫 茶帯 — ${n}日達成`,
+    beltBlack: '⬛ 黒帯 — 修行完遂'
+  },
+  es: {
+    title: '百 日 修 行',
+    sub: '100 días cultivando la sensación corporal',
+    progressLabel: 'Progreso de la práctica',
+    countSuffix: ' días',
+    btn: '🥋 Registrar la práctica de hoy',
+    btnDone: '✓ ¡Práctica de hoy completada!',
+    doneMsg: '✓ La práctica de hoy está completada 🙏',
+    calTitle: 'Registro de Práctica',
+    guideTitle: 'Condiciones de ascenso de cinturón',
+    g1: '🥋 Cinturón blanco (días 1-29) — Comienzo de la práctica',
+    g2: '🟫 Cinturón marrón (días 30-99) — La sensación corporal despierta',
+    g3: '⬛ Cinturón negro (100 días) — Practicante legendario',
+    g4: 'Registrado con un check-in diario',
+    unlockTitle: '100 Días · Logro Completo',
+    unlockMsg: 'Has enfrentado tu cuerpo cada día durante 100 días.\nEste es un estado que solo los verdaderos samuráis pueden alcanzar.',
+    videoBtn: '▶ Desbloquear el vídeo legendario',
+    certBtn: '📜 Mostrar certificado',
+    certLabel: 'YOSHI DOJO · CERTIFICADO',
+    certText: 'Has completado brillantemente\n100 días de práctica de sensación corporal.\nSe otorga el cinturón negro del Yoshi Dojo.',
+    certClose: 'Cerrar',
+    beltWhite: (n) => `🥋 Cinturón blanco — Día ${n}`,
+    beltBrown: (n) => `🟫 Cinturón marrón — ${n} días`,
+    beltBlack: '⬛ Cinturón negro — Práctica completada'
+  },
+  fr: {
+    title: '百 日 修 行',
+    sub: '100 jours à cultiver la sensation corporelle',
+    progressLabel: 'Progrès de la pratique',
+    countSuffix: ' jours',
+    btn: "🥋 Enregistrer la pratique d'aujourd'hui",
+    btnDone: "✓ Pratique d'aujourd'hui terminée !",
+    doneMsg: "✓ La pratique d'aujourd'hui est terminée 🙏",
+    calTitle: 'Registre de Pratique',
+    guideTitle: 'Conditions de promotion de ceinture',
+    g1: '🥋 Ceinture blanche (jours 1-29) — Début de la pratique',
+    g2: '🟫 Ceinture marron (jours 30-99) — La sensation corporelle s\'éveille',
+    g3: '⬛ Ceinture noire (100 jours) — Pratiquant légendaire',
+    g4: 'Enregistré avec un check-in quotidien',
+    unlockTitle: '100 Jours · Accomplissement Complet',
+    unlockMsg: 'Vous avez confronté votre corps chaque jour pendant 100 jours.\nC\'est un état que seuls les vrais samouraïs peuvent atteindre.',
+    videoBtn: '▶ Débloquer la vidéo légendaire',
+    certBtn: '📜 Afficher le certificat',
+    certLabel: 'YOSHI DOJO · CERTIFICAT',
+    certText: 'Vous avez brillamment complété\n100 jours de pratique de sensation corporelle.\nLa ceinture noire du Yoshi Dojo vous est décernée.',
+    certClose: 'Fermer',
+    beltWhite: (n) => `🥋 Ceinture blanche — Jour ${n}`,
+    beltBrown: (n) => `🟫 Ceinture marron — ${n} jours`,
+    beltBlack: '⬛ Ceinture noire — Pratique accomplie'
+  },
+  pt: {
+    title: '百 日 修 行',
+    sub: '100 dias cultivando a sensação corporal',
+    progressLabel: 'Progresso do treino',
+    countSuffix: ' dias',
+    btn: '🥋 Registrar o treino de hoje',
+    btnDone: '✓ Treino de hoje concluído!',
+    doneMsg: '✓ O treino de hoje está concluído 🙏',
+    calTitle: 'Registro de Treino',
+    guideTitle: 'Condições de promoção de faixa',
+    g1: '🥋 Faixa branca (dias 1-29) — Início do treino',
+    g2: '🟫 Faixa marrom (dias 30-99) — A sensação corporal desperta',
+    g3: '⬛ Faixa preta (100 dias) — Praticante lendário',
+    g4: 'Registrado com um check-in diário',
+    unlockTitle: '100 Dias · Conquista Completa',
+    unlockMsg: 'Você enfrentou seu corpo todos os dias por 100 dias.\nEste é um estado que apenas os verdadeiros samurais podem alcançar.',
+    videoBtn: '▶ Desbloquear o vídeo lendário',
+    certBtn: '📜 Mostrar certificado',
+    certLabel: 'YOSHI DOJO · CERTIFICADO',
+    certText: 'Você completou brilhantemente\n100 dias de treino de sensação corporal.\nA faixa preta do Yoshi Dojo é concedida.',
+    certClose: 'Fechar',
+    beltWhite: (n) => `🥋 Faixa branca — Dia ${n}`,
+    beltBrown: (n) => `🟫 Faixa marrom — ${n} dias`,
+    beltBlack: '⬛ Faixa preta — Treino concluído'
+  },
+  zh: {
+    title: '百 日 修 行',
+    sub: '100天，每天与身体感觉对话',
+    progressLabel: '修行进度',
+    countSuffix: '天',
+    btn: '🥋 记录今天的修行',
+    btnDone: '✓ 今天的修行已完成！',
+    doneMsg: '✓ 今天的修行已完成 🙏',
+    calTitle: '修行记录',
+    guideTitle: '腰带晋级条件',
+    g1: '🥋 白带（第1-29天）— 修行开始',
+    g2: '🟫 棕带（第30-99天）— 身体感觉觉醒',
+    g3: '⬛ 黑带（100天达成）— 传奇修行者',
+    g4: '每天一次打卡即可记录',
+    unlockTitle: '百日修行 · 完全达成',
+    unlockMsg: '你坚持了100天，每天与自己的身体对话。\n这是只有真正武士才能到达的境界。',
+    videoBtn: '▶ 解锁传奇视频',
+    certBtn: '📜 显示认定证',
+    certLabel: 'YOSHI DOJO · 认定证',
+    certText: '您已出色完成\n100天身体感觉修行。\n授予Yoshi道场黑带。',
+    certClose: '关闭',
+    beltWhite: (n) => `🥋 白带 — 第${n}天`,
+    beltBrown: (n) => `🟫 棕带 — 已达成${n}天`,
+    beltBlack: '⬛ 黑带 — 修行完成'
+  },
+  ko: {
+    title: '百 日 修 行',
+    sub: '100일간, 매일 신체 감각과 마주하다',
+    progressLabel: '수행 진행도',
+    countSuffix: '일',
+    btn: '🥋 오늘의 수행을 기록하다',
+    btnDone: '✓ 오늘의 수행 완료！',
+    doneMsg: '✓ 오늘의 수행이 완료되었습니다 🙏',
+    calTitle: '수행 기록',
+    guideTitle: '벨트 승급 조건',
+    g1: '🥋 흰 띠（1~29일）— 수행의 시작',
+    g2: '🟫 갈색 띠（30~99일）— 신체 감각이 깨어난다',
+    g3: '⬛ 검은 띠（100일 달성）— 전설의 수행자',
+    g4: '매일 1회 체크인으로 기록됩니다',
+    unlockTitle: '백일 수행 · 완전 달성',
+    unlockMsg: '당신은 100일 동안 매일 자신의 몸과 마주했습니다.\n이것은 진정한 사무라이만이 도달할 수 있는 경지입니다.',
+    videoBtn: '▶ 전설의 영상을 해제하다',
+    certBtn: '📜 인정증 보기',
+    certLabel: 'YOSHI DOJO · 인정증',
+    certText: '당신은 100일간의 신체 감각 수행을\n훌륭하게 완수하셨습니다.\nYoshi 도장 검은 띠를 수여합니다.',
+    certClose: '닫기',
+    beltWhite: (n) => `🥋 흰 띠 — ${n}일째`,
+    beltBrown: (n) => `🟫 갈색 띠 — ${n}일 달성`,
+    beltBlack: '⬛ 검은 띠 — 수행 완수'
+  },
+  en: {
+    title: '百 日 修 行',
+    sub: '100 days connecting with body sensation every day',
+    progressLabel: 'Training progress',
+    countSuffix: ' days',
+    btn: '🥋 Record today\'s training',
+    btnDone: '✓ Today\'s training complete!',
+    doneMsg: '✓ Today\'s training is complete 🙏',
+    calTitle: 'Training Record',
+    guideTitle: 'Belt promotion conditions',
+    g1: '🥋 White belt (days 1-29) — Beginning of training',
+    g2: '🟫 Brown belt (days 30-99) — Body sensation awakens',
+    g3: '⬛ Black belt (100 days) — Legendary practitioner',
+    g4: 'Recorded with one daily check-in',
+    unlockTitle: '100-Day Challenge · Full Achievement',
+    unlockMsg: 'You have faced your body every day for 100 days.\nThis is a realm only true samurai can reach.',
+    videoBtn: '▶ Unlock the legendary video',
+    certBtn: '📜 Show certificate',
+    certLabel: 'YOSHI DOJO · CERTIFICATE',
+    certText: 'You have brilliantly completed\n100 days of body sensation training.\nYoshi Dojo black belt is awarded.',
+    certClose: 'Close',
+    beltWhite: (n) => `🥋 White belt — Day ${n}`,
+    beltBrown: (n) => `🟫 Brown belt — ${n} days`,
+    beltBlack: '⬛ Black belt — Training complete'
+  }
+};
+
+function updateHyakuLang() {
+  const ht = hyakuTexts[currentLang] || hyakuTexts.ja;
+  const el = (id) => document.getElementById(id);
+  if(el('hyakuTitle')) el('hyakuTitle').textContent = ht.title;
+  if(el('hyakuSub')) el('hyakuSub').textContent = ht.sub;
+  if(el('hyakuProgressLabel')) el('hyakuProgressLabel').textContent = ht.progressLabel;
+  if(el('hyakuCalTitle')) el('hyakuCalTitle').textContent = ht.calTitle;
+  if(el('hyakuGuideTitle')) el('hyakuGuideTitle').textContent = ht.guideTitle;
+  if(el('hyakuG1')) el('hyakuG1').textContent = ht.g1;
+  if(el('hyakuG2')) el('hyakuG2').textContent = ht.g2;
+  if(el('hyakuG3')) el('hyakuG3').textContent = ht.g3;
+  if(el('hyakuG4')) el('hyakuG4').textContent = ht.g4;
+  if(el('hyakuUnlockTitle')) el('hyakuUnlockTitle').textContent = ht.unlockTitle;
+  if(el('hyakuUnlockMsg')) el('hyakuUnlockMsg').innerHTML = ht.unlockMsg.replace('\n','<br>');
+  if(el('hyakuVideoBtn')) el('hyakuVideoBtn').textContent = ht.videoBtn;
+  if(el('hyakuCertBtn')) el('hyakuCertBtn').textContent = ht.certBtn;
+  updateHyakuStatus();
+}
+
 let hyakuData = JSON.parse(localStorage.getItem('yoshiHyaku') || '{"days":[],"startDate":null}');
 
 function initHyaku() {
   renderHyakuCalendar();
-  updateHyakuStatus();
+  updateHyakuLang();
 }
 
 function doCheckin() {
@@ -2448,9 +2647,9 @@ function doCheckin() {
   localStorage.setItem('yoshiHyaku', JSON.stringify(hyakuData));
   renderHyakuCalendar();
   updateHyakuStatus();
-  // 完了アニメ
   const btn = document.getElementById('hyakuBtn');
-  btn.textContent = '✓ 今日の修行 完了！';
+  const ht = hyakuTexts[currentLang] || hyakuTexts.ja;
+  btn.textContent = ht.btnDone;
   setTimeout(() => updateHyakuStatus(), 1500);
 }
 
@@ -2482,13 +2681,13 @@ function updateHyakuStatus() {
   const count = hyakuData.days.length;
   const today = new Date().toDateString();
   const doneToday = hyakuData.days.includes(today);
-  const t = translations[currentLang] || translations.ja;
+  const ht = hyakuTexts[currentLang] || hyakuTexts.ja;
 
   // progress
   const fill = document.getElementById('hyakuFill');
   const countEl = document.getElementById('hyakuCount');
   if (fill) fill.style.width = (count / 100 * 100) + '%';
-  if (countEl) countEl.textContent = count + ' / 100日';
+  if (countEl) countEl.textContent = count + ' / 100' + ht.countSuffix;
 
   // button
   const btn = document.getElementById('hyakuBtn');
@@ -2497,11 +2696,12 @@ function updateHyakuStatus() {
     if (doneToday) {
       btn.style.display = 'none';
       doneMsg.style.display = 'block';
+      doneMsg.textContent = ht.doneMsg;
     } else {
       btn.style.display = 'block';
       doneMsg.style.display = 'none';
       btn.disabled = false;
-      btn.textContent = '🥋 今日の修行を記す';
+      btn.textContent = ht.btn;
     }
   }
 
@@ -2509,11 +2709,11 @@ function updateHyakuStatus() {
   const belt = document.getElementById('hyakuBelt');
   if (belt) {
     if (count >= 100) {
-      belt.className = 'hyaku-belt black'; belt.textContent = '⬛ 黒帯 — 修行完遂';
+      belt.className = 'hyaku-belt black'; belt.textContent = ht.beltBlack;
     } else if (count >= 30) {
-      belt.className = 'hyaku-belt brown'; belt.textContent = '🟫 茶帯 — ' + count + '日達成';
+      belt.className = 'hyaku-belt brown'; belt.textContent = ht.beltBrown(count);
     } else {
-      belt.className = 'hyaku-belt white'; belt.textContent = '🥋 白帯 — ' + count + '日目';
+      belt.className = 'hyaku-belt white'; belt.textContent = ht.beltWhite(count);
     }
   }
 
@@ -2524,11 +2724,13 @@ function updateHyakuStatus() {
 
 function showCertificate() {
   const overlay = document.getElementById('certOverlay');
+  const ht = hyakuTexts[currentLang] || hyakuTexts.ja;
+  const locales = {ja:'ja-JP',es:'es-ES',en:'en-US',fr:'fr-FR',pt:'pt-BR',zh:'zh-CN',ko:'ko-KR'};
   const dateEl = document.getElementById('certDate');
-  if (dateEl) {
-    const locales = {ja:'ja-JP',es:'es-ES',en:'en-US',fr:'fr-FR',pt:'pt-BR',zh:'zh-CN',ko:'ko-KR'};
-    dateEl.textContent = new Date().toLocaleDateString(locales[currentLang]||'ja-JP',{year:'numeric',month:'long',day:'numeric'});
-  }
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString(locales[currentLang]||'ja-JP',{year:'numeric',month:'long',day:'numeric'});
+  const certLabel = document.getElementById('certLabel'); if(certLabel) certLabel.textContent = ht.certLabel;
+  const certText = document.getElementById('certText'); if(certText) certText.innerHTML = ht.certText.replace(/\n/g,'<br>');
+  const certClose = document.getElementById('certCloseBtn'); if(certClose) certClose.textContent = ht.certClose;
   overlay.style.display = 'flex';
 }
 
@@ -2670,6 +2872,7 @@ renderVideoList();
 setTimeout(showDailyQuote, 1500);
 updatePopupLang();
 updatePhilosophy();
+updateHyakuLang();
 
 </script>
 </body>
