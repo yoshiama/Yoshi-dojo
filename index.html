@@ -675,12 +675,11 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
   <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(42,107,124,0.05));border:1px solid var(--mist);border-radius:3px;padding:20px 24px;margin-bottom:16px;">
     <div style="font-size:10px;letter-spacing:0.5em;color:var(--gold);margin-bottom:8px;" id="mcTitle">📩 無料ニュースレター</div>
     <div style="font-size:12px;color:#666;line-height:1.8;margin-bottom:14px;" id="mcDesc">Yoshiの気・身体感覚の知恵を毎週お届け。登録無料。</div>
-    <form action="https://shiatsuyoshi.us21.list-manage.com/subscribe/post" method="POST" target="_blank" style="display:flex;gap:8px;">
-      <input type="hidden" name="u" value="MAILCHIMP_U">
-      <input type="hidden" name="id" value="MAILCHIMP_ID">
-      <input type="email" name="EMAIL" id="mcEmail" required placeholder="your@email.com" style="flex:1;background:rgba(255,255,255,0.8);border:1px solid var(--mist);border-radius:2px;padding:10px 12px;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ink);outline:none;">
+    <form id="mlForm" onsubmit="submitMailerlite(event)" style="display:flex;gap:8px;flex-wrap:wrap;">
+      <input type="email" id="mcEmail" required placeholder="your@email.com" style="flex:1;min-width:180px;background:rgba(255,255,255,0.8);border:1px solid var(--mist);border-radius:2px;padding:10px 12px;font-family:'Noto Serif JP',serif;font-size:13px;color:var(--ink);outline:none;">
       <button type="submit" style="background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:0.2em;padding:10px 18px;cursor:pointer;border-radius:1px;font-weight:700;white-space:nowrap;" id="mcBtn">登録</button>
     </form>
+    <div id="mlMsg" style="display:none;margin-top:10px;font-size:12px;padding:8px 12px;border-radius:2px;"></div>
   </div>
 
   <div class="stripe-notice">
@@ -1721,6 +1720,46 @@ function playSelfcareVideo(videoId, type) {
 }
 
 function openBooking() { window.open('https://www.shiatsuyoshi.com', '_blank'); }
+
+// ===== MAILERLITE =====
+async function submitMailerlite(e) {
+  e.preventDefault();
+  const email = document.getElementById('mcEmail').value.trim();
+  const btn = document.getElementById('mcBtn');
+  const msg = document.getElementById('mlMsg');
+  const successTexts = {ja:'✓ 登録完了！毎週お届けします。',es:'✓ ¡Registrado! Te escribimos cada semana.',en:'✓ Subscribed! We\'ll write weekly.',fr:'✓ Inscrit ! On vous écrit chaque semaine.',pt:'✓ Inscrito! Escrevemos toda semana.',zh:'✓ 订阅成功！每周为您发送。',ko:'✓ 구독 완료! 매주 보내드립니다.'};
+  const errorTexts = {ja:'エラーが発生しました。再度お試しください。',es:'Error. Por favor, inténtalo de nuevo.',en:'Error. Please try again.',fr:'Erreur. Veuillez réessayer.',pt:'Erro. Tente novamente.',zh:'出错了，请重试。',ko:'오류가 발생했습니다. 다시 시도해주세요.'};
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  try {
+    const params = new URLSearchParams();
+    params.append('fields[email]', email);
+    params.append('ml-submit', '1');
+    params.append('anticsrf', 'true');
+    const res = await fetch('https://assets.mailerlite.com/jsonp/2348235/forms/187453457205036283/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: params.toString()
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('mlForm').style.display = 'none';
+      msg.textContent = successTexts[currentLang] || successTexts.en;
+      msg.style.background = 'rgba(201,168,76,0.15)';
+      msg.style.color = 'var(--gold)';
+      msg.style.display = 'block';
+    } else {
+      throw new Error('not ok');
+    }
+  } catch {
+    msg.textContent = errorTexts[currentLang] || errorTexts.en;
+    msg.style.background = 'rgba(200,0,0,0.1)';
+    msg.style.color = '#c00';
+    msg.style.display = 'block';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
 
 // ===== PREMIUM =====
 function handlePremium(type) {
