@@ -140,6 +140,15 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 .vision-save-btn { margin-top: 8px; background: none; border: 1px solid var(--mist); font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 0.3em; color: #888; padding: 6px 16px; cursor: pointer; border-radius: 1px; transition: all 0.2s; }
 .vision-save-btn:hover { border-color: var(--gold); color: var(--gold); }
 .vision-saved-badge { font-size: 10px; color: var(--bamboo); letter-spacing: 0.2em; margin-left: 8px; opacity: 0; transition: opacity 0.5s; }
+.vision-img-btn { background: none; border: 1px solid var(--mist); font-family: 'Noto Serif JP', serif; font-size: 11px; letter-spacing: 0.2em; color: #888; padding: 6px 12px; cursor: pointer; border-radius: 1px; transition: all 0.2s; margin-left: 6px; }
+.vision-img-btn:hover { border-color: var(--teal); color: var(--teal); }
+.vision-img-btn.has-img { border-color: var(--teal); color: var(--teal); }
+.vision-img-viewer { display: none; margin-top: 10px; border-radius: 4px; overflow: hidden; position: relative; }
+.vision-img-viewer.show { display: block; }
+.vision-img-viewer img { width: 100%; max-height: 260px; object-fit: cover; border-radius: 4px; display: block; }
+.vision-img-delete { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.vision-img-upload-label { font-size: 11px; letter-spacing: 0.2em; color: #aaa; display: block; text-align: center; padding: 20px; border: 1px dashed var(--mist); border-radius: 4px; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
+.vision-img-upload-label:hover { border-color: var(--teal); color: var(--teal); }
 .vision-visualize-btn { width: 100%; background: linear-gradient(135deg, var(--ink), var(--deep)); color: var(--paper); border: none; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; padding: 16px; cursor: pointer; border-radius: 2px; margin-bottom: 20px; transition: all 0.3s; }
 .vision-visualize-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
 
@@ -1688,6 +1697,7 @@ const visionDomains = [
   {id:'play', icon:'🎨', kanji:'楽', name:'趣味・遊び', nameEs:'Hobbies · Juego', nameEn:'Hobbies · Play', placeholder:'魂が喜ぶ趣味や遊びは何ですか？', placeholderEs:'¿Qué hobbies alegran tu alma?', placeholderEn:'What hobbies and play make your soul happy?'},
 ];
 let visionData = JSON.parse(localStorage.getItem('yoshiVisionDomains') || '{}');
+let visionImages = JSON.parse(localStorage.getItem('yoshiVisionImages') || '{}');
 function renderVisionDomains() {
   const container = document.getElementById('visionDomains');
   container.innerHTML = '';
@@ -1695,11 +1705,22 @@ function renderVisionDomains() {
     const saved = visionData[d.id] || '';
     const ph = currentLang==='es'?d.placeholderEs:currentLang==='en'?d.placeholderEn:d.placeholder;
     const nm = currentLang==='es'?d.nameEs:currentLang==='en'?d.nameEn:d.name;
+    const hasImg = !!visionImages[d.id];
     const block = document.createElement('div');
     block.className = 'vision-domain-block';
     block.innerHTML = `<div class="vision-domain-header"><span class="vision-domain-icon">${d.icon}</span><span class="vision-domain-name">${nm}</span><span class="vision-domain-kanji">${d.kanji}</span></div>
       <div class="vision-domain-body"><textarea class="vision-domain-input" id="vision-${d.id}" placeholder="${ph}">${saved}</textarea>
-      <div style="display:flex;align-items:center;margin-top:6px"><button class="vision-save-btn" onclick="saveVisionDomain('${d.id}')">記す</button><span class="vision-saved-badge" id="badge-${d.id}">✓ 保存しました</span></div></div>`;
+      <div style="display:flex;align-items:center;margin-top:6px;flex-wrap:wrap;gap:4px">
+        <button class="vision-save-btn" onclick="saveVisionDomain('${d.id}')">記す</button>
+        <button class="vision-img-btn${hasImg?' has-img':''}" id="imgbtn-${d.id}" onclick="toggleVisionImage('${d.id}')">${hasImg?'🖼 画像':'📷 画像'}</button>
+        <input type="file" accept="image/*" id="imgfile-${d.id}" style="display:none" onchange="uploadVisionImage('${d.id}',this)">
+        <span class="vision-saved-badge" id="badge-${d.id}">✓ 保存しました</span>
+      </div>
+      <div class="vision-img-viewer" id="imgviewer-${d.id}">
+        ${hasImg
+          ? `<img src="${visionImages[d.id]}" alt="${nm}"><button class="vision-img-delete" onclick="deleteVisionImage('${d.id}')">✕</button>`
+          : `<label class="vision-img-upload-label" for="imgfile-${d.id}">＋ 画像をアップロード</label>`}
+      </div></div>`;
     container.appendChild(block);
   });
 }
@@ -1710,6 +1731,33 @@ function saveVisionDomain(id) {
   const badge = document.getElementById('badge-'+id);
   badge.style.opacity = '1';
   setTimeout(() => badge.style.opacity = '0', 2000);
+}
+function toggleVisionImage(id) {
+  const viewer = document.getElementById('imgviewer-'+id);
+  const hasImg = !!visionImages[id];
+  if (hasImg) {
+    viewer.classList.toggle('show');
+  } else {
+    viewer.classList.toggle('show');
+  }
+}
+function uploadVisionImage(id, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    visionImages[id] = e.target.result;
+    localStorage.setItem('yoshiVisionImages', JSON.stringify(visionImages));
+    renderVisionDomains();
+    const viewer = document.getElementById('imgviewer-'+id);
+    if (viewer) viewer.classList.add('show');
+  };
+  reader.readAsDataURL(file);
+}
+function deleteVisionImage(id) {
+  delete visionImages[id];
+  localStorage.setItem('yoshiVisionImages', JSON.stringify(visionImages));
+  renderVisionDomains();
 }
 
 // ===== VISUALIZATION =====
