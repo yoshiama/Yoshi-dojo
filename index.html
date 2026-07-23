@@ -1852,7 +1852,9 @@ function saveBQToday() {
   if (keys.length > 90) keys.slice(0, keys.length - 90).forEach(k => delete hist[k]);
   localStorage.setItem(BQ_KEY, JSON.stringify(hist));
   renderBQChart();
+  const savedTexts = { es:'✓ Guardado', ja:'✓ 保存しました', en:'✓ Saved', fr:'✓ Enregistré', pt:'✓ Salvo', zh:'✓ 已保存', ko:'✓ 저장됨' };
   const msg = document.getElementById('bqSavedMsg');
+  msg.textContent = savedTexts[currentLang] || savedTexts.es;
   msg.style.opacity = '1'; setTimeout(() => msg.style.opacity = '0', 2500);
 }
 function renderBQChart() {
@@ -1861,7 +1863,15 @@ function renderBQChart() {
   // 直近7日のキーを生成
   const days = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate()-i); const k = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); days.push(k); }
-  const dayLabels = { es:['D-6','D-5','D-4','D-3','D-2','Ayer','Hoy'], ja:['6日前','5日前','4日前','3日前','2日前','昨日','今日'], en:['D-6','D-5','D-4','D-3','D-2','Yday','Today'] };
+  const dayLabels = {
+    es: ['D-6','D-5','D-4','D-3','D-2','Ayer','Hoy'],
+    ja: ['6日前','5日前','4日前','3日前','2日前','昨日','今日'],
+    en: ['D-6','D-5','D-4','D-3','D-2','Yday','Today'],
+    fr: ['J-6','J-5','J-4','J-3','J-2','Hier','Auj.'],
+    pt: ['D-6','D-5','D-4','D-3','D-2','Ontem','Hoje'],
+    zh: ['-6天','-5天','-4天','-3天','-2天','昨天','今天'],
+    ko: ['6일전','5일전','4일전','3일전','2일전','어제','오늘'],
+  };
   const labels = (dayLabels[currentLang] || dayLabels.es);
   const container = document.getElementById('bqBars');
   if (!container) return;
@@ -1879,8 +1889,24 @@ function renderBQChart() {
     </div>`;
   }).join('');
   // 保存ボタンのラベル言語対応
-  const btnLabels = { es:'Guardar BQ de hoy', ja:'本日のBQを保存', en:'Save today\'s BQ' };
-  const titleLabels = { es:'EVOLUCIÓN BQ · 7 DÍAS', ja:'BQ推移 · 直近7日', en:'BQ HISTORY · 7 DAYS' };
+  const btnLabels = {
+    es: 'Guardar BQ de hoy',
+    ja: '本日のBQを保存',
+    en: "Save today's BQ",
+    fr: "Enregistrer mon BQ",
+    pt: 'Salvar BQ de hoje',
+    zh: '保存今日BQ',
+    ko: '오늘 BQ 저장',
+  };
+  const titleLabels = {
+    es: 'EVOLUCIÓN BQ · 7 DÍAS',
+    ja: 'BQ推移 · 直近7日',
+    en: 'BQ HISTORY · 7 DAYS',
+    fr: 'ÉVOLUTION BQ · 7 JOURS',
+    pt: 'EVOLUÇÃO BQ · 7 DIAS',
+    zh: 'BQ变化 · 近7天',
+    ko: 'BQ 추이 · 최근 7일',
+  };
   const el = id => document.getElementById(id);
   if(el('bqSaveBtn')) el('bqSaveBtn').textContent = btnLabels[currentLang] || btnLabels.es;
   if(el('bqHistoryTitle')) el('bqHistoryTitle').textContent = titleLabels[currentLang] || titleLabels.es;
