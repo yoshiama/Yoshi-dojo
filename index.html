@@ -750,7 +750,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
         </div>
       </div>
       <div class="premium-card-desc">マドリードで絶望→パニック障害→奇跡の連続。「頑張るのをやめた日から、人生は勝手に動き出した」。モナコのホテルで書き下ろされた実話。RAS・スコトーマ・ベルトコンベアワーク収録。</div>
-      <button class="premium-card-btn gold" onclick="window.open('https://www.amazon.co.jp/dp/B0GWWJVSTN','_blank')">📖 Kindleで今すぐ読む</button>
+      <button class="premium-card-btn gold" id="premiumKindleBtn" onclick="window.open(currentLang==='ja'?'https://www.amazon.co.jp/dp/B0GWWJVSTN':'https://amzn.eu/d/00o61Xwl','_blank')">📖 Kindleで今すぐ読む</button>
     </div>
     <div class="premium-card">
       <div class="premium-badge">人気</div>
@@ -1109,7 +1109,7 @@ function closeVideo() {
 }
 
 // ===== LANGUAGE =====
-let currentLang = 'ja';
+let currentLang = 'es';
 const translations = {
   ja: {
     nav: ['瞑　想','願　望','車　輪','気　づき','身　体','養　生','講　座','予　約','百　日'],
@@ -2231,7 +2231,8 @@ function updatePhilosophy() {
   if(el('philoPrinciple3Title')) el('philoPrinciple3Title').textContent = t.p3t;
   if(el('philoPrinciple3Desc')) el('philoPrinciple3Desc').textContent = t.p3d;
   if(el('philoBookNote')) el('philoBookNote').innerHTML = t.note.replace('\n','<br>');
-  if(el('philoBookBtn')) el('philoBookBtn').innerHTML = t.btn + '<br><span style="font-size:9px;font-weight:400">Kindle</span>';
+  const kindleURL = currentLang === 'ja' ? 'https://www.amazon.co.jp/dp/B0GWWJVSTN' : 'https://amzn.eu/d/00o61Xwl';
+  if(el('philoBookBtn')) { el('philoBookBtn').setAttribute('onclick', "window.open('"+kindleURL+"','_blank')"); el('philoBookBtn').innerHTML = t.btn + '<br><span style="font-size:9px;font-weight:400">Kindle</span>'; }
   // Belt Conveyor Work
   if(el('beltLabel')) el('beltLabel').textContent = t.beltLabel;
   if(el('beltTitle')) el('beltTitle').textContent = t.beltTitle;
@@ -2245,7 +2246,9 @@ function updatePhilosophy() {
   if(el('beltStep3Label')) el('beltStep3Label').textContent = t.s3l;
   if(el('beltStep3Q')) el('beltStep3Q').innerHTML = t.s3q.replace('\n','<br>');
   if(el('beltStep3Hint')) el('beltStep3Hint').textContent = t.s3h;
-  if(el('beltBookRef')) el('beltBookRef').innerHTML = t.bRef + '&nbsp;<button onclick="window.open(\'https://www.amazon.co.jp/dp/B0GWWJVSTN\',\'_blank\')" style="background:none;border:none;color:var(--teal);font-size:10px;cursor:pointer;letter-spacing:0.2em;padding:0;text-decoration:underline;">' + t.bLink + '</button>';
+  if(el('beltBookRef')) el('beltBookRef').innerHTML = t.bRef + '&nbsp;<button onclick="window.open(\''+kindleURL+'\',\'_blank\')" style="background:none;border:none;color:var(--teal);font-size:10px;cursor:pointer;letter-spacing:0.2em;padding:0;text-decoration:underline;">' + t.bLink + '</button>';
+  const premiumKindleLabels = { ja:'📖 Kindleで今すぐ読む', es:'📖 Leer en Kindle ahora', en:'📖 Read on Kindle now', fr:'📖 Lire sur Kindle', pt:'📖 Ler no Kindle agora', zh:'📖 立即在Kindle阅读', ko:'📖 지금 Kindle로 읽기' };
+  if(el('premiumKindleBtn')) el('premiumKindleBtn').textContent = premiumKindleLabels[currentLang] || premiumKindleLabels.es;
 }
 
 // ===== SELFCARE VIDEOS =====
