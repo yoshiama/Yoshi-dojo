@@ -1532,6 +1532,7 @@ const translations = {
 
 function setLang(lang) {
   currentLang = lang;
+  localStorage.removeItem('yoshiSamuraiLangSet');
  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   const lbEl = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
   if(lbEl) lbEl.classList.add('active');
