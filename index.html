@@ -1959,14 +1959,19 @@ function updateBodyCheckLang() {
   renderBQChart();
 }
 
+function getSamuraiVideoURL() {
+  return currentLang === 'ja'
+    ? 'https://youtu.be/MJdYrTwRizo'
+    : 'https://youtube.com/playlist?list=PLu47G4oLaxmc5KHrJCLEoTzqq4mIOTYcl&si=68XXq6Tz3oPnTTtq';
+}
 function openSamuraiVideo() {
   const alreadySet = localStorage.getItem('yoshiSamuraiLangSet');
-  if (alreadySet) { window.open('https://youtu.be/MJdYrTwRizo', '_blank'); giveScoreBonus(); }
+  if (alreadySet) { window.open(getSamuraiVideoURL(), '_blank'); giveScoreBonus(); }
   else { updateLangGuideContent(); document.getElementById('langGuideOverlay').classList.add('show'); }
 }
 function closeLangGuide(go) {
   document.getElementById('langGuideOverlay').classList.remove('show');
-  if (go) { localStorage.setItem('yoshiSamuraiLangSet','1'); window.open('https://youtu.be/MJdYrTwRizo','_blank'); giveScoreBonus(); }
+  if (go) { localStorage.setItem('yoshiSamuraiLangSet','1'); window.open(getSamuraiVideoURL(),'_blank'); giveScoreBonus(); }
 }
 function giveScoreBonus() {
   bodyScoreBonus = 10; updateScore();
