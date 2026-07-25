@@ -568,25 +568,25 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="body-check-kanji">丹</div>
     </div>
     <div class="body-check-desc" id="body-desc-1">へそ下3センチ。ここに意識を置き、温かさや重さを感じますか？</div>
-    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
+    <input type="range" class="level-slider" id="bq-slider-1" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
     <div class="level-labels"><span id="body-low-1">感じない</span><span id="body-high-1">強く感じる</span></div>
   </div>
   <div class="body-check-item">
     <div class="body-check-header"><div class="body-check-name" id="body-name-2">呼吸</div><div class="body-check-kanji">息</div></div>
     <div class="body-check-desc" id="body-desc-2">今の呼吸は深いですか？胸ではなく、腹で呼吸できていますか？</div>
-    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
+    <input type="range" class="level-slider" id="bq-slider-2" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
     <div class="level-labels"><span id="body-low-2">浅い</span><span id="body-high-2">深く豊か</span></div>
   </div>
   <div class="body-check-item">
     <div class="body-check-header"><div class="body-check-name" id="body-name-3">脱力</div><div class="body-check-kanji">緩</div></div>
     <div class="body-check-desc" id="body-desc-3">肩、首、顎の力は抜けていますか？不必要な緊張はありますか？</div>
-    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
+    <input type="range" class="level-slider" id="bq-slider-3" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
     <div class="level-labels"><span id="body-low-3">緊張</span><span id="body-high-3">完全脱力</span></div>
   </div>
   <div class="body-check-item">
     <div class="body-check-header"><div class="body-check-name" id="body-name-4">気の流れ</div><div class="body-check-kanji">気</div></div>
     <div class="body-check-desc" id="body-desc-4">身体全体にエネルギーや温かさが流れているのを感じますか？</div>
-    <input type="range" class="level-slider" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
+    <input type="range" class="level-slider" id="bq-slider-4" min="0" max="100" value="50" oninput="updateSlider(this);updateScore()">
     <div class="level-labels"><span id="body-low-4">滞っている</span><span id="body-high-4">自由に流れる</span></div>
   </div>
   <div class="body-summary">
@@ -1840,8 +1840,9 @@ let bodyScoreBonus = 0;
 const BQ_KEY = 'yoshiBQHistory';
 function _todayKey() { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function loadBQHistory() { try { return JSON.parse(localStorage.getItem(BQ_KEY) || '{}'); } catch(e) { return {}; } }
+function getBQSliders() { return [1,2,3,4].map(i => document.getElementById('bq-slider-'+i)).filter(Boolean); }
 function saveBQToday() {
-  const sliders = [...document.querySelectorAll('.level-slider')];
+  const sliders = getBQSliders();
   const vals = sliders.map(s => parseInt(s.value));
   const base = Math.round(vals.reduce((a,v)=>a+v,0)/vals.length);
   const total = Math.min(100, base + bodyScoreBonus);
@@ -1915,7 +1916,7 @@ function restoreTodaySliders() {
   const hist = loadBQHistory();
   const entry = hist[_todayKey()];
   if (!entry) return;
-  const sliders = [...document.querySelectorAll('.level-slider')];
+  const sliders = getBQSliders();
   const vals = [entry.tanden, entry.kokyu, entry.datsuryoku, entry.ki];
   vals.forEach((v, i) => { if (sliders[i] && v !== undefined) { sliders[i].value = v; updateSlider(sliders[i]); } });
   if (entry.videoWatched) bodyScoreBonus = 10;
@@ -1926,8 +1927,8 @@ renderBQChart();
 
 function updateScore() {
   const t = translations[currentLang];
-  const sliders = document.querySelectorAll('.level-slider');
-  const base = Math.round([...sliders].reduce((a,s) => a+parseInt(s.value), 0) / sliders.length);
+  const sliders = getBQSliders();
+  const base = Math.round(sliders.reduce((a,s) => a+parseInt(s.value), 0) / sliders.length);
   const total = Math.min(100, base + bodyScoreBonus);
   document.getElementById('scoreDisplay').textContent = total;
   const ranges = [[0,25,0],[25,50,1],[50,75,2],[75,101,3]];
