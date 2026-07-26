@@ -2437,10 +2437,10 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi 정체 지압 클리닉',
     },
   };
-  const p = pc[currentLang] || pc.es;
-  const ids = ['bookTag','bookSubtitle','bookPriceUnit','bookDesc','courseTag','courseTitle','coursePriceUnit','courseDesc','courseBtn','memberTag','memberTitle','memberPriceUnit','memberDesc','memberBtn','sessionTag','sessionCardTitle','sessionPriceUnit','sessionCardDesc','sessionCardBtn','clinicYouTubeLink'];
-  const vals = [p.bookTag,p.bookSubtitle,p.bookPriceUnit,p.bookDesc,p.courseTag,p.courseTitle,p.coursePriceUnit,p.courseDesc,p.courseBtn,p.memberTag,p.memberTitle,p.memberPriceUnit,p.memberDesc,p.memberBtn,p.sessionTag,p.sessionTitle,p.sessionPriceUnit,p.sessionDesc,p.sessionBtn,p.ytLink];
-  ids.forEach((id,i)=>{ if(el(id)) el(id).textContent=vals[i]; });
+  const pCard = pc[currentLang] || pc.es;
+  const pcIds = ['bookTag','bookSubtitle','bookPriceUnit','bookDesc','courseTag','courseTitle','coursePriceUnit','courseDesc','courseBtn','memberTag','memberTitle','memberPriceUnit','memberDesc','memberBtn','sessionTag','sessionCardTitle','sessionPriceUnit','sessionCardDesc','sessionCardBtn','clinicYouTubeLink'];
+  const pcVals = [pCard.bookTag,pCard.bookSubtitle,pCard.bookPriceUnit,pCard.bookDesc,pCard.courseTag,pCard.courseTitle,pCard.coursePriceUnit,pCard.courseDesc,pCard.courseBtn,pCard.memberTag,pCard.memberTitle,pCard.memberPriceUnit,pCard.memberDesc,pCard.memberBtn,pCard.sessionTag,pCard.sessionTitle,pCard.sessionPriceUnit,pCard.sessionDesc,pCard.sessionBtn,pCard.ytLink];
+  pcIds.forEach((id,i)=>{ if(el(id)) el(id).textContent=pcVals[i]; });
 }
 
 // ===== SELFCARE VIDEOS =====
