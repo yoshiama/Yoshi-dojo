@@ -517,6 +517,16 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div style="font-size:13px;letter-spacing:0.1em;color:var(--ink);margin-bottom:10px;" id="bodyScanDesc">Recorre tu cuerpo con atención plena. Libera tensiones y entra en el ki.</div>
       <button class="selfcare-btn dark" style="width:100%;margin:0;" onclick="openBodyScanVideo()">▶ <span id="bodyScanBtn">Ver meditación guiada</span></button>
     </div>
+    <div style="margin:0 0 12px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:3px;padding:16px;" id="morningMedCard">
+      <div style="font-size:10px;letter-spacing:0.4em;color:var(--gold);margin-bottom:6px;" id="morningMedLabel">MEDITACIÓN DE MAÑANA</div>
+      <div style="font-size:13px;letter-spacing:0.1em;color:var(--ink);margin-bottom:10px;" id="morningMedDesc">Comienza el día con presencia y energía. Activa tu ki desde la mañana.</div>
+      <button class="selfcare-btn" style="width:100%;margin:0;opacity:0.5;cursor:not-allowed;" disabled id="morningMedBtnEl">🌅 <span id="morningMedBtn">Próximamente</span></button>
+    </div>
+    <div style="margin:0 0 20px;background:rgba(42,60,124,0.07);border:1px solid rgba(42,60,124,0.2);border-radius:3px;padding:16px;" id="eveningMedCard">
+      <div style="font-size:10px;letter-spacing:0.4em;color:#8899cc;margin-bottom:6px;" id="eveningMedLabel">MEDITACIÓN DE NOCHE</div>
+      <div style="font-size:13px;letter-spacing:0.1em;color:var(--ink);margin-bottom:10px;" id="eveningMedDesc">Suelta el día con gratitud. Prepara tu cuerpo y mente para el descanso profundo.</div>
+      <button class="selfcare-btn dark" style="width:100%;margin:0;opacity:0.5;cursor:not-allowed;" disabled id="eveningMedBtnEl">🌙 <span id="eveningMedBtn">Próximamente</span></button>
+    </div>
     <div class="meditation-guide">
       <div class="guide-title" id="guide-title-1">今・ここへの誘い</div>
       <div class="guide-step" id="guide-step-1">① 背筋を自然に伸ばし、丹田に意識を置く</div>
@@ -1989,6 +1999,24 @@ const bqVideoTexts = {
   zh: { title:'🧠 什么是BQ？', desc:'了解身体智能（BQ）——人类的第三种智慧。', btn:'观看讲解视频' },
   ko: { title:'🧠 BQ란 무엇인가?', desc:'Body Intelligence(BQ) — 인류의 세 번째 지능을 이해하다.', btn:'설명 영상 보기' },
 };
+const morningMedTexts = {
+  es: { label:'MEDITACIÓN DE MAÑANA', desc:'Comienza el día con presencia y energía. Activa tu ki desde la mañana.', btn:'Próximamente' },
+  ja: { label:'朝の瞑想', desc:'一日を存在感とエネルギーで始める。朝から気を活性化させる。', btn:'近日公開' },
+  en: { label:'MORNING MEDITATION', desc:'Start the day with presence and energy. Activate your ki from the morning.', btn:'Coming soon' },
+  fr: { label:'MÉDITATION DU MATIN', desc:'Commencez la journée avec présence et énergie. Activez votre ki dès le matin.', btn:'Bientôt disponible' },
+  pt: { label:'MEDITAÇÃO MATINAL', desc:'Comece o dia com presença e energia. Ative seu ki desde a manhã.', btn:'Em breve' },
+  zh: { label:'早晨冥想', desc:'以临在和活力开始新的一天。从早晨激活你的气。', btn:'即将推出' },
+  ko: { label:'아침 명상', desc:'존재감과 에너지로 하루를 시작하세요. 아침부터 기를 활성화하세요.', btn:'출시 예정' },
+};
+const eveningMedTexts = {
+  es: { label:'MEDITACIÓN DE NOCHE', desc:'Suelta el día con gratitud. Prepara tu cuerpo y mente para el descanso profundo.', btn:'Próximamente' },
+  ja: { label:'夜の瞑想', desc:'感謝とともに一日を手放す。身体と心を深い休息へと準備する。', btn:'近日公開' },
+  en: { label:'EVENING MEDITATION', desc:'Release the day with gratitude. Prepare your body and mind for deep rest.', btn:'Coming soon' },
+  fr: { label:'MÉDITATION DU SOIR', desc:'Relâchez la journée avec gratitude. Préparez votre corps et esprit pour un repos profond.', btn:'Bientôt disponible' },
+  pt: { label:'MEDITAÇÃO NOTURNA', desc:'Liberte o dia com gratidão. Prepare seu corpo e mente para o descanso profundo.', btn:'Em breve' },
+  zh: { label:'夜晚冥想', desc:'带着感恩放下这一天。让身体和心灵准备好进入深度休息。', btn:'即将推出' },
+  ko: { label:'저녁 명상', desc:'감사함으로 하루를 놓아주세요. 몸과 마음을 깊은 휴식에 준비시키세요.', btn:'출시 예정' },
+};
 const bodyScanTexts = {
   es: { label:'BODY SCAN · MEDITACIÓN GUIADA', desc:'Recorre tu cuerpo con atención plena. Libera tensiones y entra en el ki.', btn:'Ver meditación guiada' },
   ja: { label:'BODY SCAN · ボディスキャン瞑想', desc:'全身に意識を向け、緊張を解放し、気の流れに入る。', btn:'ガイド瞑想を見る' },
@@ -2024,6 +2052,14 @@ function updateBQBodyScanLang() {
   if(el('bodyScanLabel')) el('bodyScanLabel').textContent = bs.label;
   if(el('bodyScanDesc')) el('bodyScanDesc').textContent = bs.desc;
   if(el('bodyScanBtn')) el('bodyScanBtn').textContent = bs.btn;
+  const mm = morningMedTexts[currentLang] || morningMedTexts.es;
+  const em = eveningMedTexts[currentLang] || eveningMedTexts.es;
+  if(el('morningMedLabel')) el('morningMedLabel').textContent = mm.label;
+  if(el('morningMedDesc')) el('morningMedDesc').textContent = mm.desc;
+  if(el('morningMedBtn')) el('morningMedBtn').textContent = mm.btn;
+  if(el('eveningMedLabel')) el('eveningMedLabel').textContent = em.label;
+  if(el('eveningMedDesc')) el('eveningMedDesc').textContent = em.desc;
+  if(el('eveningMedBtn')) el('eveningMedBtn').textContent = em.btn;
   localStorage.removeItem('yoshiBQVideoLangSet');
   localStorage.removeItem('yoshiBodyScanLangSet');
 }
