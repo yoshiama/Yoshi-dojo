@@ -764,12 +764,12 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="premium-card-top">
         <div class="premium-card-icon">📖</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">書籍 · LIBRO</div>
-          <div class="premium-card-title">身体感覚という名の羅針盤<br><span style="font-size:12px;color:#888">La Brújula de la Sensación Corporal</span></div>
-          <div class="premium-card-price">€18 <span>/ 電子書籍</span></div>
+          <div class="premium-card-tag" id="bookTag">書籍 · LIBRO</div>
+          <div class="premium-card-title" id="bookTitle">身体感覚という名の羅針盤<br><span id="bookSubtitle" style="font-size:12px;color:#888">La Brújula de la Sensación Corporal</span></div>
+          <div class="premium-card-price">€18 <span id="bookPriceUnit">/ 電子書籍</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">マドリードで絶望→パニック障害→奇跡の連続。「頑張るのをやめた日から、人生は勝手に動き出した」。モナコのホテルで書き下ろされた実話。RAS・スコトーマ・ベルトコンベアワーク収録。</div>
+      <div class="premium-card-desc" id="bookDesc">マドリードで絶望→パニック障害→奇跡の連続。「頑張るのをやめた日から、人生は勝手に動き出した」。モナコのホテルで書き下ろされた実話。RAS・スコトーマ・ベルトコンベアワーク収録。</div>
       <button class="premium-card-btn gold" id="premiumKindleBtn" onclick="window.open(currentLang==='ja'?'https://www.amazon.co.jp/dp/B0GWWJVSTN':'https://amzn.eu/d/00o61Xwl','_blank')">📖 Kindleで今すぐ読む</button>
     </div>
     <div class="premium-card">
@@ -777,37 +777,37 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="premium-card-top">
         <div class="premium-card-icon">🎓</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">オンライン講座 · CURSO</div>
-          <div class="premium-card-title">丹田覚醒 7日間プログラム</div>
-          <div class="premium-card-price">€97 <span>/ 一括</span></div>
+          <div class="premium-card-tag" id="courseTag">オンライン講座 · CURSO</div>
+          <div class="premium-card-title" id="courseTitle">丹田覚醒 7日間プログラム</div>
+          <div class="premium-card-price">€97 <span id="coursePriceUnit">/ 一括</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。</div>
-      <button class="premium-card-btn" onclick="handlePremium('course7')">▶ 講座を見る</button>
+      <div class="premium-card-desc" id="courseDesc">7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。</div>
+      <button class="premium-card-btn" onclick="handlePremium('course7')" id="courseBtnEl">▶ <span id="courseBtn">講座を見る</span></button>
     </div>
     <div class="premium-card">
       <div class="premium-card-top">
         <div class="premium-card-icon">🌿</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">月額メンバーシップ · MEMBRESÍA</div>
-          <div class="premium-card-title">Yoshi Dojo メンバー</div>
-          <div class="premium-card-price">€19 <span>/ 月</span></div>
+          <div class="premium-card-tag" id="memberTag">月額メンバーシップ · MEMBRESÍA</div>
+          <div class="premium-card-title" id="memberTitle">Yoshi Dojo メンバー</div>
+          <div class="premium-card-price">€19 <span id="memberPriceUnit">/ 月</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">毎月新しい身体感覚ワーク動画・Yoshiとのグループセッション・限定ポッドキャストへアクセス。世界のメンバーと共に気を深める。</div>
-      <button class="premium-card-btn gold" onclick="handlePremium('membership')">🌿 メンバーになる</button>
+      <div class="premium-card-desc" id="memberDesc">毎月新しい身体感覚ワーク動画・Yoshiとのグループセッション・限定ポッドキャストへアクセス。世界のメンバーと共に気を深める。</div>
+      <button class="premium-card-btn gold" onclick="handlePremium('membership')" id="memberBtnEl">🌿 <span id="memberBtn">メンバーになる</span></button>
     </div>
     <div class="premium-card">
       <div class="premium-card-top">
         <div class="premium-card-icon">🎯</div>
         <div class="premium-card-info">
-          <div class="premium-card-tag">個人セッション · SESIÓN PERSONAL</div>
-          <div class="premium-card-title">Yoshiとのオンライン個人セッション</div>
-          <div class="premium-card-price">€120 <span>/ 60分</span></div>
+          <div class="premium-card-tag" id="sessionTag">個人セッション · SESIÓN PERSONAL</div>
+          <div class="premium-card-title" id="sessionCardTitle">Yoshiとのオンライン個人セッション</div>
+          <div class="premium-card-price">€120 <span id="sessionPriceUnit">/ 60分</span></div>
         </div>
       </div>
-      <div class="premium-card-desc">Zoom・世界どこからでも。身体感覚・気・人生の流れについてYoshi本人と直接セッション。マドリードの哲学をあなたへ。</div>
-      <button class="premium-card-btn" onclick="handlePremium('session')">📅 セッションを予約</button>
+      <div class="premium-card-desc" id="sessionCardDesc">Zoom・世界どこからでも。身体感覚・気・人生の流れについてYoshi本人と直接セッション。マドリードの哲学をあなたへ。</div>
+      <button class="premium-card-btn" onclick="handlePremium('session')" id="sessionCardBtnEl">📅 <span id="sessionCardBtn">セッションを予約</span></button>
     </div>
   </div>
   <!-- MailChimp Newsletter -->
@@ -854,7 +854,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       <div class="clinic-info-item"><span class="clinic-info-icon">🕐</span><span id="clinicHours">月〜金 10:00–21:00<br>土 10:00–14:00 / 日 休</span></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">📞</span><span id="clinicPhone">606 054 229（WhatsApp可）</span></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">🎙</span><a href="https://podcasts.apple.com/es/podcast/id1659916913" target="_blank" style="color:var(--teal);text-decoration:none">Yoshiの聞く(効く)チャンネル · 292話</a></div>
-      <div class="clinic-info-item"><span class="clinic-info-icon">📺</span><a href="https://youtu.be/MJdYrTwRizo" target="_blank" style="color:var(--teal);text-decoration:none">YouTube: Yoshi clínica de Seitai shiatsu</a></div>
+      <div class="clinic-info-item"><span class="clinic-info-icon">📺</span><a href="https://youtu.be/MJdYrTwRizo" target="_blank" style="color:var(--teal);text-decoration:none" id="clinicYouTubeLink">YouTube: Yoshi clínica de Seitai shiatsu</a></div>
       <div class="clinic-info-item"><span class="clinic-info-icon">📸</span><a href="https://www.instagram.com/yoshishiatsu" target="_blank" style="color:var(--teal);text-decoration:none">Instagram: @yoshishiatsu</a></div>
     </div>
     <div class="zen-divider" id="bookingDivider">縁</div>
@@ -2357,6 +2357,90 @@ function updatePhilosophy() {
   if(el('beltBookRef')) el('beltBookRef').innerHTML = t.bRef + '&nbsp;<button onclick="window.open(\''+kindleURL+'\',\'_blank\')" style="background:none;border:none;color:var(--teal);font-size:10px;cursor:pointer;letter-spacing:0.2em;padding:0;text-decoration:underline;">' + t.bLink + '</button>';
   const premiumKindleLabels = { ja:'📖 Kindleで今すぐ読む', es:'📖 Leer en Kindle ahora', en:'📖 Read on Kindle now', fr:'📖 Lire sur Kindle', pt:'📖 Ler no Kindle agora', zh:'📖 立即在Kindle阅读', ko:'📖 지금 Kindle로 읽기' };
   if(el('premiumKindleBtn')) el('premiumKindleBtn').textContent = premiumKindleLabels[currentLang] || premiumKindleLabels.es;
+
+  const pc = {
+    ja: {
+      bookTag:'書籍 · LIBRO', bookSubtitle:'La Brújula de la Sensación Corporal', bookPriceUnit:'/ 電子書籍',
+      bookDesc:'マドリードで絶望→パニック障害→奇跡の連続。「頑張るのをやめた日から、人生は勝手に動き出した」。モナコのホテルで書き下ろされた実話。RAS・スコトーマ・ベルトコンベアワーク収録。',
+      courseTag:'オンライン講座 · CURSO', courseTitle:'丹田覚醒 7日間プログラム', coursePriceUnit:'/ 一括',
+      courseDesc:'7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。', courseBtn:'講座を見る',
+      memberTag:'月額メンバーシップ · MEMBRESÍA', memberTitle:'Yoshi Dojo メンバー', memberPriceUnit:'/ 月',
+      memberDesc:'毎月新しい身体感覚ワーク動画・Yoshiとのグループセッション・限定ポッドキャストへアクセス。世界のメンバーと共に気を深める。', memberBtn:'メンバーになる',
+      sessionTag:'個人セッション · SESIÓN PERSONAL', sessionTitle:'Yoshiとのオンライン個人セッション', sessionPriceUnit:'/ 60分',
+      sessionDesc:'Zoom・世界どこからでも。身体感覚・気・人生の流れについてYoshi本人と直接セッション。マドリードの哲学をあなたへ。', sessionBtn:'セッションを予約',
+      ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
+    },
+    es: {
+      bookTag:'LIBRO · 書籍', bookSubtitle:'La Brújula de la Sensación Corporal', bookPriceUnit:'/ eBook',
+      bookDesc:'De la desesperación en Madrid al trastorno de pánico y una serie de milagros. «El día que dejé de esforzarme, la vida comenzó a moverse sola.» Historia real escrita en un hotel de Mónaco. Incluye trabajo con RAS, Escotoma y Cinta Transportadora.',
+      courseTag:'CURSO EN LÍNEA · オンライン講座', courseTitle:'Programa 7 Días: Despertar el Tanden', coursePriceUnit:'/ pago único',
+      courseDesc:'Un programa práctico para despertar tu tanden en 7 días. Guía en vídeo de 15 min diarios + práctica. Disponible desde cualquier lugar del mundo.', courseBtn:'Ver el curso',
+      memberTag:'MEMBRESÍA MENSUAL · 月額', memberTitle:'Miembro Yoshi Dojo', memberPriceUnit:'/ mes',
+      memberDesc:'Accede cada mes a nuevos vídeos de trabajo corporal, sesiones grupales con Yoshi y podcasts exclusivos. Profundiza el ki junto a miembros de todo el mundo.', memberBtn:'Hacerse miembro',
+      sessionTag:'SESIÓN PERSONAL · 個人セッション', sessionTitle:'Sesión personal online con Yoshi', sessionPriceUnit:'/ 60 min',
+      sessionDesc:'Por Zoom, desde cualquier lugar del mundo. Sesión directa con Yoshi sobre sensación corporal, ki y el fluir de la vida. La filosofía de Madrid, para ti.', sessionBtn:'Reservar sesión',
+      ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
+    },
+    en: {
+      bookTag:'BOOK · 書籍', bookSubtitle:'The Compass of Bodily Sensation', bookPriceUnit:'/ eBook',
+      bookDesc:'From despair in Madrid to panic disorder and a series of miracles. "The day I stopped trying so hard, life started moving on its own." A true story written in a Monaco hotel. Includes RAS, Scotoma and Conveyor Belt work.',
+      courseTag:'ONLINE COURSE · 講座', courseTitle:'7-Day Tanden Awakening Program', coursePriceUnit:'/ one-time',
+      courseDesc:'A practical program to awaken your tanden in 7 days. 15-min daily video guide + practice work. Available from anywhere in the world.', courseBtn:'View course',
+      memberTag:'MONTHLY MEMBERSHIP · 月額', memberTitle:'Yoshi Dojo Member', memberPriceUnit:'/ month',
+      memberDesc:'Access new body-awareness video work, group sessions with Yoshi, and exclusive podcasts every month. Deepen your ki alongside members worldwide.', memberBtn:'Become a member',
+      sessionTag:'PERSONAL SESSION · 個人', sessionTitle:'Online personal session with Yoshi', sessionPriceUnit:'/ 60 min',
+      sessionDesc:'Via Zoom, from anywhere in the world. Direct session with Yoshi on bodily sensation, ki, and the flow of life. Madrid philosophy, for you.', sessionBtn:'Book a session',
+      ytLink:'YouTube: Yoshi Seitai Shiatsu Clinic',
+    },
+    fr: {
+      bookTag:'LIVRE · 書籍', bookSubtitle:'La Boussole de la Sensation Corporelle', bookPriceUnit:'/ eBook',
+      bookDesc:'Du désespoir à Madrid au trouble panique et une série de miracles. «Le jour où j\'ai arrêté de forcer, la vie a commencé à avancer d\'elle-même.» Histoire vraie écrite dans un hôtel de Monaco. Inclut le travail RAS, Scotome et Tapis Roulant.',
+      courseTag:'COURS EN LIGNE · 講座', courseTitle:'Programme 7 Jours : Éveil du Tanden', coursePriceUnit:'/ paiement unique',
+      courseDesc:'Un programme pratique pour éveiller votre tanden en 7 jours. Guide vidéo de 15 min par jour + pratique. Disponible depuis n\'importe où dans le monde.', courseBtn:'Voir le cours',
+      memberTag:'ABONNEMENT MENSUEL · 月額', memberTitle:'Membre Yoshi Dojo', memberPriceUnit:'/ mois',
+      memberDesc:'Accédez chaque mois à de nouvelles vidéos de travail corporel, des sessions de groupe avec Yoshi et des podcasts exclusifs. Approfondissez le ki avec des membres du monde entier.', memberBtn:'Devenir membre',
+      sessionTag:'SESSION PERSONNELLE · 個人', sessionTitle:'Session personnelle en ligne avec Yoshi', sessionPriceUnit:'/ 60 min',
+      sessionDesc:'Par Zoom, depuis n\'importe où dans le monde. Session directe avec Yoshi sur la sensation corporelle, le ki et le flux de la vie. La philosophie de Madrid, pour vous.', sessionBtn:'Réserver une session',
+      ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
+    },
+    pt: {
+      bookTag:'LIVRO · 書籍', bookSubtitle:'A Bússola da Sensação Corporal', bookPriceUnit:'/ eBook',
+      bookDesc:'Do desespero em Madrid ao transtorno de pânico e uma série de milagres. «No dia em que parei de me esforçar, a vida começou a mover-se sozinha.» História real escrita num hotel do Mónaco. Inclui trabalho com RAS, Escotoma e Esteira Transportadora.',
+      courseTag:'CURSO ONLINE · 講座', courseTitle:'Programa 7 Dias: Despertar o Tanden', coursePriceUnit:'/ pagamento único',
+      courseDesc:'Um programa prático para despertar seu tanden em 7 dias. Guia em vídeo de 15 min por dia + prática. Disponível de qualquer lugar do mundo.', courseBtn:'Ver o curso',
+      memberTag:'ASSINATURA MENSAL · 月額', memberTitle:'Membro Yoshi Dojo', memberPriceUnit:'/ mês',
+      memberDesc:'Acesse mensalmente novos vídeos de trabalho corporal, sessões em grupo com Yoshi e podcasts exclusivos. Aprofunde o ki junto a membros do mundo todo.', memberBtn:'Tornar-se membro',
+      sessionTag:'SESSÃO PESSOAL · 個人', sessionTitle:'Sessão pessoal online com Yoshi', sessionPriceUnit:'/ 60 min',
+      sessionDesc:'Por Zoom, de qualquer lugar do mundo. Sessão direta com Yoshi sobre sensação corporal, ki e o fluir da vida. A filosofia de Madrid, para você.', sessionBtn:'Reservar sessão',
+      ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
+    },
+    zh: {
+      bookTag:'书籍 · 書籍', bookSubtitle:'身体感觉的罗盘', bookPriceUnit:'/ 电子书',
+      bookDesc:'从马德里的绝望到恐慌症，再到一连串的奇迹。「停止努力的那天，生活开始自然流动。」在摩纳哥酒店写下的真实故事。收录RAS、盲点与传送带练习。',
+      courseTag:'在线课程 · 講座', courseTitle:'7天丹田觉醒计划', coursePriceUnit:'/ 一次性付款',
+      courseDesc:'在7天内唤醒丹田的实践计划。每天15分钟视频指导＋实践练习。可从世界任何地方参加。', courseBtn:'查看课程',
+      memberTag:'月度会员 · 月額', memberTitle:'Yoshi Dojo 会员', memberPriceUnit:'/ 月',
+      memberDesc:'每月获取新的身体感知练习视频、与Yoshi的小组会议以及独家播客。与全球会员一同深化气的体验。', memberBtn:'成为会员',
+      sessionTag:'个人会话 · 個人', sessionTitle:'与Yoshi的在线个人会话', sessionPriceUnit:'/ 60分钟',
+      sessionDesc:'通过Zoom，从世界任何地方。直接与Yoshi进行关于身体感觉、气和生命流动的会话。将马德里的哲学带给您。', sessionBtn:'预约会话',
+      ytLink:'YouTube: Yoshi整体指压诊所',
+    },
+    ko: {
+      bookTag:'서적 · 書籍', bookSubtitle:'신체 감각이라는 나침반', bookPriceUnit:'/ 전자책',
+      bookDesc:'마드리드에서의 절망에서 공황 장애, 그리고 연속적인 기적으로. «노력을 멈춘 날부터 삶이 스스로 움직이기 시작했다.» 모나코 호텔에서 쓴 실화. RAS, 스코토마, 컨베이어 벨트 작업 수록.',
+      courseTag:'온라인 강좌 · 講座', courseTitle:'7일 단전 각성 프로그램', coursePriceUnit:'/ 일시불',
+      courseDesc:'7일 안에 단전을 깨우는 실용적인 프로그램. 매일 15분 영상 가이드＋실습. 세계 어디서나 수강 가능.', courseBtn:'강좌 보기',
+      memberTag:'월정액 멤버십 · 月額', memberTitle:'Yoshi Dojo 멤버', memberPriceUnit:'/ 월',
+      memberDesc:'매달 새로운 신체 감각 연습 영상, Yoshi와의 그룹 세션, 전용 팟캐스트에 접근. 전 세계 멤버와 함께 기를 깊게 다진다.', memberBtn:'멤버 되기',
+      sessionTag:'개인 세션 · 個人', sessionTitle:'Yoshi와의 온라인 개인 세션', sessionPriceUnit:'/ 60분',
+      sessionDesc:'Zoom으로, 세계 어디서나. 신체 감각·기·삶의 흐름에 대해 Yoshi 본인과 직접 세션. 마드리드의 철학을 당신에게.', sessionBtn:'세션 예약',
+      ytLink:'YouTube: Yoshi 정체 지압 클리닉',
+    },
+  };
+  const p = pc[currentLang] || pc.es;
+  const ids = ['bookTag','bookSubtitle','bookPriceUnit','bookDesc','courseTag','courseTitle','coursePriceUnit','courseDesc','courseBtn','memberTag','memberTitle','memberPriceUnit','memberDesc','memberBtn','sessionTag','sessionCardTitle','sessionPriceUnit','sessionCardDesc','sessionCardBtn','clinicYouTubeLink'];
+  const vals = [p.bookTag,p.bookSubtitle,p.bookPriceUnit,p.bookDesc,p.courseTag,p.courseTitle,p.coursePriceUnit,p.courseDesc,p.courseBtn,p.memberTag,p.memberTitle,p.memberPriceUnit,p.memberDesc,p.memberBtn,p.sessionTag,p.sessionTitle,p.sessionPriceUnit,p.sessionDesc,p.sessionBtn,p.ytLink];
+  ids.forEach((id,i)=>{ if(el(id)) el(id).textContent=vals[i]; });
 }
 
 // ===== SELFCARE VIDEOS =====
