@@ -512,6 +512,11 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
       </div>
     </div>
     <div class="zen-divider">〇</div>
+    <div style="margin:0 0 20px;background:rgba(42,107,124,0.07);border:1px solid rgba(42,107,124,0.2);border-radius:3px;padding:16px;" id="bodyScanCard">
+      <div style="font-size:10px;letter-spacing:0.4em;color:var(--teal);margin-bottom:6px;" id="bodyScanLabel">BODY SCAN · MEDITACIÓN GUIADA</div>
+      <div style="font-size:13px;letter-spacing:0.1em;color:var(--ink);margin-bottom:10px;" id="bodyScanDesc">Recorre tu cuerpo con atención plena. Libera tensiones y entra en el ki.</div>
+      <button class="selfcare-btn dark" style="width:100%;margin:0;" onclick="openBodyScanVideo()">▶ <span id="bodyScanBtn">Ver meditación guiada</span></button>
+    </div>
     <div class="meditation-guide">
       <div class="guide-title" id="guide-title-1">今・ここへの誘い</div>
       <div class="guide-step" id="guide-step-1">① 背筋を自然に伸ばし、丹田に意識を置く</div>
@@ -594,6 +599,11 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div class="body-summary-score" id="scoreDisplay">50</div>
     <div class="body-summary-label" id="scoreLabel">調和の途中</div>
     <div style="font-size:9px;letter-spacing:0.3em;color:#aaa;margin-top:6px;">Body Intelligence Quotient</div>
+  </div>
+  <div class="samurai-reset" style="margin-bottom:12px;" id="bqVideoCard">
+    <div class="samurai-title">🧠 ¿QUÉ ES EL BQ?</div>
+    <div class="samurai-desc" id="bqVideoDesc">Entiende el Body Intelligence (BQ) — la tercera inteligencia del ser humano.</div>
+    <button class="samurai-btn" onclick="openBQVideo()">▶ <span id="bqVideoBtn">Ver video explicativo</span></button>
   </div>
   <div class="bq-history" id="bqHistory">
     <div class="bq-history-title" id="bqHistoryTitle">EVOLUCIÓN BQ · 7 DÍAS</div>
@@ -1533,6 +1543,8 @@ const translations = {
 function setLang(lang) {
   currentLang = lang;
   localStorage.removeItem('yoshiSamuraiLangSet');
+  localStorage.removeItem('yoshiBQVideoLangSet');
+  localStorage.removeItem('yoshiBodyScanLangSet');
  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   const lbEl = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
   if(lbEl) lbEl.classList.add('active');
@@ -1603,7 +1615,8 @@ function setLang(lang) {
   updatePopupLang();
   updatePhilosophy();
   updateHyakuLang();
-  renderVisionDomains();  
+  renderVisionDomains();
+  updateBQBodyScanLang();
 }
 
 function updateSelfcareLang(t) {
@@ -1965,14 +1978,66 @@ function getSamuraiVideoURL() {
     ? 'https://youtu.be/MJdYrTwRizo'
     : 'https://youtube.com/playlist?list=PLu47G4oLaxmc5KHrJCLEoTzqq4mIOTYcl&si=68XXq6Tz3oPnTTtq';
 }
+const BQ_VIDEO_ID = 'MXUTn46gbMc';
+const BODY_SCAN_VIDEO_ID = '63rt_aY8z0Y';
+const bqVideoTexts = {
+  es: { title:'🧠 ¿QUÉ ES EL BQ?', desc:'Entiende el Body Intelligence (BQ) — la tercera inteligencia del ser humano.', btn:'Ver video explicativo' },
+  ja: { title:'🧠 BQとは何か？', desc:'Body Intelligence（BQ）— 人類の第三の知性を理解する。', btn:'解説動画を見る' },
+  en: { title:'🧠 WHAT IS BQ?', desc:'Understand Body Intelligence (BQ) — the third intelligence of human beings.', btn:'Watch explanatory video' },
+  fr: { title:'🧠 QU\'EST-CE QUE LE BQ?', desc:'Comprendre le Body Intelligence (BQ) — la troisième intelligence humaine.', btn:'Voir la vidéo explicative' },
+  pt: { title:'🧠 O QUE É O BQ?', desc:'Entenda o Body Intelligence (BQ) — a terceira inteligência do ser humano.', btn:'Ver vídeo explicativo' },
+  zh: { title:'🧠 什么是BQ？', desc:'了解身体智能（BQ）——人类的第三种智慧。', btn:'观看讲解视频' },
+  ko: { title:'🧠 BQ란 무엇인가?', desc:'Body Intelligence(BQ) — 인류의 세 번째 지능을 이해하다.', btn:'설명 영상 보기' },
+};
+const bodyScanTexts = {
+  es: { label:'BODY SCAN · MEDITACIÓN GUIADA', desc:'Recorre tu cuerpo con atención plena. Libera tensiones y entra en el ki.', btn:'Ver meditación guiada' },
+  ja: { label:'BODY SCAN · ボディスキャン瞑想', desc:'全身に意識を向け、緊張を解放し、気の流れに入る。', btn:'ガイド瞑想を見る' },
+  en: { label:'BODY SCAN · GUIDED MEDITATION', desc:'Scan your body with full attention. Release tension and enter the flow of ki.', btn:'Watch guided meditation' },
+  fr: { label:'BODY SCAN · MÉDITATION GUIDÉE', desc:'Parcourez votre corps avec pleine attention. Libérez les tensions et entrez dans le ki.', btn:'Voir la méditation guidée' },
+  pt: { label:'BODY SCAN · MEDITAÇÃO GUIADA', desc:'Percorra seu corpo com atenção plena. Libere tensões e entre no ki.', btn:'Ver meditação guiada' },
+  zh: { label:'BODY SCAN · 冥想引导', desc:'用完全的注意力扫描你的身体。释放紧张，进入气的流动。', btn:'观看引导冥想' },
+  ko: { label:'BODY SCAN · 가이드 명상', desc:'전신에 의식을 집중하여 긴장을 해소하고 기의 흐름 속으로 들어갑니다.', btn:'가이드 명상 보기' },
+};
+function openBQVideo() {
+  const alreadySet = localStorage.getItem('yoshiBQVideoLangSet');
+  if (alreadySet) { window.open('https://youtu.be/'+BQ_VIDEO_ID, '_blank'); }
+  else { _openSubtitleGuide(() => { localStorage.setItem('yoshiBQVideoLangSet','1'); window.open('https://youtu.be/'+BQ_VIDEO_ID,'_blank'); }); }
+}
+function openBodyScanVideo() {
+  const alreadySet = localStorage.getItem('yoshiBodyScanLangSet');
+  if (alreadySet) { window.open('https://youtu.be/'+BODY_SCAN_VIDEO_ID, '_blank'); }
+  else { _openSubtitleGuide(() => { localStorage.setItem('yoshiBodyScanLangSet','1'); window.open('https://youtu.be/'+BODY_SCAN_VIDEO_ID,'_blank'); }); }
+}
+let _subtitleGuideCallback = null;
+function _openSubtitleGuide(cb) {
+  _subtitleGuideCallback = cb;
+  updateLangGuideContent();
+  document.getElementById('langGuideOverlay').classList.add('show');
+}
+function updateBQBodyScanLang() {
+  const el = id => document.getElementById(id);
+  const bq = bqVideoTexts[currentLang] || bqVideoTexts.es;
+  const bs = bodyScanTexts[currentLang] || bodyScanTexts.es;
+  if(el('bqVideoCard')) el('bqVideoCard').querySelector('.samurai-title').textContent = bq.title;
+  if(el('bqVideoDesc')) el('bqVideoDesc').textContent = bq.desc;
+  if(el('bqVideoBtn')) el('bqVideoBtn').textContent = bq.btn;
+  if(el('bodyScanLabel')) el('bodyScanLabel').textContent = bs.label;
+  if(el('bodyScanDesc')) el('bodyScanDesc').textContent = bs.desc;
+  if(el('bodyScanBtn')) el('bodyScanBtn').textContent = bs.btn;
+  localStorage.removeItem('yoshiBQVideoLangSet');
+  localStorage.removeItem('yoshiBodyScanLangSet');
+}
 function openSamuraiVideo() {
   const alreadySet = localStorage.getItem('yoshiSamuraiLangSet');
   if (alreadySet) { window.open(getSamuraiVideoURL(), '_blank'); giveScoreBonus(); }
-  else { updateLangGuideContent(); document.getElementById('langGuideOverlay').classList.add('show'); }
+  else { _subtitleGuideCallback = null; updateLangGuideContent(); document.getElementById('langGuideOverlay').classList.add('show'); }
 }
 function closeLangGuide(go) {
   document.getElementById('langGuideOverlay').classList.remove('show');
-  if (go) { localStorage.setItem('yoshiSamuraiLangSet','1'); window.open(getSamuraiVideoURL(),'_blank'); giveScoreBonus(); }
+  if (go) {
+    if (_subtitleGuideCallback) { _subtitleGuideCallback(); _subtitleGuideCallback = null; }
+    else { localStorage.setItem('yoshiSamuraiLangSet','1'); window.open(getSamuraiVideoURL(),'_blank'); giveScoreBonus(); }
+  } else { _subtitleGuideCallback = null; }
 }
 function giveScoreBonus() {
   bodyScoreBonus = 10; updateScore();
