@@ -611,7 +611,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     <div style="font-size:9px;letter-spacing:0.3em;color:#aaa;margin-top:6px;">Body Intelligence Quotient</div>
   </div>
   <div class="samurai-reset" style="margin-bottom:12px;" id="bqVideoCard">
-    <div class="samurai-title">🧠 ¿QUÉ ES EL BQ?</div>
+    <div class="samurai-title" id="bqVideoTitle">🧠 ¿QUÉ ES EL BQ?</div>
     <div class="samurai-desc" id="bqVideoDesc">Entiende el Body Intelligence (BQ) — la tercera inteligencia del ser humano.</div>
     <button class="samurai-btn" onclick="openBQVideo()">▶ <span id="bqVideoBtn">Ver video explicativo</span></button>
   </div>
@@ -2046,7 +2046,7 @@ function updateBQBodyScanLang() {
   const el = id => document.getElementById(id);
   const bq = bqVideoTexts[currentLang] || bqVideoTexts.es;
   const bs = bodyScanTexts[currentLang] || bodyScanTexts.es;
-  if(el('bqVideoCard')) el('bqVideoCard').querySelector('.samurai-title').textContent = bq.title;
+  if(el('bqVideoTitle')) el('bqVideoTitle').textContent = bq.title;
   if(el('bqVideoDesc')) el('bqVideoDesc').textContent = bq.desc;
   if(el('bqVideoBtn')) el('bqVideoBtn').textContent = bq.btn;
   if(el('bodyScanLabel')) el('bodyScanLabel').textContent = bs.label;
