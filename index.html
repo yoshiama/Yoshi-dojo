@@ -1992,6 +1992,8 @@ function getSamuraiVideoURL() {
 }
 const BQ_VIDEO_ID = 'MXUTn46gbMc';
 const BODY_SCAN_VIDEO_ID = '63rt_aY8z0Y';
+const BODY_SCAN_VIDEO_ID_JA = 'MU0Wwao7ggw';
+const MORNING_MED_ID_JA = 'mtkH1r9-AIc';
 const bqVideoTexts = {
   es: { title:'🧠 ¿QUÉ ES EL BQ?', desc:'Entiende el Body Intelligence (BQ) — la tercera inteligencia del ser humano.', btn:'Ver video explicativo' },
   ja: { title:'🧠 BQとは何か？', desc:'Body Intelligence（BQ）— 人類の第三の知性を理解する。', btn:'解説動画を見る' },
@@ -2036,11 +2038,14 @@ function openBQVideo() {
   else { _openSubtitleGuide(() => { localStorage.setItem('yoshiBQVideoLangSet','1'); window.open('https://youtu.be/'+BQ_VIDEO_ID,'_blank'); }); }
 }
 function openBodyScanVideo() {
+  if (currentLang === 'ja') { window.open('https://youtu.be/'+BODY_SCAN_VIDEO_ID_JA, '_blank'); return; }
+  if (currentLang === 'es') { window.open('https://youtu.be/'+BODY_SCAN_VIDEO_ID, '_blank'); return; }
   const alreadySet = localStorage.getItem('yoshiBodyScanLangSet');
   if (alreadySet) { window.open('https://youtu.be/'+BODY_SCAN_VIDEO_ID, '_blank'); }
   else { _openSubtitleGuide(() => { localStorage.setItem('yoshiBodyScanLangSet','1'); window.open('https://youtu.be/'+BODY_SCAN_VIDEO_ID,'_blank'); }); }
 }
 function openMorningMedVideo() {
+  if (currentLang === 'ja') { window.open('https://youtube.com/shorts/'+MORNING_MED_ID_JA, '_blank'); return; }
   if (currentLang === 'es') { window.open('https://youtube.com/shorts/'+MORNING_MED_ID, '_blank'); return; }
   const alreadySet = localStorage.getItem('yoshiMorningMedLangSet');
   if (alreadySet) { window.open('https://youtube.com/shorts/'+MORNING_MED_ID, '_blank'); }
