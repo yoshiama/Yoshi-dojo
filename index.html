@@ -1774,7 +1774,6 @@ function renderVisionDomains() {
   });
 }
 renderVisionDomains();
-renderFutureSelfCard();
 function saveVisionDomain(id) {
   visionData[id] = document.getElementById('vision-'+id).value;
   localStorage.setItem('yoshiVisionDomains', JSON.stringify(visionData));
@@ -3367,6 +3366,7 @@ drawRadarChart();
 
 // ===== INIT =====
 renderVideoList();
+renderFutureSelfCard();
 setTimeout(showDailyQuote, 1500);
 updatePopupLang();
 updatePhilosophy();
