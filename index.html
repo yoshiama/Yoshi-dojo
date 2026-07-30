@@ -1591,6 +1591,21 @@ function setLang(lang) {
   if(mce) mce.placeholder=mc.ph;
   renderWheelSliders();
   document.getElementById('logoSub').textContent = t.logoSub;
+  const breathLabel = {ja:'呼　吸', es:'RES · PI · RA · CIÓN', en:'B R E A T H E', fr:'R E S P I R E R', pt:'R E S P I R A R', zh:'呼　吸', ko:'호　흡'};
+  const blEl = document.getElementById('breath-label-sub'); if(blEl) blEl.textContent = breathLabel[lang]||breathLabel.es;
+  const vizTitleTxts = {ja:'毎朝のビジョン視覚化', es:'Visualización de visión matutina', en:'Morning Vision Visualization', fr:'Visualisation matinale', pt:'Visualização matinal', zh:'每日愿景观想', ko:'매일 아침 비전 시각화'};
+  const vtEl = document.getElementById('vizTitle'); if(vtEl) vtEl.textContent = vizTitleTxts[lang]||vizTitleTxts.es;
+  const yoshiStatusTxts = {ja:'Yoshi哲学エンジン · 無料版', es:'Motor filosófico Yoshi · Gratis', en:'Yoshi Philosophy Engine · Free', fr:'Moteur philosophique Yoshi · Gratuit', pt:'Motor filosófico Yoshi · Grátis', zh:'Yoshi哲学引擎 · 免费版', ko:'Yoshi 철학 엔진 · 무료'};
+  const ysEl = document.getElementById('yoshiStatus'); if(ysEl) ysEl.textContent = yoshiStatusTxts[lang]||yoshiStatusTxts.es;
+  const qBtns = [{id:0,ja:'丹田とは？',es:'¿Qué es el Tanden?',en:'What is Tanden?',fr:'Qu\'est-ce que le Tanden?',pt:'O que é o Tanden?',zh:'什么是丹田？',ko:'단전이란?',qJa:'丹田とは何ですか？',qEs:'¿Qué es el Tanden?',qEn:'What is Tanden?'},{id:1,ja:'不安を感じる',es:'Siento ansiedad',en:'Feeling anxious',fr:'Je me sens anxieux',pt:'Estou ansioso',zh:'感到焦虑',ko:'불안함을 느낀다',qJa:'不安を感じています',qEs:'Siento ansiedad, ¿qué hago?',qEn:'I\'m feeling anxious'},{id:2,ja:'気を整える',es:'Equilibrar el ki',en:'Balance the ki',fr:'Équilibrer le ki',pt:'Equilibrar o ki',zh:'调整气的流动',ko:'기를 다스리다',qJa:'気の流れを良くするには？',qEs:'¿Cómo equilibro el ki?',qEn:'How can I improve my ki flow?'},{id:3,ja:'今に生きる',es:'Vivir en el presente',en:'Live in the now',fr:'Vivre dans le présent',pt:'Viver no presente',zh:'活在当下',ko:'지금을 살다',qJa:'今に生きるとは？',qEs:'¿Qué significa vivir en el presente?',qEn:'What does living in the now mean?'}];
+  qBtns.forEach((b,i) => {
+    const btn = document.querySelectorAll('.quick-btn')[i];
+    if(!btn) return;
+    const lbl = b[lang]||b.es;
+    const q = lang==='ja'?b.qJa:lang==='es'?b.qEs:(b.qEn||b.qEs);
+    btn.textContent = lbl;
+    btn.setAttribute('onclick', `quickAsk(${JSON.stringify(q)})`);
+  });
   document.getElementById('startBtn').textContent = breathingActive ? t.breathStop : t.breathStart;
   document.getElementById('breathInstruction').textContent = breathingActive ? '' : t.breathTap;
   document.getElementById('guide-title-1').textContent = t.guideTitle;
@@ -1666,8 +1681,8 @@ const now = new Date();
 const today = now.toDateString();
 
 function updateDateDisplay() {
-  const locales = {ja:'ja-JP', es:'es-ES', en:'en-US'};
-  const locale = locales[currentLang] || 'ja-JP';
+  const locales = {ja:'ja-JP', es:'es-ES', en:'en-US', fr:'fr-FR', pt:'pt-PT', zh:'zh-CN', ko:'ko-KR'};
+  const locale = locales[currentLang] || 'es-ES';
   const dateStr = now.toLocaleDateString(locale, {year:'numeric',month:'long',day:'numeric',weekday:'long'});
   document.getElementById('dateDisplay').textContent = dateStr;
   document.getElementById('diaryDate').textContent = dateStr;
@@ -1753,23 +1768,31 @@ function renderVisionDomains() {
   container.innerHTML = '';
   visionDomains.forEach(d => {
     const saved = visionData[d.id] || '';
-    const ph = currentLang==='es'?d.placeholderEs:currentLang==='en'?d.placeholderEn:d.placeholder;
-    const nm = currentLang==='es'?d.nameEs:currentLang==='en'?d.nameEn:d.name;
+    const ph = currentLang==='es'?d.placeholderEs:currentLang==='en'?d.placeholderEn:currentLang==='ja'?d.placeholder:(d.placeholderEn||d.placeholder);
+    const nm = currentLang==='es'?d.nameEs:currentLang==='en'?d.nameEn:currentLang==='ja'?d.name:(d.nameEn||d.name);
     const hasImg = !!visionImages[d.id];
+    const vSaveBtn = {ja:'記す', es:'Guardar', en:'Save', fr:'Enregistrer', pt:'Salvar', zh:'保存', ko:'저장'};
+    const vSaved = {ja:'✓ 保存しました', es:'✓ Guardado', en:'✓ Saved', fr:'✓ Enregistré', pt:'✓ Salvo', zh:'✓ 已保存', ko:'✓ 저장됨'};
+    const vUpload = {ja:'＋ 画像をアップロード', es:'＋ Subir imagen', en:'＋ Upload image', fr:'＋ Télécharger', pt:'＋ Enviar imagem', zh:'＋ 上传图片', ko:'＋ 이미지 업로드'};
+    const vImg = {ja:'画像', es:'Imagen', en:'Image', fr:'Image', pt:'Imagem', zh:'图片', ko:'이미지'};
+    const saveLbl = vSaveBtn[currentLang]||vSaveBtn.es;
+    const savedLbl = vSaved[currentLang]||vSaved.es;
+    const uploadLbl = vUpload[currentLang]||vUpload.es;
+    const imgLbl = vImg[currentLang]||vImg.es;
     const block = document.createElement('div');
     block.className = 'vision-domain-block';
     block.innerHTML = `<div class="vision-domain-header"><span class="vision-domain-icon">${d.icon}</span><span class="vision-domain-name">${nm}</span><span class="vision-domain-kanji">${d.kanji}</span></div>
       <div class="vision-domain-body"><textarea class="vision-domain-input" id="vision-${d.id}" placeholder="${ph}">${saved}</textarea>
       <div style="display:flex;align-items:center;margin-top:6px;flex-wrap:wrap;gap:4px">
-        <button class="vision-save-btn" onclick="saveVisionDomain('${d.id}')">記す</button>
-        <button class="vision-img-btn${hasImg?' has-img':''}" id="imgbtn-${d.id}" onclick="toggleVisionImage('${d.id}')">${hasImg?'🖼 画像':'📷 画像'}</button>
+        <button class="vision-save-btn" onclick="saveVisionDomain('${d.id}')">${saveLbl}</button>
+        <button class="vision-img-btn${hasImg?' has-img':''}" id="imgbtn-${d.id}" onclick="toggleVisionImage('${d.id}')">${hasImg?'🖼 '+imgLbl:'📷 '+imgLbl}</button>
         <input type="file" accept="image/*" id="imgfile-${d.id}" style="display:none" onchange="uploadVisionImage('${d.id}',this)">
-        <span class="vision-saved-badge" id="badge-${d.id}">✓ 保存しました</span>
+        <span class="vision-saved-badge" id="badge-${d.id}">${savedLbl}</span>
       </div>
       <div class="vision-img-viewer" id="imgviewer-${d.id}">
         ${hasImg
           ? `<img src="${visionImages[d.id]}" alt="${nm}"><button class="vision-img-delete" onclick="deleteVisionImage('${d.id}')">✕</button>`
-          : `<label class="vision-img-upload-label" for="imgfile-${d.id}">＋ 画像をアップロード</label>`}
+          : `<label class="vision-img-upload-label" for="imgfile-${d.id}">${uploadLbl}</label>`}
       </div></div>`;
     container.appendChild(block);
   });
@@ -1784,12 +1807,7 @@ function saveVisionDomain(id) {
 }
 function toggleVisionImage(id) {
   const viewer = document.getElementById('imgviewer-'+id);
-  const hasImg = !!visionImages[id];
-  if (hasImg) {
-    viewer.classList.toggle('show');
-  } else {
-    viewer.classList.toggle('show');
-  }
+  viewer.classList.toggle('show');
 }
 function uploadVisionImage(id, input) {
   const file = input.files[0];
@@ -1814,33 +1832,36 @@ function deleteVisionImage(id) {
 let vizIndex=0, vizDomains=[];
 function startViz() {
   vizDomains = visionDomains.filter(d => visionData[d.id] && visionData[d.id].trim());
-  if (!vizDomains.length) { alert('まず各分野に願望を入力してください 🙏'); return; }
+  const vizAlerts = {ja:'まず各分野に願望を入力してください 🙏', es:'Primero escribe tus deseos en cada área 🙏', en:'Please write your wishes in each area first 🙏', fr:'Veuillez d\'abord écrire vos souhaits dans chaque domaine 🙏', pt:'Por favor, escreva seus desejos em cada área primeiro 🙏', zh:'请先在每个领域写下您的愿望 🙏', ko:'먼저 각 분야에 소망을 입력해 주세요 🙏'};
+  if (!vizDomains.length) { alert(vizAlerts[currentLang] || vizAlerts.es); return; }
   vizIndex = 0; showVizSlide();
   document.getElementById('vizOverlay').classList.add('show');
 }
 function showVizSlide() {
   const d = vizDomains[vizIndex];
-  const nm = currentLang==='es'?d.nameEs:currentLang==='en'?d.nameEn:d.name;
+  const nm = currentLang==='es'?d.nameEs:currentLang==='en'?d.nameEn:currentLang==='ja'?d.name:(d.nameEn||d.name);
   document.getElementById('vizDomainIcon').textContent = d.icon;
   document.getElementById('vizDomainName').textContent = nm;
   document.getElementById('vizText').textContent = visionData[d.id];
   document.getElementById('vizProgress').innerHTML = vizDomains.map((_,i) => `<div class="viz-dot${i===vizIndex?' active':''}"></div>`).join('');
-  document.getElementById('vizNextBtn').textContent = vizIndex < vizDomains.length-1 ? '次へ →' : '完了 🙏';
+  const vizNext = {ja:'次へ →', es:'Siguiente →', en:'Next →', fr:'Suivant →', pt:'Próximo →', zh:'下一个 →', ko:'다음 →'};
+  const vizDone = {ja:'完了 🙏', es:'Finalizar 🙏', en:'Done 🙏', fr:'Terminer 🙏', pt:'Concluir 🙏', zh:'完成 🙏', ko:'완료 🙏'};
+  document.getElementById('vizNextBtn').textContent = vizIndex < vizDomains.length-1 ? (vizNext[currentLang]||vizNext.es) : (vizDone[currentLang]||vizDone.es);
 }
 function nextViz() { if (vizIndex < vizDomains.length-1) { vizIndex++; showVizSlide(); } else closeViz(); }
 function closeViz() { document.getElementById('vizOverlay').classList.remove('show'); }
 
 // ===== DIARY =====
 const dow = now.getDay();
-document.getElementById('diaryPrompt').textContent = translations['ja'].prompts[dow];
+// diaryPrompt is set by setLang() at init
 let selectedMood = null;
 let diaryEntries = JSON.parse(localStorage.getItem('yoshiDiary') || '[]');
 function selectMood(btn) { document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedMood = btn.textContent; }
 function saveDiary() {
   const text = document.getElementById('diaryText').value.trim();
   if (!text) return;
-  const locales = {ja:'ja-JP', es:'es-ES', en:'en-US'};
-  const locale = locales[currentLang] || 'ja-JP';
+  const locales = {ja:'ja-JP', es:'es-ES', en:'en-US', fr:'fr-FR', pt:'pt-PT', zh:'zh-CN', ko:'ko-KR'};
+  const locale = locales[currentLang] || 'es-ES';
   diaryEntries.unshift({date: now.toLocaleDateString(locale,{year:'numeric',month:'long',day:'numeric'}), mood: selectedMood||'🙏', text});
   localStorage.setItem('yoshiDiary', JSON.stringify(diaryEntries.slice(0,30)));
   document.getElementById('diaryText').value = '';
@@ -2040,6 +2061,7 @@ const bodyScanTexts = {
   ko: { label:'BODY SCAN · 가이드 명상', desc:'전신에 의식을 집중하여 긴장을 해소하고 기의 흐름 속으로 들어갑니다.', btn:'가이드 명상 보기' },
 };
 function openBQVideo() {
+  if (currentLang === 'ja' || currentLang === 'es') { window.open('https://youtu.be/'+BQ_VIDEO_ID, '_blank'); return; }
   const alreadySet = localStorage.getItem('yoshiBQVideoLangSet');
   if (alreadySet) { window.open('https://youtu.be/'+BQ_VIDEO_ID, '_blank'); }
   else { _openSubtitleGuide(() => { localStorage.setItem('yoshiBQVideoLangSet','1'); window.open('https://youtu.be/'+BQ_VIDEO_ID,'_blank'); }); }
@@ -2225,64 +2247,6 @@ function closeBookingPopup() {
 }
 
 function updatePopupLang() {
-  const texts = {
-    ja: {
-      label: '身 体 が サ イ ン を 送 っ て い ま す',
-      title: '今、プロの調整が必要かもしれません',
-      desc: 'BQスコアが低下しています。Yoshiのクリニックで、プロによる身体の再調律を受けてみませんか？',
-      urgency: '🔥 今週の空き枠：残り少数',
-      btn: '🗓 Clínica Yoshiを予約する',
-      skip: '今は続ける'
-    },
-    es: {
-      label: 'T U   C U E R P O   E N V Í A   S E Ñ A L E S',
-      title: 'Tu cuerpo puede necesitar ajuste profesional',
-      desc: 'Tu puntuación BQ ha bajado. ¿Te gustaría recibir un reequilibrio profesional en la Clínica Yoshi?',
-      urgency: '🔥 Esta semana: plazas muy limitadas',
-      btn: '🗓 Reservar en Clínica Yoshi',
-      skip: 'Continuar por ahora'
-    },
-    fr: {
-      label: 'V O T R E   C O R P S   E N V O I E   D E S   S I G N A U X',
-      title: 'Votre corps a peut-être besoin d\'un ajustement',
-      desc: 'Votre score BQ a baissé. Souhaitez-vous un rééquilibrage professionnel à la Clínica Yoshi?',
-      urgency: '🔥 Cette semaine: places très limitées',
-      btn: '🗓 Réserver à la Clínica Yoshi',
-      skip: 'Continuer pour l\'instant'
-    },
-    pt: {
-      label: 'S E U   C O R P O   E S T Á   E N V I A N D O   S I N A I S',
-      title: 'Seu corpo pode precisar de ajuste profissional',
-      desc: 'Sua pontuação BQ caiu. Gostaria de receber um reequilíbrio profissional na Clínica Yoshi?',
-      urgency: '🔥 Esta semana: vagas muito limitadas',
-      btn: '🗓 Reservar na Clínica Yoshi',
-      skip: 'Continuar por enquanto'
-    },
-    zh: {
-      label: '您 的 身 体 正 在 发 送 信 号',
-      title: '您的身体可能需要专业调整',
-      desc: '您的BQ分数下降了。想在Clínica Yoshi接受专业身体调整吗？',
-      urgency: '🔥 本周空位：剩余不多',
-      btn: '🗓 预约 Clínica Yoshi',
-      skip: '暂时继续'
-    },
-    ko: {
-      label: '당 신 의 몸 이 신 호 를 보 내 고 있 습 니 다',
-      title: '전문적인 조정이 필요할 수 있습니다',
-      desc: 'BQ 점수가 떨어졌습니다. Clínica Yoshi에서 전문적인 신체 재조율을 받아보시겠어요?',
-      urgency: '🔥 이번 주 남은 자리: 얼마 없음',
-      btn: '🗓 Clínica Yoshi 예약',
-      skip: '지금은 계속하기'
-    },
-    en: {
-      label: 'Y O U R   B O D Y   I S   S E N D I N G   S I G N A L S',
-      title: 'Your body may need professional tuning',
-      desc: 'Your BQ score has dropped. Would you like to receive a professional body realignment at Clínica Yoshi?',
-      urgency: '🔥 This week: very limited availability',
-      btn: '🗓 Book at Clínica Yoshi',
-      skip: 'Continue for now'
-    }
-  };
   const el = (id) => document.getElementById(id);
   const lsp = lowScorePopupCopy[currentLang] || lowScorePopupCopy.es;
   if(el('popupLabel')) el('popupLabel').textContent = lsp.label;
@@ -2467,7 +2431,7 @@ function updatePhilosophy() {
 
   const pc = {
     ja: {
-      bookTag:'書籍 · LIBRO', bookSubtitle:'La Brújula de la Sensación Corporal', bookPriceUnit:'/ 電子書籍',
+      bookTitle:'身体感覚という名の羅針盤', bookTag:'書籍 · LIBRO', bookSubtitle:'La Brújula de la Sensación Corporal', bookPriceUnit:'/ 電子書籍',
       bookDesc:'マドリードで絶望→パニック障害→奇跡の連続。「頑張るのをやめた日から、人生は勝手に動き出した」。モナコのホテルで書き下ろされた実話。RAS・スコトーマ・ベルトコンベアワーク収録。',
       courseTag:'オンライン講座 · CURSO', courseTitle:'丹田覚醒 7日間プログラム', coursePriceUnit:'/ 一括',
       courseDesc:'7日間で丹田を目覚めさせる実践的プログラム。毎日15分の動画ガイド＋実践ワーク。世界中からどこでも受講可能。', courseBtn:'講座を見る',
@@ -2478,7 +2442,7 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
     },
     es: {
-      bookTag:'LIBRO · 書籍', bookSubtitle:'La Brújula de la Sensación Corporal', bookPriceUnit:'/ eBook',
+      bookTitle:'La Brújula de la Sensación Corporal', bookTag:'LIBRO · 書籍', bookSubtitle:'La Brújula de la Sensación Corporal', bookPriceUnit:'/ eBook',
       bookDesc:'De la desesperación en Madrid al trastorno de pánico y una serie de milagros. «El día que dejé de esforzarme, la vida comenzó a moverse sola.» Historia real escrita en un hotel de Mónaco. Incluye trabajo con RAS, Escotoma y Cinta Transportadora.',
       courseTag:'CURSO EN LÍNEA · オンライン講座', courseTitle:'Programa 7 Días: Despertar el Tanden', coursePriceUnit:'/ pago único',
       courseDesc:'Un programa práctico para despertar tu tanden en 7 días. Guía en vídeo de 15 min diarios + práctica. Disponible desde cualquier lugar del mundo.', courseBtn:'Ver el curso',
@@ -2489,7 +2453,7 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
     },
     en: {
-      bookTag:'BOOK · 書籍', bookSubtitle:'The Compass of Bodily Sensation', bookPriceUnit:'/ eBook',
+      bookTitle:'The Compass of Bodily Sensation', bookTag:'BOOK · 書籍', bookSubtitle:'The Compass of Bodily Sensation', bookPriceUnit:'/ eBook',
       bookDesc:'From despair in Madrid to panic disorder and a series of miracles. "The day I stopped trying so hard, life started moving on its own." A true story written in a Monaco hotel. Includes RAS, Scotoma and Conveyor Belt work.',
       courseTag:'ONLINE COURSE · 講座', courseTitle:'7-Day Tanden Awakening Program', coursePriceUnit:'/ one-time',
       courseDesc:'A practical program to awaken your tanden in 7 days. 15-min daily video guide + practice work. Available from anywhere in the world.', courseBtn:'View course',
@@ -2500,7 +2464,7 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi Seitai Shiatsu Clinic',
     },
     fr: {
-      bookTag:'LIVRE · 書籍', bookSubtitle:'La Boussole de la Sensation Corporelle', bookPriceUnit:'/ eBook',
+      bookTitle:'La Boussole de la Sensation Corporelle', bookTag:'LIVRE · 書籍', bookSubtitle:'La Boussole de la Sensation Corporelle', bookPriceUnit:'/ eBook',
       bookDesc:'Du désespoir à Madrid au trouble panique et une série de miracles. «Le jour où j\'ai arrêté de forcer, la vie a commencé à avancer d\'elle-même.» Histoire vraie écrite dans un hôtel de Monaco. Inclut le travail RAS, Scotome et Tapis Roulant.',
       courseTag:'COURS EN LIGNE · 講座', courseTitle:'Programme 7 Jours : Éveil du Tanden', coursePriceUnit:'/ paiement unique',
       courseDesc:'Un programme pratique pour éveiller votre tanden en 7 jours. Guide vidéo de 15 min par jour + pratique. Disponible depuis n\'importe où dans le monde.', courseBtn:'Voir le cours',
@@ -2511,7 +2475,7 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
     },
     pt: {
-      bookTag:'LIVRO · 書籍', bookSubtitle:'A Bússola da Sensação Corporal', bookPriceUnit:'/ eBook',
+      bookTitle:'A Bússola da Sensação Corporal', bookTag:'LIVRO · 書籍', bookSubtitle:'A Bússola da Sensação Corporal', bookPriceUnit:'/ eBook',
       bookDesc:'Do desespero em Madrid ao transtorno de pânico e uma série de milagres. «No dia em que parei de me esforçar, a vida começou a mover-se sozinha.» História real escrita num hotel do Mónaco. Inclui trabalho com RAS, Escotoma e Esteira Transportadora.',
       courseTag:'CURSO ONLINE · 講座', courseTitle:'Programa 7 Dias: Despertar o Tanden', coursePriceUnit:'/ pagamento único',
       courseDesc:'Um programa prático para despertar seu tanden em 7 dias. Guia em vídeo de 15 min por dia + prática. Disponível de qualquer lugar do mundo.', courseBtn:'Ver o curso',
@@ -2522,7 +2486,7 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi clínica de Seitai shiatsu',
     },
     zh: {
-      bookTag:'书籍 · 書籍', bookSubtitle:'身体感觉的罗盘', bookPriceUnit:'/ 电子书',
+      bookTitle:'身体感觉的罗盘', bookTag:'书籍 · 書籍', bookSubtitle:'身体感觉的罗盘', bookPriceUnit:'/ 电子书',
       bookDesc:'从马德里的绝望到恐慌症，再到一连串的奇迹。「停止努力的那天，生活开始自然流动。」在摩纳哥酒店写下的真实故事。收录RAS、盲点与传送带练习。',
       courseTag:'在线课程 · 講座', courseTitle:'7天丹田觉醒计划', coursePriceUnit:'/ 一次性付款',
       courseDesc:'在7天内唤醒丹田的实践计划。每天15分钟视频指导＋实践练习。可从世界任何地方参加。', courseBtn:'查看课程',
@@ -2533,7 +2497,7 @@ function updatePhilosophy() {
       ytLink:'YouTube: Yoshi整体指压诊所',
     },
     ko: {
-      bookTag:'서적 · 書籍', bookSubtitle:'신체 감각이라는 나침반', bookPriceUnit:'/ 전자책',
+      bookTitle:'신체 감각이라는 나침반', bookTag:'서적 · 書籍', bookSubtitle:'신체 감각이라는 나침반', bookPriceUnit:'/ 전자책',
       bookDesc:'마드리드에서의 절망에서 공황 장애, 그리고 연속적인 기적으로. «노력을 멈춘 날부터 삶이 스스로 움직이기 시작했다.» 모나코 호텔에서 쓴 실화. RAS, 스코토마, 컨베이어 벨트 작업 수록.',
       courseTag:'온라인 강좌 · 講座', courseTitle:'7일 단전 각성 프로그램', coursePriceUnit:'/ 일시불',
       courseDesc:'7일 안에 단전을 깨우는 실용적인 프로그램. 매일 15분 영상 가이드＋실습. 세계 어디서나 수강 가능.', courseBtn:'강좌 보기',
@@ -2545,8 +2509,8 @@ function updatePhilosophy() {
     },
   };
   const pCard = pc[currentLang] || pc.es;
-  const pcIds = ['bookTag','bookSubtitle','bookPriceUnit','bookDesc','courseTag','courseTitle','coursePriceUnit','courseDesc','courseBtn','memberTag','memberTitle','memberPriceUnit','memberDesc','memberBtn','sessionTag','sessionCardTitle','sessionPriceUnit','sessionCardDesc','sessionCardBtn','clinicYouTubeLink'];
-  const pcVals = [pCard.bookTag,pCard.bookSubtitle,pCard.bookPriceUnit,pCard.bookDesc,pCard.courseTag,pCard.courseTitle,pCard.coursePriceUnit,pCard.courseDesc,pCard.courseBtn,pCard.memberTag,pCard.memberTitle,pCard.memberPriceUnit,pCard.memberDesc,pCard.memberBtn,pCard.sessionTag,pCard.sessionTitle,pCard.sessionPriceUnit,pCard.sessionDesc,pCard.sessionBtn,pCard.ytLink];
+  const pcIds = ['bookTitle','bookTag','bookSubtitle','bookPriceUnit','bookDesc','courseTag','courseTitle','coursePriceUnit','courseDesc','courseBtn','memberTag','memberTitle','memberPriceUnit','memberDesc','memberBtn','sessionTag','sessionCardTitle','sessionPriceUnit','sessionCardDesc','sessionCardBtn','clinicYouTubeLink'];
+  const pcVals = [pCard.bookTitle,pCard.bookTag,pCard.bookSubtitle,pCard.bookPriceUnit,pCard.bookDesc,pCard.courseTag,pCard.courseTitle,pCard.coursePriceUnit,pCard.courseDesc,pCard.courseBtn,pCard.memberTag,pCard.memberTitle,pCard.memberPriceUnit,pCard.memberDesc,pCard.memberBtn,pCard.sessionTag,pCard.sessionTitle,pCard.sessionPriceUnit,pCard.sessionDesc,pCard.sessionBtn,pCard.ytLink];
   pcIds.forEach((id,i)=>{ if(el(id)) el(id).textContent=pcVals[i]; });
 }
 
@@ -2600,13 +2564,30 @@ async function submitMailerlite(e) {
 
 // ===== PREMIUM =====
 function handlePremium(type) {
-  const messages = {
-    book: '📖 ありがとうございます！\n\n本の出版準備中です。\ninfo@shiatsuyoshi.com\nまでご連絡ください。',
-    course7: '🎓 丹田覚醒7日間プログラム\n\n現在準備中です。\ninfo@shiatsuyoshi.com\nまでご連絡ください。',
-    membership: '🌿 Yoshi Dojoメンバーシップ\n\nまもなく開始予定です。\ninfo@shiatsuyoshi.com\nまでご連絡ください。',
-    session: '🎯 オンライン個人セッション\n\nご予約はこちら：\ninfo@shiatsuyoshi.com\nまたはWhatsApp: 606 054 229'
+  const email = 'info@shiatsuyoshi.com';
+  const wa = 'WhatsApp: 606 054 229';
+  const msgs = {
+    ja: {
+      book: `📖 ありがとうございます！\n\n本の出版準備中です。\n${email}\nまでご連絡ください。`,
+      course7: `🎓 丹田覚醒7日間プログラム\n\n現在準備中です。\n${email}\nまでご連絡ください。`,
+      membership: `🌿 Yoshi Dojoメンバーシップ\n\nまもなく開始予定です。\n${email}\nまでご連絡ください。`,
+      session: `🎯 オンライン個人セッション\n\nご予約はこちら：\n${email}\nまたは${wa}`
+    },
+    es: {
+      book: `📖 ¡Gracias!\n\nEl libro está en preparación.\nContacta: ${email}`,
+      course7: `🎓 Programa 7 días - Despertar del Tanden\n\nEn preparación.\nContacta: ${email}`,
+      membership: `🌿 Membresía Yoshi Dojo\n\nPróximamente.\nContacta: ${email}`,
+      session: `🎯 Sesión individual online\n\nReservas:\n${email}\no ${wa}`
+    },
+    en: {
+      book: `📖 Thank you!\n\nThe book is in preparation.\nContact: ${email}`,
+      course7: `🎓 7-Day Tanden Awakening Program\n\nComing soon.\nContact: ${email}`,
+      membership: `🌿 Yoshi Dojo Membership\n\nComing soon.\nContact: ${email}`,
+      session: `🎯 Online Individual Session\n\nBook here:\n${email}\nor ${wa}`
+    }
   };
-  alert(messages[type]);
+  const m = msgs[currentLang] || msgs.es;
+  alert(m[type] || (msgs.es[type]));
 }
 
 // ===== YOSHI AI =====
@@ -2696,7 +2677,8 @@ async function sendYoshi() {
   }
 }
 function getYoshiSystemPrompt() {
-  const lang = currentLang==='ja'?'日本語':currentLang==='es'?'スペイン語':'英語';
+  const langMap = {ja:'日本語',es:'スペイン語',en:'英語',fr:'フランス語',pt:'ポルトガル語',zh:'中国語',ko:'韓国語'};
+  const lang = langMap[currentLang]||'スペイン語';
   return 'あなたはミニYoshi（中井経賀）です。早稲田大学人間科学部スポーツ医学専攻、北京中医薬大学、ピッツバーグ大学で解剖実習。マドリード在住21年の整体指圧師。野口晴哉、甲野善紀、鈴木大拙、エックハルト・トール、苫米地英人の哲学に精通。大阪人のユーモアで' + lang + 'で答える。身体感覚・丹田・気・今に生きることが核心。医療診断不可。3〜5文で温かく答える。';
 }
 function addDeepTalkBtn(question) {
@@ -2898,15 +2880,15 @@ function showDailyQuote() {
   if (localStorage.getItem('yoshiQuoteDate') === new Date().toDateString()) return;
   const dayIndex = Math.floor((new Date() - new Date('2024-01-01')) / 86400000) % yoshiQuotes.length;
   const q = yoshiQuotes[dayIndex];
-  const t = currentLang==='es'?q.es:currentLang==='en'?q.en:q;
+  const t = currentLang==='es'?q.es:currentLang==='ja'?q:(q.en||q);
   document.getElementById('quoteKanji').textContent = q.kanji;
   document.getElementById('quoteText').textContent = t.text;
   document.getElementById('quoteSub').textContent = t.sub;
   document.getElementById('quoteSource').textContent = q.source;
-  const labels = {ja:'今日のYoshiの言葉', es:'Palabra de Yoshi de hoy', en:"Today's Word from Yoshi"};
-  const btns = {ja:'今日も、気と共に 🙏', es:'Hoy tambien, con ki 🙏', en:'Today also, with ki 🙏'};
-  document.getElementById('quoteLabelTop').textContent = labels[currentLang];
-  document.getElementById('quoteCloseBtn').textContent = btns[currentLang];
+  const labels = {ja:'今日のYoshiの言葉', es:'Palabra de Yoshi de hoy', en:"Today's Word from Yoshi", fr:'Parole de Yoshi aujourd\'hui', pt:'Palavra de Yoshi hoje', zh:'今日Yoshi语录', ko:'오늘의 Yoshi 말씀'};
+  const btns = {ja:'今日も、気と共に 🙏', es:'Hoy tambien, con ki 🙏', en:'Today also, with ki 🙏', fr:'Aujourd\'hui aussi, avec le ki 🙏', pt:'Hoje também, com ki 🙏', zh:'今天也一起感受气 🙏', ko:'오늘도 기와 함께 🙏'};
+  document.getElementById('quoteLabelTop').textContent = labels[currentLang] || labels.en;
+  document.getElementById('quoteCloseBtn').textContent = btns[currentLang] || btns.en;
   document.getElementById('dailyQuoteOverlay').classList.add('show');
 }
 function closeQuote() {
