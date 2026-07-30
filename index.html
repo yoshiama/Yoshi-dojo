@@ -733,7 +733,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
     </div>
     <div style="border-top:1px solid rgba(201,168,76,0.2);padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
       <div style="font-size:10px;color:rgba(245,240,232,0.5);letter-spacing:0.05em;line-height:1.7;" id="philoBookNote">モナコのホテルで書き下ろされた<br>Yoshiの実体験に基づく一冊</div>
-      <button onclick="window.open('https://www.amazon.co.jp/dp/B0GWWJVSTN','_blank')" style="flex-shrink:0;background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:11px;letter-spacing:0.15em;padding:10px 14px;cursor:pointer;border-radius:2px;font-weight:700;line-height:1.4;" id="philoBookBtn">📖 本を読む<br><span style="font-size:9px;font-weight:400">Kindle</span></button>
+      <button onclick="window.open('https://amzn.asia/d/03TspWJp','_blank')" style="flex-shrink:0;background:var(--gold);color:var(--ink);border:none;font-family:'Noto Serif JP',serif;font-size:11px;letter-spacing:0.15em;padding:10px 14px;cursor:pointer;border-radius:2px;font-weight:700;line-height:1.4;" id="philoBookBtn">📖 本を読む<br><span style="font-size:9px;font-weight:400">Kindle</span></button>
     </div>
   </div>
 
@@ -759,7 +759,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
         <div style="font-size:11px;color:#888;margin-top:4px;" id="beltStep3Hint">心が少し温かくなる未来を描けた瞬間、「最高の未来」行きのベルトに乗り換えている</div>
       </div>
     </div>
-    <div style="margin-top:12px;text-align:center;font-size:10px;color:#aaa;letter-spacing:0.2em;line-height:1.7;" id="beltBookRef">このワークの詳細と実践例は、<br>Yoshiの著書で読めます →&nbsp;<button onclick="window.open('https://www.amazon.co.jp/dp/B0GWWJVSTN','_blank')" style="background:none;border:none;color:var(--teal);font-size:10px;cursor:pointer;letter-spacing:0.2em;padding:0;text-decoration:underline;" id="beltBookLink">Kindleで読む</button></div>
+    <div style="margin-top:12px;text-align:center;font-size:10px;color:#aaa;letter-spacing:0.2em;line-height:1.7;" id="beltBookRef">このワークの詳細と実践例は、<br>Yoshiの著書で読めます →&nbsp;<button onclick="window.open('https://amzn.asia/d/03TspWJp','_blank')" style="background:none;border:none;color:var(--teal);font-size:10px;cursor:pointer;letter-spacing:0.2em;padding:0;text-decoration:underline;" id="beltBookLink">Kindleで読む</button></div>
   </div>
 
   <div class="premium-cards">
@@ -774,7 +774,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
         </div>
       </div>
       <div class="premium-card-desc" id="bookDesc">マドリードで絶望→パニック障害→奇跡の連続。「頑張るのをやめた日から、人生は勝手に動き出した」。モナコのホテルで書き下ろされた実話。RAS・スコトーマ・ベルトコンベアワーク収録。</div>
-      <button class="premium-card-btn gold" id="premiumKindleBtn" onclick="window.open(currentLang==='ja'?'https://www.amazon.co.jp/dp/B0GWWJVSTN':'https://amzn.eu/d/00o61Xwl','_blank')">📖 Kindleで今すぐ読む</button>
+      <button class="premium-card-btn gold" id="premiumKindleBtn" onclick="window.open(currentLang==='ja'?'https://amzn.asia/d/03TspWJp':'https://amzn.eu/d/00o61Xwl','_blank')">📖 Kindleで今すぐ読む</button>
     </div>
     <div class="premium-card">
       <div class="premium-badge">人気</div>
@@ -2410,7 +2410,7 @@ function updatePhilosophy() {
   if(el('philoPrinciple3Title')) el('philoPrinciple3Title').textContent = t.p3t;
   if(el('philoPrinciple3Desc')) el('philoPrinciple3Desc').textContent = t.p3d;
   if(el('philoBookNote')) el('philoBookNote').innerHTML = t.note.replace('\n','<br>');
-  const kindleURL = currentLang === 'ja' ? 'https://www.amazon.co.jp/dp/B0GWWJVSTN' : 'https://amzn.eu/d/00o61Xwl';
+  const kindleURL = currentLang === 'ja' ? 'https://amzn.asia/d/03TspWJp' : 'https://amzn.eu/d/00o61Xwl';
   if(el('philoBookBtn')) { el('philoBookBtn').setAttribute('onclick', "window.open('"+kindleURL+"','_blank')"); el('philoBookBtn').innerHTML = t.btn + '<br><span style="font-size:9px;font-weight:400">Kindle</span>'; }
   // Belt Conveyor Work
   if(el('beltLabel')) el('beltLabel').textContent = t.beltLabel;
