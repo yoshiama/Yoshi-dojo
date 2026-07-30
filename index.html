@@ -1133,7 +1133,7 @@ function closeVideo() {
 }
 
 // ===== LANGUAGE =====
-let currentLang = 'es';
+let currentLang = localStorage.getItem('yoshiUserLang') || 'es';
 const translations = {
   ja: {
     nav: ['瞑　想','願　望','車　輪','気　づき','身　体','養　生','講　座','予　約','百　日'],
@@ -1556,6 +1556,7 @@ const translations = {
 
 function setLang(lang) {
   currentLang = lang;
+  localStorage.setItem('yoshiUserLang', lang);
   localStorage.removeItem('yoshiSamuraiLangSet');
   localStorage.removeItem('yoshiBQVideoLangSet');
   localStorage.removeItem('yoshiBodyScanLangSet');
@@ -3365,12 +3366,8 @@ renderWheelSliders();
 drawRadarChart();
 
 // ===== INIT =====
-renderVideoList();
-renderFutureSelfCard();
+setLang(currentLang);
 setTimeout(showDailyQuote, 1500);
-updatePopupLang();
-updatePhilosophy();
-updateHyakuLang();
 
 </script>
 </body>
