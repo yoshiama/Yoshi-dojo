@@ -2005,6 +2005,7 @@ const bqVideoTexts = {
 };
 const MORNING_MED_ID = 'pPIQA6a_wQ4';
 const EVENING_MED_ID = 'k0SSREXTpcA';
+const EVENING_MED_ID_JA = 'c8krlEGXWTI';
 const morningMedTexts = {
   es: { label:'MEDITACIÓN DE MAÑANA', desc:'Comienza el día con presencia y energía. Activa tu ki desde la mañana.', btn:'Ver meditación de mañana' },
   ja: { label:'朝の瞑想', desc:'一日を存在感とエネルギーで始める。朝から気を活性化させる。', btn:'朝の瞑想を見る' },
@@ -2052,6 +2053,7 @@ function openMorningMedVideo() {
   else { _openSubtitleGuide(() => { localStorage.setItem('yoshiMorningMedLangSet','1'); window.open('https://youtube.com/shorts/'+MORNING_MED_ID,'_blank'); }); }
 }
 function openEveningMedVideo() {
+  if (currentLang === 'ja') { window.open('https://youtube.com/shorts/'+EVENING_MED_ID_JA, '_blank'); return; }
   if (currentLang === 'es') { window.open('https://youtu.be/'+EVENING_MED_ID, '_blank'); return; }
   const alreadySet = localStorage.getItem('yoshiEveningMedLangSet');
   if (alreadySet) { window.open('https://youtu.be/'+EVENING_MED_ID, '_blank'); }
